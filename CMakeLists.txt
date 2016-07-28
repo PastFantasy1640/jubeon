@@ -24,6 +24,9 @@ source_group("Main" FILES src/main.cpp)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
+set(SFML_ROOT "${CMAKE_SOURCE_DIR}/lib/SFML")
+set(THOR_ROOT "${CMAKE_SOURCE_DIR}/lib/Thor")
+
 # add sfml
 find_package(SFML 2 REQUIRED system window graphics network audio)
 if(SFML_FOUND)
@@ -35,6 +38,8 @@ file(GLOB sfml_dlls ${CMAKE_SOURCE_DIR}/lib/SFML/bin/*.dll)
 foreach(dll ${sfml_dlls})
     configure_file(${dll} ${CMAKE_BINARY_DIR} COPYONLY)
 endforeach()
+
+file(COPY ${CMAKE_SOURCE_DIR}/media/ DESTINATION ${CMAKE_BINARY_DIR}/media/)
 
 # add thor
 find_package(Thor 2 REQUIRED)
