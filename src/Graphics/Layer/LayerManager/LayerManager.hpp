@@ -5,6 +5,7 @@
 
 #include <string>
 #include <list>
+#include <memory>
 #include <SFML/Graphics.hpp>
 
 
@@ -46,8 +47,8 @@ namespace jubeat_online {
 				void setScale(const double rate);
 
 				typedef enum : unsigned char{
-					MAIN = 0,
-					FOREGROUND = 1,
+					FOREGROUND = 0,
+					MAIN = 1,
 					BACKGROUND = 2
 				}LayerType;
 
@@ -63,7 +64,7 @@ namespace jubeat_online {
 
 				LayerManager(const LayerManager & cp);		//コピーコンストラクタの禁止
 				
-				std::list<LayerDetail> *	layer_list;		//レイヤーのリスト
+				std::unique_ptr< std::list<LayerDetail>>	layer_list;		//レイヤーのリスト
 
 				sf::VideoMode				vmode;			//生成するウィンドウのサイズなど
 				std::string					window_title;	//生成するウィンドウのタイトル

@@ -11,7 +11,7 @@ namespace jubeat_online {
 		namespace layers {
 			class FrameLayer : public jubeat_online::graphics::layer::LayerBase {
 			private:
-				sf::Texture frame;
+				//sf::Texture frame;
 
 			public:
 				virtual void Init() override;

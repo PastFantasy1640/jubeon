@@ -28,7 +28,7 @@ jubeat_online::graphics::layer::LayerManager::LayerManager()
 
 	//リストインスタンスの生成
 	try {
-		this->layer_list = new std::list<LayerDetail>;
+		this->layer_list.reset(new std::list<LayerDetail>);
 
 		if (this->layer_list == nullptr) throw std::bad_alloc();
 	}
@@ -75,8 +75,8 @@ jubeat_online::graphics::layer::LayerManager::~LayerManager()
 	}
 
 	//リストの解放
-	delete this->layer_list;
-	this->layer_list = nullptr;
+	//delete this->layer_list;
+	//this->layer_list = nullptr;
 
 	//ウィンドウの終了
 	this->window.close();
@@ -94,7 +94,7 @@ void jubeat_online::graphics::layer::LayerManager::createWindow(void)
 	this->window.clear();
 
 	//#################TEMPORARY
-	this->window.setPosition(sf::Vector2i(0, 300));
+	this->window.setPosition(sf::Vector2i(0, 0));
 	this->window.setVerticalSyncEnabled(true);
 }
 
@@ -150,6 +150,7 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 			//「クローズが要求された」イベント：ウインドウを閉じる
 			if (event.type == sf::Event::Closed)
 				this->window.close();
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) this->window.close();
 		}
 
 

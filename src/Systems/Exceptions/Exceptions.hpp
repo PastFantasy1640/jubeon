@@ -22,6 +22,12 @@ namespace jubeat_online {
 			public:
 				bad_alloc(const std::string & msg);
 			};
+
+
+			class panel_out_of_index : ::std::exception {
+			public:
+				panel_out_of_index(const std::string & msg);
+			};
 		}	
 	}
 }
