@@ -6,6 +6,8 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <memory>
+
 #include <SFML/Graphics.hpp>
 
 
@@ -32,11 +34,13 @@ namespace jubeat_online {
 			//マーカー名
 			std::string marker_name;
 			
+			typedef std::shared_ptr<MarkerTextures> SPMarkerTextures;
+
 			//出現のマーカー画像群
-			MarkerTextures appear;
+			SPMarkerTextures appear;
 
 			//消滅のマーカー画像群
-			std::array<MarkerTextures, 7> disappear;
+			std::array<SPMarkerTextures , 7> disappear;
 
 			//例によってデフォルトコンストラクタは禁止
 			Marker();
