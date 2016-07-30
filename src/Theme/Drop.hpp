@@ -44,7 +44,20 @@ namespace Theme {
 			for (auto spring : springs_) { spring->update(); };
 			for (auto point : points_) { point->update(); };
 			this->update();
+
+			//this->setPosition(this->getPosition() + this->moving_);
+			this->move(this->moving_);
+			//this->scale2_ += this->scale_;
+			if(this->getScale().x < 3.0f) this->scale(this->scale_);
+			
 		}
+
+		void move2(sf::Vector2f move, sf::Vector2f scale ) {
+			moving_ = move;
+			scale_ = scale;
+		}
+
+
 
 		virtual std::size_t getPointCount() const {
 
@@ -94,6 +107,7 @@ namespace Theme {
 		std::array<std::shared_ptr<Spring::Point>, S> points_;
 		std::shared_ptr<Spring::Point> centerPoint_;
 		std::array<std::shared_ptr<Spring>, S * 2> springs_;
+		sf::Vector2f moving_, scale_, scale2_;
 	};
 };
 

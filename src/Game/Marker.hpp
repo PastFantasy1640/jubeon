@@ -15,13 +15,13 @@ namespace jubeat_online {
 		private:
 
 			//STLはpublic継承NG
-			class MarkerTexture : private std::vector<sf::Texture> {
+			class MarkerTextures : private std::vector<sf::Texture> {
 			private:
 				
 
 			public:
-				MarkerTexture();
-				virtual ~MarkerTexture();
+				MarkerTextures();
+				virtual ~MarkerTextures();
 
 
 			};
@@ -33,8 +33,10 @@ namespace jubeat_online {
 			std::string marker_name;
 			
 			//出現のマーカー画像群
-			MarkerTexture appear;
-			std::array<MarkerTexture, 7> disappear;
+			MarkerTextures appear;
+
+			//消滅のマーカー画像群
+			std::array<MarkerTextures, 7> disappear;
 
 			//例によってデフォルトコンストラクタは禁止
 			Marker();

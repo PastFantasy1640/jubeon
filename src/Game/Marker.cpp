@@ -1,11 +1,11 @@
 #include "Marker.hpp"
 
 
-jubeat_online::game::Marker::MarkerTexture::MarkerTexture()
+jubeat_online::game::Marker::MarkerTextures::MarkerTextures()
 {
 }
 
-jubeat_online::game::Marker::MarkerTexture::~MarkerTexture()
+jubeat_online::game::Marker::MarkerTextures::~MarkerTextures()
 {
 }
 

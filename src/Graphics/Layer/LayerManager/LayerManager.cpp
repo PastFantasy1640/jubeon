@@ -64,7 +64,7 @@ jubeat_online::graphics::layer::LayerManager::LayerManager(
 jubeat_online::graphics::layer::LayerManager::~LayerManager()
 {
 	//全てのレイヤーの解放
-	for (std::list<LayerDetail>::iterator p = this->layer_list->begin(); p != this->layer_list->end(); ) {
+	for (auto p = this->layer_list->begin(); p != this->layer_list->end(); ) {
 		if ((*p).lb != nullptr) {
 			(*p).lb->Exit();
 			delete (*p).lb;
@@ -73,10 +73,6 @@ jubeat_online::graphics::layer::LayerManager::~LayerManager()
 
 		p = this->layer_list->erase(p);
 	}
-
-	//リストの解放
-	//delete this->layer_list;
-	//this->layer_list = nullptr;
 
 	//ウィンドウの終了
 	this->window.close();
@@ -94,8 +90,9 @@ void jubeat_online::graphics::layer::LayerManager::createWindow(void)
 	this->window.clear();
 
 	//#################TEMPORARY
-	this->window.setPosition(sf::Vector2i(0, 0));
+	this->window.setPosition(sf::Vector2i(1920, -835));
 	this->window.setVerticalSyncEnabled(true);
+	this->window.setFramerateLimit(30);
 }
 
 void jubeat_online::graphics::layer::LayerManager::setScale(const double rate)
@@ -156,12 +153,13 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 
 		this->window.clear();
 		if (this->layer_list->size() > 0) {
-			for (std::list<LayerDetail>::iterator p = --this->layer_list->end(); /*p != this->layer_list->end()*/; p--) {
+			for (auto p = --this->layer_list->end(); /*p != this->layer_list->end()*/; p--) {
 				//描写
 				p->lb->Draw();
 
 				p->lb->display();
 				sf::Sprite sp(p->lb->getTexture());
+				
 				//sp.setTexture(*p->lb->getScreenBufferTexture());
 				//sp.setPosition(0, 0);
 				if (this->scale != 1.0f) {
@@ -169,6 +167,7 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 					sp.setScale(1, 1);
 				}
 				this->window.draw(sp);
+				
 
 				if (p->lb->getExitCode() != 0) {
 					//終了処理
@@ -185,7 +184,7 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 	}
 
 
-	for (std::list<LayerDetail>::iterator p = this->layer_list->begin(); p != this->layer_list->end(); ) {
+	for (auto p = this->layer_list->begin(); p != this->layer_list->end(); ) {
 		p->lb->Exit();
 		p = this->layer_list->erase(p);
 	}

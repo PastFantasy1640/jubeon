@@ -35,7 +35,7 @@ int main(int argc, char * argv[]) {
 	jubeat_online::graphics::layer::LayerManager a("test",sf::VideoMode(768,1360),sf::Style::None);
 
 	a.createWindow();
-	a.setScale(0.75);
+	a.setScale(1.41);
 
 	jubeat_online::game::layers::BackgroundLayer bg;
 	jubeat_online::game::layers::FrameLayer frame;
@@ -89,10 +89,10 @@ int main(int argc, char * argv[]) {
 
 
 	a.addLayer(&bg, jubeat_online::graphics::layer::LayerManager::BACKGROUND, 0);
-	//a.addLayer(&frame, jubeat_online::graphics::layer::LayerManager::FOREGROUND, 0);
-	//a.addLayer(&musicinfo, jubeat_online::graphics::layer::LayerManager::MAIN, 0);
-	//a.addLayer(&shutterlayer, jubeat_online::graphics::layer::LayerManager::MAIN, 0);
-	//a.addLayer(&seqplayer, jubeat_online::graphics::layer::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
+	a.addLayer(&frame, jubeat_online::graphics::layer::LayerManager::FOREGROUND, 0);
+	a.addLayer(&musicinfo, jubeat_online::graphics::layer::LayerManager::MAIN, 0);
+	a.addLayer(&shutterlayer, jubeat_online::graphics::layer::LayerManager::MAIN, 0);
+	a.addLayer(&seqplayer, jubeat_online::graphics::layer::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
 	
 	
 
