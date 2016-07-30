@@ -8,6 +8,11 @@
 
 using namespace jubeat_online::graphics::layer;
 
+inline void jubeat_online::graphics::layer::LayerBase::clearBuffer()
+{
+	this->clear(sf::Color(0, 0, 0, 0));
+}
+
 jubeat_online::graphics::layer::LayerBase::LayerBase()
 	: exit_code(0),
 	sf::RenderTexture()

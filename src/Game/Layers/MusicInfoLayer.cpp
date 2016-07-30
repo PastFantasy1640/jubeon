@@ -9,7 +9,7 @@ void jubeat_online::game::layers::MusicInfoLayer::Draw()
 {
 	sf::Sprite sp(this->dummy);
 	sp.setPosition(28, 24);
-	this->clear(sf::Color(0,0,0,0));
+	this->clearBuffer();
 	this->draw(sp);
 }
 

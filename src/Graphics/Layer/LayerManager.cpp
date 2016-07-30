@@ -52,7 +52,7 @@ jubeat_online::graphics::layer::LayerManager::LayerManager(
 			"LayerManagerにおいてレイヤーリスト用の領域確保に失敗しました。メモリに十分な空きがあるか確認してください。");
 	}
 	
-	this->window.setPosition(startWindowPosition);
+	this->window_position = startWindowPosition;
 }
 
 
@@ -85,6 +85,7 @@ void jubeat_online::graphics::layer::LayerManager::createWindow(void)
 
 	this->window.setVerticalSyncEnabled(this->isVSync);
 	this->window.setFramerateLimit(30);
+	this->window.setPosition(this->window_position);
 
 	this->window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y);
 	this->window_buffer.clear();
@@ -187,7 +188,7 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 		wsp.setOrigin(static_cast<float>(this->RENDER_TEXTURE_SIZE.x) / 2.0f, static_cast<float>(this->RENDER_TEXTURE_SIZE.y) / 2.0f);
 		wsp.setPosition(this->vmode.width / 2.0f, this->vmode.height / 2.0f);
 		wsp.setScale(scale);
-
+		
 		//画面描写
 		this->window.draw(wsp);
 

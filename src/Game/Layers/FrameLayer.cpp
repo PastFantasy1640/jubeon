@@ -11,7 +11,7 @@ void jubeat_online::game::layers::FrameLayer::Draw()
 	//s//f::Sprite sp(this->frame);
 	//this->draw(sp);
 
-	this->clear(sf::Color(0, 0, 0, 0));
+	this->clearBuffer();
 
 	//ÀÛ‚ÌƒTƒCƒY‚É‡‚í‚¹‚Ä•`Ê‚·‚é
 	sf::RectangleShape rect;

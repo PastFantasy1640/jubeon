@@ -69,6 +69,7 @@ namespace jubeat_online {
 				sf::Uint32					window_style;	//生成するウィンドウのスタイル
 				bool						isVSync;		//垂直同期をとるか
 				unsigned int				fpsLimit;		//0で制限なし
+				sf::Vector2i				window_position;//ウィンドウを生成するポジション
 
 
 				sf::RenderWindow			window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）

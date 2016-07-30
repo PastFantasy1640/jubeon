@@ -18,9 +18,11 @@ namespace jubeat_online {
 				//終了コード
 				int						exit_code;
 
+
 			protected:
 				//コンストラクタ、デストラクタ
 				LayerBase();
+				inline void clearBuffer(void);
 
 			public:
 

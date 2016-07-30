@@ -64,7 +64,7 @@ void jubeat_online::game::layers::SequencePlayer::Init()
 void jubeat_online::game::layers::SequencePlayer::Draw()
 {
 
-	this->clear(sf::Color(0, 0, 0, 0));
+	this->clearBuffer();
 
 	//•`ŽÊ
 
