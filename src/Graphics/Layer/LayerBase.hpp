@@ -22,7 +22,9 @@ namespace jubeat_online {
 			protected:
 				//コンストラクタ、デストラクタ
 				LayerBase();
-				inline void clearBuffer(void);
+				inline void clearBuffer(void) {
+					this->clear(sf::Color(0, 0, 0, 0));
+				}
 
 			public:
 

@@ -150,13 +150,6 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 				//描写
 				p->lb->Draw();
 
-				//画面更新
-				p->lb->display();
-
-				sf::Sprite sp(p->lb->getTexture());
-
-				//ウィンドウバッファに描写
-				this->window_buffer.draw(sp);
 				
 				//終了検知
 				if (p->lb->getExitCode() != 0) {
@@ -166,7 +159,17 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 					//デクリメントだから全ループにおいてp--が可能
 					p = this->layer_list->erase(p);
 				}
-				
+				else {
+
+					//画面更新
+					p->lb->display();
+
+					sf::Sprite sp(p->lb->getTexture());
+
+					//ウィンドウバッファに描写
+					this->window_buffer.draw(sp);
+				}
+
 				if (p == this->layer_list->begin()) break;	//全てのレイヤーを描写済み
 			}
 		}

@@ -33,7 +33,6 @@ LayerBaseがSFMLのRenderTextureを継承しているため、RenderTextureのdraw関数にはthi
 従って、自動的に画面バッファの消去は行いません。各レイヤー、this->clear関数にて適宜画面をクリアして描写してください。
 また、レイヤーを重ねる場合、this->clear関数のデフォルト引数では不具合が生じます（レイヤーの透過が無しになる）
 そのため、クリアする際はthis->clear(sf::Color(0,0,0,0))を使用するか、this->clearLayer()を使用してください。
-//TO DO : clearLayerのインライン呼び出し
 
 *** Exit()
 setExitCodeメソッドにより、終了コードを0以外に設定した場合、レイヤーが終了処理に入ります。
