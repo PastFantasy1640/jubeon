@@ -9,10 +9,6 @@
 #include <SFML/Graphics.hpp>
 
 
-#define LAYERMANAGER_DEFAULT_WINDOW_WIDTH 960
-#define LAYERMANAGER_DEFAULT_WINDOW_HEIGHT 540
-
-
 namespace jubeat_online {
 	namespace graphics {
 		namespace layer {
@@ -34,7 +30,7 @@ namespace jubeat_online {
 					const std::string & window_title,
 					const sf::VideoMode & vmode,
 					const bool isVSync,
-					const int fpsLimit = 0,
+					const unsigned int fpsLimit = 0,
 					const sf::Vector2i startWindowPosition = sf::Vector2i(0,0),
 					const sf::Uint32 style = sf::Style::Default
 					);
@@ -72,13 +68,13 @@ namespace jubeat_online {
 				std::string					window_title;	//生成するウィンドウのタイトル
 				sf::Uint32					window_style;	//生成するウィンドウのスタイル
 				bool						isVSync;		//垂直同期をとるか
-				int							fpsLimit;		//0で制限なし
+				unsigned int				fpsLimit;		//0で制限なし
 
 
 				sf::RenderWindow			window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
 				sf::RenderTexture			window_buffer;	//画面調整のためのラストバッファ
 
-
+				const static sf::Vector2u RENDER_TEXTURE_SIZE;
 
 			};
 		};

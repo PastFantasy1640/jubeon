@@ -13,6 +13,7 @@
 
 using namespace jubeat_online::graphics::layer;
 
+const sf::Vector2u jubeat_online::graphics::layer::LayerManager::RENDER_TEXTURE_SIZE = sf::Vector2u(768,1360);
 
 //#############  コンストラクタ　・　デストラクタ  ###############
 
@@ -26,7 +27,7 @@ jubeat_online::graphics::layer::LayerManager::LayerManager(
 	const std::string & window_title, 
 	const sf::VideoMode & vmode,
 	const bool isVSync,
-	const int fpsLimit, 
+	const unsigned int fpsLimit, 
 	const sf::Vector2i startWindowPosition,
 	const sf::Uint32 style)
 	: vmode(vmode),
@@ -82,9 +83,12 @@ void jubeat_online::graphics::layer::LayerManager::createWindow(void)
 	this->window.create(this->vmode, this->window_title, this->window_style);
 	this->window.clear();
 
-	this->window.setPosition(sf::Vector2i(1920, -835));
-	this->window.setVerticalSyncEnabled(true);
+	this->window.setVerticalSyncEnabled(this->isVSync);
 	this->window.setFramerateLimit(30);
+
+	this->window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y);
+	this->window_buffer.clear();
+	this->window_buffer.setSmooth(true);
 }
 
 
@@ -94,7 +98,7 @@ void jubeat_online::graphics::layer::LayerManager::addLayer(std::shared_ptr<Laye
 {
 
 	//レイヤーの初期化
-	layer->create(this->vmode.width, this->vmode.height, false);
+	layer->create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y);
 	layer->setSmooth(true);
 	layer->Init();
 
@@ -126,9 +130,7 @@ void jubeat_online::graphics::layer::LayerManager::addLayer(std::shared_ptr<Laye
 //#############  レイヤー描写フロー  ###############
 void jubeat_online::graphics::layer::LayerManager::process(void)
 {
-
-
-
+	
 	while (this->window.isOpen()) {
 		sf::Event event;
 		while (this->window.pollEvent(event)) {
@@ -140,35 +142,58 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 
 
 		this->window.clear();
+		this->window_buffer.clear();
+
 		if (this->layer_list->size() > 0) {
 			for (auto p = --this->layer_list->end(); /*p != this->layer_list->end()*/; p--) {
 				//描写
 				p->lb->Draw();
 
+				//画面更新
 				p->lb->display();
-				sf::Sprite sp(p->lb->getTexture());
-				
-				//sp.setTexture(*p->lb->getScreenBufferTexture());
-				//sp.setPosition(0, 0);
-				if (this->scale != 1.0f) {
-					//sp.setScale(1.0f / this->scale, 1.0f / this->scale);
-					sp.setScale(1, 1);
-				}
-				this->window.draw(sp);
-				
 
+				sf::Sprite sp(p->lb->getTexture());
+
+				//ウィンドウバッファに描写
+				this->window_buffer.draw(sp);
+				
+				//終了検知
 				if (p->lb->getExitCode() != 0) {
 					//終了処理
 					p->lb->Exit();
 					//リストから削除
+					//デクリメントだから全ループにおいてp--が可能
 					p = this->layer_list->erase(p);
 				}
-				//else p--;
+				
 				if (p == this->layer_list->begin()) break;	//全てのレイヤーを描写済み
 			}
 		}
 
-		window.display();   //描画アップデート
+		//ウィンドウバッファのアップデート
+		this->window_buffer.display();
+
+		//スプライトの作成
+		sf::Sprite wsp(this->window_buffer.getTexture());
+
+		//スプライトごにょごにょ
+		sf::Vector2f scale;
+		scale.x = static_cast<float>(this->window.getSize().x) / static_cast<float>(this->window_buffer.getSize().x);
+		scale.y = static_cast<float>(this->window.getSize().y) / static_cast<float>(this->window_buffer.getSize().y);
+
+		if (scale.x > scale.y) scale.x = scale.y;
+		else scale.y = scale.x;
+
+		wsp.setOrigin(static_cast<float>(this->RENDER_TEXTURE_SIZE.x) / 2.0f, static_cast<float>(this->RENDER_TEXTURE_SIZE.y) / 2.0f);
+		wsp.setPosition(this->vmode.width / 2.0f, this->vmode.height / 2.0f);
+		wsp.setScale(scale);
+
+		//画面描写
+		this->window.draw(wsp);
+
+		//画面アップデート
+		this->window.display();
+
 	}
 
 
@@ -177,7 +202,4 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 		p = this->layer_list->erase(p);
 	}
 
-	//レイヤー全てをExitする。
-	//listは開放しない
-	//それぞれのレイヤーも解放しない
 }
