@@ -23,9 +23,6 @@ namespace jubeat_online {
 			 */
 			class LayerManager {
 			public:
-				/** デフォルトコンストラクタ。
-				 */
-				LayerManager();
 
 
 				/** 引数付きコンストラクタ。
@@ -36,6 +33,9 @@ namespace jubeat_online {
 				LayerManager(
 					const std::string & window_title,
 					const sf::VideoMode & vmode,
+					const bool isVSync,
+					const int fpsLimit = 0,
+					const sf::Vector2i startWindowPosition = sf::Vector2i(0,0),
 					const sf::Uint32 style = sf::Style::Default
 					);
 
@@ -43,8 +43,9 @@ namespace jubeat_online {
 				 */
 				virtual ~LayerManager();
 
+				/** ウィンドウを生成します。
+				 */
 				void createWindow(void);
-				void setScale(const double rate);
 
 				typedef enum : unsigned char{
 					FOREGROUND = 0,
@@ -52,27 +53,31 @@ namespace jubeat_online {
 					BACKGROUND = 2
 				}LayerType;
 
-				void addLayer(LayerBase * layer, const LayerType type, const unsigned char layernumber);
+				void addLayer(std::shared_ptr<LayerBase> layer, const LayerType type, const unsigned char layernumber);
 
 				void process(void);
 
 			private:
 				typedef struct {
-					LayerBase * lb;
+					std::shared_ptr<LayerBase> lb;
 					LayerType lt;
 				} LayerDetail;
 
 				LayerManager(const LayerManager & cp);		//コピーコンストラクタの禁止
+				LayerManager();								//デフォルトコンストラクタも禁止
 				
-				std::unique_ptr< std::list<LayerDetail>>	layer_list;		//レイヤーのリスト
+				std::shared_ptr< std::list<LayerDetail>>	layer_list;		//レイヤーのリスト
 
 				sf::VideoMode				vmode;			//生成するウィンドウのサイズなど
 				std::string					window_title;	//生成するウィンドウのタイトル
 				sf::Uint32					window_style;	//生成するウィンドウのスタイル
-				
-				sf::RenderWindow			window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
+				bool						isVSync;		//垂直同期をとるか
+				int							fpsLimit;		//0で制限なし
 
-				double scale;
+
+				sf::RenderWindow			window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
+				sf::RenderTexture			window_buffer;	//画面調整のためのラストバッファ
+
 
 
 			};

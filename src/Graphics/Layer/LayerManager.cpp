@@ -17,11 +17,23 @@ using namespace jubeat_online::graphics::layer;
 //#############  コンストラクタ　・　デストラクタ  ###############
 
 jubeat_online::graphics::layer::LayerManager::LayerManager()
-	: layer_list(nullptr),
-	vmode(LAYERMANAGER_DEFAULT_WINDOW_WIDTH, LAYERMANAGER_DEFAULT_WINDOW_HEIGHT),
-	window_title("Untitled window"),
-	window_style(sf::Style::Default),
-	scale(1.0f)
+{
+
+}
+
+
+jubeat_online::graphics::layer::LayerManager::LayerManager(
+	const std::string & window_title, 
+	const sf::VideoMode & vmode,
+	const bool isVSync,
+	const int fpsLimit, 
+	const sf::Vector2i startWindowPosition,
+	const sf::Uint32 style)
+	: vmode(vmode),
+	window_style(style),
+	window_title(window_title),
+	isVSync(isVSync),
+	fpsLimit(fpsLimit)
 {
 
 	//ウィンドウの生成は別。
@@ -38,23 +50,8 @@ jubeat_online::graphics::layer::LayerManager::LayerManager()
 		throw jubeat_online::systems::exceptions::bad_alloc(
 			"LayerManagerにおいてレイヤーリスト用の領域確保に失敗しました。メモリに十分な空きがあるか確認してください。");
 	}
-}
-
-
-
-
-jubeat_online::graphics::layer::LayerManager::LayerManager(
-	const std::string & window_title,
-	const sf::VideoMode & vmode,
-	const sf::Uint32 style)
-	: LayerManager()
-{
-
-	//デフォルト値のウィンドウ情報の更新
-	this->vmode = vmode;
-	this->window_style = style;
-	this->window_title = window_title;
-
+	
+	this->window.setPosition(startWindowPosition);
 }
 
 
@@ -65,10 +62,8 @@ jubeat_online::graphics::layer::LayerManager::~LayerManager()
 {
 	//全てのレイヤーの解放
 	for (auto p = this->layer_list->begin(); p != this->layer_list->end(); ) {
-		if ((*p).lb != nullptr) {
+		if ((*p).lb) {
 			(*p).lb->Exit();
-			delete (*p).lb;
-			(*p).lb = nullptr;
 		}
 
 		p = this->layer_list->erase(p);
@@ -83,32 +78,28 @@ jubeat_online::graphics::layer::LayerManager::~LayerManager()
 
 void jubeat_online::graphics::layer::LayerManager::createWindow(void)
 {
-
-	this->window.setVerticalSyncEnabled(true);
-
+	
 	this->window.create(this->vmode, this->window_title, this->window_style);
 	this->window.clear();
 
-	//#################TEMPORARY
 	this->window.setPosition(sf::Vector2i(1920, -835));
 	this->window.setVerticalSyncEnabled(true);
 	this->window.setFramerateLimit(30);
 }
 
-void jubeat_online::graphics::layer::LayerManager::setScale(const double rate)
-{
-	this->scale = rate;
-	sf::Vector2u size = this->window.getSize();
-	size.x *= rate;
-	size.y *= rate;
-	this->window.setSize(size);
-}
-
 
 //#############  レイヤーの追加  ###############
 
-void jubeat_online::graphics::layer::LayerManager::addLayer(LayerBase * layer, const LayerType type, const unsigned char layernumber)
+void jubeat_online::graphics::layer::LayerManager::addLayer(std::shared_ptr<LayerBase> layer, const LayerType type, const unsigned char layernumber)
 {
+
+	//レイヤーの初期化
+	layer->create(this->vmode.width, this->vmode.height, false);
+	layer->setSmooth(true);
+	layer->Init();
+
+	//初期化が完了してからDrawをはじめる
+
 	//レイヤーの追加
 	//同じタイプでレイヤーナンバーの場所に入れる
 	unsigned char i = 0;
@@ -125,13 +116,10 @@ void jubeat_online::graphics::layer::LayerManager::addLayer(LayerBase * layer, c
 	newlb.lb = layer;
 	newlb.lt = type;
 
+	//shared_ptrはスレッドセーフ
 	this->layer_list->insert(p,newlb);
 
-	//layer->createScreenBuffer(this->window.getSize().x, this->window.getSize().y);
 	
-	layer->create(this->vmode.width, this->vmode.height, false);
-	layer->setSmooth(true);
-	layer->Init();
 }
 
 
