@@ -13,7 +13,8 @@ jubeat_online::game::layers::SequencePlayer::SequencePlayer(const Sequence * seq
 	music(music),
 	playrecord(std::move(playrecord)),
 	before_check_ms(0),
-	pushing(0)
+	pushing(0),
+	mk("media/marker/shutter", "shutter.json")
 {
 }
 
@@ -59,6 +60,9 @@ void jubeat_online::game::layers::SequencePlayer::Init()
 	//panel_shadow.pngはサイズ190x190
 	//伸縮させる可能性があるので、smooth適用
 	this->panel_frame.setSmooth(true);
+
+	//マーカー読み込みテスト
+	this->mk.load();
 }
 
 void jubeat_online::game::layers::SequencePlayer::Draw()
@@ -78,8 +82,14 @@ void jubeat_online::game::layers::SequencePlayer::Draw()
 	//済、というか持ってる
 
 	//Markerのテクスチャを取得
+	const sf::Texture * tex = this->mk.getTexturePtr((this->music->getPlayingCurrentTime() % 2000) - 1000, NOJUDGE);
+	if (tex != nullptr) {
 
+		sf::Sprite markersp(*tex);
+		markersp.setPosition(100, 100);
+		this->draw(markersp);
 
+	}
 	//描写
 
 

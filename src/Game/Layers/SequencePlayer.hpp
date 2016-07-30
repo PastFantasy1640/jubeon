@@ -13,6 +13,8 @@
 #include "../Music.hpp"
 #include "../PlayRecord.hpp"
 
+#include "../Marker.hpp"
+
 namespace jubeat_online{
 	namespace game {
 		namespace layers {
@@ -42,6 +44,9 @@ namespace jubeat_online{
 				unsigned int before_check_ms;
 
 				sf::Texture panel_frame;
+
+				//TEMPORARY
+				Marker mk;
 
 			};
 		}

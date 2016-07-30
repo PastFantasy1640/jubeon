@@ -34,6 +34,8 @@ int main(int argc, char * argv[]) {
 	jubeat_online::systems::Logger::information("jubeon‚ª‹N“®‚µ‚Ü‚µ‚½");
 
 
+	
+
 	jubeat_online::graphics::layer::LayerManager a("test", sf::VideoMode(1080, 1920), true, 30, sf::Vector2i(1920, -840), sf::Style::None);
 
 	a.createWindow();

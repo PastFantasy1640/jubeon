@@ -1,6 +1,5 @@
 #include "Marker.hpp"
-#include <map>
-#include "JudgeDefinition.hpp"
+
 
 jubeat_online::game::Marker::MarkerTextures::MarkerTextures()
 {
@@ -8,8 +7,8 @@ jubeat_online::game::Marker::MarkerTextures::MarkerTextures()
 
 
 
-jubeat_online::game::Marker::Marker(const std::string meta_filepath)
-	: meta_filepath(meta_filepath)
+jubeat_online::game::Marker::Marker(const std::string directory, const std::string meta_filepath)
+	: directory(directory), meta_filepath(directory + "/" +  meta_filepath)
 {
 }
 
@@ -19,7 +18,7 @@ jubeat_online::game::Marker::~Marker()
 
 bool jubeat_online::game::Marker::load(void)
 {
-	std::ifstream ifs(this->marker_name);
+	std::ifstream ifs(this->meta_filepath);
 	if (ifs.fail())
 	{
 		std::cerr << "Failed to open marker setting file." << std::endl << "marker name : " << this->marker_name << std::endl << "filename : " << this->meta_filepath << std::endl;
@@ -41,17 +40,18 @@ bool jubeat_online::game::Marker::load(void)
 		this->marker_name = o["name"].get<std::string>();
 
 		//テクスチャと実際の効果の対応付け
-		std::map<int, SPMarkerTextures> assign;
+		std::array<int, 7> assign;
 		
 		picojson::object& e = o["assign"].get<picojson::object>();
 				
-		assign[e["appear"].get<int>()] = this->appear;
-		assign[e["perfect"].get<int>()] = this->disappear[PERFECT];
-		assign[e["great"].get<int>()] = this->disappear[GREAT];
-		assign[e["good"].get<int>()] = this->disappear[GOOD];
-		assign[e["early"].get<int>()] = this->disappear[EARLY];
-		assign[e["late"].get<int>()] = this->disappear[LATE];
-		assign[e["miss"].get<int>()] = this->disappear[MISS];
+		assign[NOJUDGE] = static_cast<int>(e["appear"].get<double>());
+		assign[PERFECT] = static_cast<int>(e["perfect"].get<double>());
+		assign[GREAT] = static_cast<int>(e["great"].get<double>());
+		assign[GOOD] = static_cast<int>(e["good"].get<double>());
+		assign[EARLY] = static_cast<int>(e["early"].get<double>());
+		assign[LATE] = static_cast<int>(e["late"].get<double>());
+		assign[MISS] = static_cast<int>(e["miss"].get<double>());
+
 
 
 		//リソースの一覧を取得
@@ -60,8 +60,8 @@ bool jubeat_online::game::Marker::load(void)
 		for (auto p = resources.begin(); p != resources.end(); p++) {
 			picojson::object& o2 = p->get<picojson::object>();
 
-			int id = o2["id"].get<int>();
-			int duration = o2["duration"].get<int>();
+			int id = static_cast<int>(o2["id"].get<double>());
+			int duration = static_cast<int>(o2["duration"].get<double>());
 
 			//画像の本体
 			picojson::array& images = o2["rectangle"].get<picojson::array>();
@@ -82,21 +82,28 @@ bool jubeat_online::game::Marker::load(void)
 
 				std::string image_str = param[0].get<std::string>();
 				sf::IntRect rectangle;
-				rectangle.left = param[1].get<int>();
-				rectangle.top = param[2].get<int>();
-				rectangle.width = param[3].get<int>();
-				rectangle.height = param[4].get<int>();
+				rectangle.left =	static_cast<int>(param[1].get<double>());
+				rectangle.top =		static_cast<int>(param[2].get<double>());
+				rectangle.width	=	static_cast<int>(param[3].get<double>());
+				rectangle.height =	static_cast<int>(param[4].get<double>());
 				
 				std::unique_ptr<sf::Texture> tex(new sf::Texture());
-				tex->loadFromFile(image_str, rectangle);
+				tex->loadFromFile(this->directory + "/" + image_str, rectangle);
+				tex->setSmooth(true);
 
 				//新しく画像を追加
 				mktexes->push_back(std::move(tex));
 			}
 
-			//割り当てマップをもとに画像を対象のポインタへ格納
-			assign[mktexes->getID()] = mktexes;
+			//割り当てをもとに画像を対象のポインタへ格納
+			for (size_t i = 0; i < 6;i++) {
+				if (assign[i] == mktexes->getID()) {
+					this->disappear[i] = mktexes;
+				}
+			}
 
+			//appearだけは別で
+			if (assign[6] == mktexes->getID()) this->appear = mktexes;
 		}
 
 		
@@ -107,6 +114,17 @@ bool jubeat_online::game::Marker::load(void)
 	}
 
 	return true;
+}
+
+const sf::Texture * jubeat_online::game::Marker::getTexturePtr(const int diff_ms, const jubeat_online::game::Judge judge) const
+{
+	if (diff_ms < 0) {
+		return this->appear->getTexture(diff_ms);
+	}
+	else{
+		return this->disappear[(judge == NOJUDGE ? MISS : judge)]->getTexture(diff_ms);
+	}
+	return nullptr;
 }
 
 jubeat_online::game::Marker::MarkerTextures::MarkerTextures(int id, unsigned int duration)
@@ -120,4 +138,13 @@ jubeat_online::game::Marker::MarkerTextures::MarkerTextures(int id, unsigned int
 int jubeat_online::game::Marker::MarkerTextures::getID()
 {
 	return this->id;
+}
+
+const sf::Texture * jubeat_online::game::Marker::MarkerTextures::getTexture(int diff_ms) const
+{
+	if (diff_ms < 0) diff_ms = this->duration + diff_ms;
+	if (diff_ms >= this->duration || diff_ms < 0) return nullptr;	//範囲外
+	
+	std::cout << (diff_ms / (this->duration / this->size())) << std::endl;
+	return this->at(diff_ms / (this->duration / this->size())).get();
 }

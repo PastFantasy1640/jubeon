@@ -75,7 +75,8 @@
 		"perfect":3,
 		"great":4,
 		"good":4,
-		"poor":5,
+		"early":5,
+		"late":5,
 		"miss":2
 	}
 }

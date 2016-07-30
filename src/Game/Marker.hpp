@@ -9,6 +9,8 @@
 #include <memory>
 #include <fstream>
 
+#include "JudgeDefinition.hpp"
+
 #include <SFML/Graphics.hpp>
 
 #include "../Systems/picojson.hpp"
@@ -30,6 +32,8 @@ namespace jubeat_online {
 
 				int getID();
 
+				const sf::Texture * getTexture(const int diff_ms) const;
+
 				using std::vector<std::unique_ptr<sf::Texture>>::push_back;
 			};
 
@@ -37,6 +41,9 @@ namespace jubeat_online {
 
 			//マーカーに関してのメタデータが入ってるファイルのパス
 			std::string meta_filepath;
+
+			//ディレクトリ名
+			std::string directory;
 
 			//マーカー名
 			std::string marker_name;
@@ -55,13 +62,17 @@ namespace jubeat_online {
 		public:
 
 			//コンストラクタ。ロードはしない
-			Marker(const std::string meta_filepath);
+			Marker(const std::string directory, const std::string meta_filepath);
 			
 			//デストラクタ
 			virtual ~Marker();
 
 			//ロード。trueで成功
 			bool load(void);
+
+			//時間を指定して適切なテクスチャを返す関数
+			//マイナスを指定した場合はappear
+			const sf::Texture * getTexturePtr(const int diff_ms, const jubeat_online::game::Judge judge) const;
 
 
 		};
