@@ -1,22 +1,22 @@
 #include <memory>
 
 
-#include "Graphics\Layer\LayerManager\LayerManager.hpp"
+#include "Graphics/Layer/LayerManager.hpp"
 
 //Layer include
-#include "game/Layers/BackgroundLayer/BackgroundLayer.hpp"
-#include "game/Layers/FrameLayer/FrameLayer.hpp"
-#include "game/Layers/MusicInfoLayer/MusicInfoLayer.hpp"
-#include "game/Layers/SequencePlayer/SequencePlayer.hpp"
-#include "game/Layers/ShutterLayer/ShutterLayer.hpp"
+#include "Game/Layers/BackgroundLayer.hpp"
+#include "Game/Layers/FrameLayer.hpp"
+#include "Game/Layers/MusicInfoLayer.hpp"
+#include "Game/Layers/SequencePlayer.hpp"
+#include "Game/Layers/ShutterLayer.hpp"
 
 //for test
-#include "game/Sequence.hpp"
-#include "game/Music.hpp"
-#include "game/PlayRecord.hpp"
+#include "Game/Sequence.hpp"
+#include "Game/Music.hpp"
+#include "Game/PlayRecord.hpp"
 
 
-#include "systems/Logger/Logger.hpp"
+#include "Systems/Logger.hpp"
 
 #ifdef _DEBUG
 #include <crtdbg.h>	//メモリリークログ用

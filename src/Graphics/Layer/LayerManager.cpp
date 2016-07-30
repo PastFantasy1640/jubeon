@@ -7,9 +7,9 @@
 
 
 #include "LayerManager.hpp"
-#include "../LayerBase/LayerBase.hpp"
+#include "LayerBase.hpp"
 #include <exception>
-#include "../../../systems/exceptions/Exceptions.hpp"
+#include "../../Systems/Exceptions.hpp"
 
 using namespace jubeat_online::graphics::layer;
 

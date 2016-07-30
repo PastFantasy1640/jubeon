@@ -11,7 +11,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../input/PanelEvent/PanelEvent.hpp"
+#include "../Input/PanelEvent.hpp"
 #include "JudgeDefinition.hpp"
 
 namespace jubeat_online {

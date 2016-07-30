@@ -3,7 +3,7 @@
 #ifndef JUBEAT_ONLINE_FRAME_LAYER_HPP
 #define JUBEAT_ONLINE_FRAME_LAYER_HPP
 
-#include "../../../graphics/layer/LayerBase/LayerBase.hpp"
+#include "../../Graphics/Layer/LayerBase.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace jubeat_online {

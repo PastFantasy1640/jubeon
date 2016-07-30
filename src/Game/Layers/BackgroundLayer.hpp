@@ -6,9 +6,9 @@
 #include <memory>
 #include <random>
 
-#include "../../../graphics/layer/LayerBase/LayerBase.hpp"
+#include "../../Graphics/Layer/LayerBase.hpp"
 #include <SFML/Graphics.hpp>
-#include "../../../Theme/Drop.hpp"
+#include "../../Theme/Drop.hpp"
 
 namespace jubeat_online {
 	namespace game {

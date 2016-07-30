@@ -7,11 +7,11 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../../graphics/layer/LayerBase/LayerBase.hpp"
+#include "../../Graphics/Layer/LayerBase.hpp"
 
-#include "../../Sequence.hpp"
-#include "../../Music.hpp"
-#include "../../PlayRecord.hpp"
+#include "../Sequence.hpp"
+#include "../Music.hpp"
+#include "../PlayRecord.hpp"
 
 namespace jubeat_online{
 	namespace game {

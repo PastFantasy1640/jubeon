@@ -1,4 +1,4 @@
 #pragma once
 
-#include "Layer/LayerBase/LayerBase.hpp"
-#include "Layer/LayerManager/LayerManager.hpp"
+#include "Layer/LayerBase.hpp"
+#include "Layer/LayerManager.hpp"

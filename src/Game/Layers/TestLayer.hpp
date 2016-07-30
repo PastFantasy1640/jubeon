@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Graphics/Layer/LayerBase/LayerBase.hpp"
+#include "../../Graphics/Layer/LayerBase.hpp"
 
 namespace jubeat_online {
 	namespace game {

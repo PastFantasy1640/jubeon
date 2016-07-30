@@ -4,7 +4,7 @@
 #ifndef JUBEAT_ONLINE_MUSICINFOLAYER_HPP
 #define JUBEAT_ONLINE_MUSICINFOLAYER_HPP
 
-#include "../../../graphics/layer/LayerBase/LayerBase.hpp"
+#include "../../Graphics/Layer/LayerBase.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace jubeat_online {

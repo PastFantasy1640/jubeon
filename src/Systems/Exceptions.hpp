@@ -7,7 +7,7 @@
 #include <string>
 
 //ログ出力を伴うためロガーのヘッダ
-#include "../Logger/Logger.hpp"
+#include "Logger.hpp"
 
 //**********************************************************
 //*   std::exception系の継承、もしくはオーバーライドをする

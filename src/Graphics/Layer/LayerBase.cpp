@@ -3,8 +3,8 @@
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
-#include "../../../systems/Logger/Logger.hpp"
-#include "../../../systems/exceptions/Exceptions.hpp"
+#include "../../Systems/Logger.hpp"
+#include "../../Systems/Exceptions.hpp"
 
 using namespace jubeat_online::graphics::layer;
 
