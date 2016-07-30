@@ -1,0 +1,82 @@
+
+{
+	"name" : "Shutter Marker",
+	"resources" : [
+		{
+			"id":1,
+			"duration":500,
+			"rectangle":[
+				["shutter.png"	,0	,0	,230,230],
+				["shutter.png"	,230,0	,230,230],
+				["shutter.png"	,460,0	,230,230],
+				["shutter.png"	,690,0	,230,230],
+				["shutter.png"	,920,0	,230,230],
+				["shutter.png"	,0	,230,230,230],
+				["shutter.png"	,230,230,230,230],
+				["shutter.png"	,460,230,230,230],
+				["shutter.png"	,690,230,230,230],
+				["shutter.png"	,920,230,230,230],
+				["shutter.png"	,0	,460,230,230],
+				["shutter.png"	,230,460,230,230],
+				["shutter.png"	,460,460,230,230],
+				["shutter.png"	,690,460,230,230],
+				["shutter.png"	,920,460,230,230]
+			]
+		},
+		{
+			"id":2,
+			"duration":233,
+			"rectangle":[
+				["shutter.png"	,0	,690,230,230],
+				["shutter.png"	,230,690,230,230],
+				["shutter.png"	,460,690,230,230],
+				["shutter.png"	,690,690,230,230],
+				["shutter.png"	,920,690,230,230],
+				["shutter.png"	,0	,925,230,230],
+				["shutter.png"	,230,920,230,230]
+			]
+		},
+		{
+			"id":3,
+			"duration":300,
+			"rectangle":[
+				["shutter_p.png"	,0	,0	,230,230],
+				["shutter_p.png"	,230,0	,230,230],
+				["shutter_p.png"	,460,0	,230,230],
+				["shutter_p.png"	,690,0	,230,230],
+				["shutter_p.png"	,920,0	,230,230]
+			]
+		},
+		{
+			"id":4,
+			"duration":300,
+			"rectangle":[
+				["shutter_gr.png"	,0	,0	,230,230],
+				["shutter_gr.png"	,230,0	,230,230],
+				["shutter_gr.png"	,460,0	,230,230],
+				["shutter_gr.png"	,690,0	,230,230],
+				["shutter_gr.png"	,920,0	,230,230]
+			]
+		},
+		{
+			"id":5,
+			"duration":300,
+			"rectangle":[
+				["shutter_go.png"	,0	,0	,230,230],
+				["shutter_go.png"	,230,0	,230,230],
+				["shutter_go.png"	,460,0	,230,230],
+				["shutter_go.png"	,690,0	,230,230],
+				["shutter_go.png"	,920,0	,230,230]
+			]
+		}
+	],
+	"assign" : {
+		"appear":1,
+		"perfect":3,
+		"great":4,
+		"good":4,
+		"poor":5,
+		"miss":2
+	}
+}
+
