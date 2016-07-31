@@ -21,7 +21,7 @@ namespace jubeat_online{
 			class SequencePlayer : public jubeat_online::graphics::layer::LayerBase {
 			public:
 
-				SequencePlayer(const Sequence * sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord);
+				SequencePlayer(const Sequence * sequence, Music * music, std::unique_ptr<PlayRecord> playrecord);
 
 				void process(void);
 
@@ -31,7 +31,7 @@ namespace jubeat_online{
 
 			private:
 				const Sequence * sequence;
-				const Music * music;
+				Music * music;
 				std::unique_ptr<PlayRecord> playrecord;
 
 				//どのマーカーが押されたままか
