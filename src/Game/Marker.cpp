@@ -47,6 +47,7 @@ bool jubeat_online::game::Marker::load(void)
 
 		//マーカーの名前を取得
 		this->marker_name = o["name"].get<std::string>();
+		systems::Logger::information(logstr + "マーカー名:" + this->marker_name);
 
 		//テクスチャと実際の効果の対応付け
 		std::array<int, 7> assign;
@@ -62,6 +63,7 @@ bool jubeat_online::game::Marker::load(void)
 		assign[MISS] = static_cast<int>(e["miss"].get<double>());
 
 
+		systems::Logger::information(logstr + "リソースの取得を開始します");
 
 		//リソースの一覧を取得
 		picojson::array& resources = o["resources"].get<picojson::array>();
@@ -71,6 +73,10 @@ bool jubeat_online::game::Marker::load(void)
 
 			int id = static_cast<int>(o2["id"].get<double>());
 			int duration = static_cast<int>(o2["duration"].get<double>());
+
+
+			systems::Logger::information(logstr + "リソースid[" + std::to_string(id)
+				+ "]: D[" + std::to_string(duration) + "] の読み込みを開始します");
 
 			//画像の本体
 			picojson::array& images = o2["rectangle"].get<picojson::array>();
@@ -95,10 +101,20 @@ bool jubeat_online::game::Marker::load(void)
 				rectangle.top =		static_cast<int>(param[2].get<double>());
 				rectangle.width	=	static_cast<int>(param[3].get<double>());
 				rectangle.height =	static_cast<int>(param[4].get<double>());
+
+				sf::Clock ckt;
+				ckt.restart();
+
+				sf::Image image_tmp;
+				image_tmp.loadFromFile(this->directory + "/" + image_str);
 				
 				std::unique_ptr<sf::Texture> tex(new sf::Texture());
-				tex->loadFromFile(this->directory + "/" + image_str, rectangle);
+				//tex->
 				tex->setSmooth(true);
+
+				systems::Logger::information(logstr + "FN[" + this->directory + image_str
+					+ "] RECT[" + std::to_string(rectangle.left) + "," + std::to_string(rectangle.top) + "," + std::to_string(rectangle.width) + "," + std::to_string(rectangle.height)
+					+ "] TIME[" + std::to_string(ckt.getElapsedTime().asMicroseconds()) + "microsec");
 
 				//新しく画像を追加
 				mktexes->push_back(std::move(tex));
@@ -113,8 +129,12 @@ bool jubeat_online::game::Marker::load(void)
 
 			//appearだけは別で
 			if (assign[6] == mktexes->getID()) this->appear = mktexes;
+
+			systems::Logger::information(logstr + "リソースid[" + std::to_string(id)
+				+ "] の読み込み、割り当てが完了しました");
 		}
 
+		systems::Logger::information(logstr + "読み込みが完了しました");
 		
 	}
 	else {
@@ -158,7 +178,6 @@ const sf::Texture * jubeat_online::game::Marker::MarkerTextures::getTexture(int 
 	double pd = static_cast<double>(diff_ms) * this->size() / this->duration;
 	std::size_t p = static_cast<size_t>(pd);
 
-	std::cout << p << std::endl;
 	if (p < 0 || p >= this->size()) 
 		std::cout << "!!![" << p << "]!!!!!!!!!!";
 	else return this->at(p).get();
