@@ -44,7 +44,12 @@
 				["shutter_p.png"	,230,0	,230,230],
 				["shutter_p.png"	,460,0	,230,230],
 				["shutter_p.png"	,690,0	,230,230],
-				["shutter_p.png"	,920,0	,230,230]
+				["shutter_p.png"	,920,0	,230,230],
+				["shutter_p.png"	,0	,230,230,230],
+				["shutter_p.png"	,230,230,230,230],
+				["shutter_p.png"	,460,230,230,230],
+				["shutter_p.png"	,690,230,230,230],
+				["shutter_p.png"	,920,230,230,230]
 			]
 		},
 		{

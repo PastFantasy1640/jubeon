@@ -1,5 +1,5 @@
 #include "Marker.hpp"
-
+#include "../Systems/Logger.hpp"
 
 jubeat_online::game::Marker::MarkerTextures::MarkerTextures()
 {
@@ -18,6 +18,11 @@ jubeat_online::game::Marker::~Marker()
 
 bool jubeat_online::game::Marker::load(void)
 {
+
+	//マーカーのロード開始
+	std::string logstr = "[" + this->meta_filepath + "]";
+	systems::Logger::information(logstr + "マーカーのロードを開始します");
+
 	std::ifstream ifs(this->meta_filepath);
 	if (ifs.fail())
 	{
@@ -26,11 +31,15 @@ bool jubeat_online::game::Marker::load(void)
 	}
 	std::string json((std::istreambuf_iterator<char>(ifs)),std::istreambuf_iterator<char>());
 
+
+	systems::Logger::information(logstr + "json文字列を取得しました");
+
 	picojson::value v;
 	std::string err;
 
 	//パース
 	picojson::parse(v, json.c_str(), json.c_str() + json.size(), &err);
+	systems::Logger::information(logstr + "jsonのパースを完了しました");
 	
 	if (err.empty())
 	{
@@ -109,7 +118,8 @@ bool jubeat_online::game::Marker::load(void)
 		
 	}
 	else {
-		std::cerr << "Illegal json format." << std::endl << "marker name : " << this->marker_name << std::endl << "filename : " << this->meta_filepath << std::endl;
+		std::cerr << "Illegal json format." << std::endl << "error msg : " << err << std::endl << "marker name : " << this->marker_name << std::endl << "filename : " << this->meta_filepath << std::endl;
+		systems::Logger::warning(logstr + "FAILED : jsonフォーマットが不正です -> " + err);
 		return false;
 	}
 
@@ -145,10 +155,12 @@ const sf::Texture * jubeat_online::game::Marker::MarkerTextures::getTexture(int 
 	if (diff_ms < 0) diff_ms = this->duration + diff_ms;
 	if (diff_ms >= this->duration || diff_ms < 0) return nullptr;	//範囲外
 	
-	float p = (diff_ms / (this->duration / this->size()));
+	double pd = static_cast<double>(diff_ms) * this->size() / this->duration;
+	std::size_t p = static_cast<size_t>(pd);
 
 	std::cout << p << std::endl;
-	if (p < 0 || p >= this->size()) std::cout << "!!!!!!!!!!!!!";
+	if (p < 0 || p >= this->size()) 
+		std::cout << "!!![" << p << "]!!!!!!!!!!";
 	else return this->at(p).get();
 	return false;
 }
