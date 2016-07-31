@@ -18,6 +18,16 @@ namespace jubeat_online {namespace models {
 
 		virtual bool Init(picojson::value) override;
 		virtual picojson::value GetJsonValue() override;
+		
+		inline LayoutType getLayoutType() { return this->layoutType; };
+		inline void setLayoutType(LayoutType type) { this->layoutType = type; };
+		inline sf::Vector2f getSize() { return this->size; };
+		inline void setSize(sf::Vector2f size) { this->size = size; };
+		inline sf::Vector2f getPosition() { return this->position; };
+		inline void setPosition(sf::Vector2f position) { this->position = position; };
+		inline bool getVsyncEnabled() { return this->vsyncEnabled; };
+		inline void setVsyncEnabled(bool b) { this->vsyncEnabled = b; };
+
 	private:
 		LayoutType layoutType;
 		sf::Vector2f size;

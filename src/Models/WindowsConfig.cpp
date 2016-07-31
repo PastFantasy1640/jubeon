@@ -1,6 +1,7 @@
 ﻿#include "WindowConfig.hpp"
 #include <string>
 #include "Systems/picojson.hpp"
+#include <iostream>
 
 namespace jubeat_online { namespace models {
 	bool WindowConfig::Init(picojson::value val) {
@@ -24,11 +25,11 @@ namespace jubeat_online { namespace models {
 			return false;
 		}
 		auto size = root["size"].get<picojson::object>();
-		if (size.find("width") == root.end()
+		if (size.find("width") == size.end()
 			|| !size["width"].is<double>()) {
 			return false;
 		}
-		if (size.find("height") == root.end()
+		if (size.find("height") == size.end()
 			|| !size["height"].is<double>()) {
 			return false;
 		}
@@ -38,11 +39,11 @@ namespace jubeat_online { namespace models {
 			return false;
 		}
 		auto position = root["position"].get<picojson::object>();
-		if (position.find("x") == root.end()
+		if (position.find("x") == position.end()
 			|| !position["x"].is<double>()) {
 			return false;
 		}
-		if (position.find("y") == root.end()
+		if (position.find("y") == position.end()
 			|| !position["y"].is<double>()) {
 			return false;
 		}
@@ -56,12 +57,12 @@ namespace jubeat_online { namespace models {
 		}
 
 		this->size = sf::Vector2f(
-			size["x"].get<double>(),
-			size["y"].get<double>());
+			size["width"].get<double>(),
+			size["height"].get<double>());
 
 		this->position = sf::Vector2f(
-			size["x"].get<double>(),
-			size["y"].get<double>());
+			position["x"].get<double>(),
+			position["y"].get<double>());
 
 		this->vsyncEnabled = root["vsync_enabled"].get<bool>();
 		return true;
