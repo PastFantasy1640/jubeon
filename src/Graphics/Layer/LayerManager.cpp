@@ -84,7 +84,7 @@ void jubeat_online::graphics::layer::LayerManager::createWindow(void)
 	this->window.clear();
 
 	this->window.setVerticalSyncEnabled(this->isVSync);
-	this->window.setFramerateLimit(30);
+	this->window.setFramerateLimit(this->fpsLimit);
 	this->window.setPosition(this->window_position);
 
 	this->window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y);
