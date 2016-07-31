@@ -1,28 +1,31 @@
 #include "Marker.hpp"
 #include "../Systems/Logger.hpp"
 
-jubeat_online::game::Marker::MarkerTextures::MarkerTextures()
-{
-}
 
-
-
+//************************** MarkerTexture関連 ******************************
+//コンストラクタ
 jubeat_online::game::Marker::Marker(const std::string directory, const std::string meta_filepath)
-	: directory(directory), meta_filepath(directory + "/" +  meta_filepath)
+	: directory(directory),
+	meta_filepath(directory + "/" +  meta_filepath)
 {
 }
 
+//デストラクタ
 jubeat_online::game::Marker::~Marker()
 {
 }
 
+//読み込み
 bool jubeat_online::game::Marker::load(void)
 {
 
 	//マーカーのロード開始
-	std::string logstr = "[" + this->meta_filepath + "]";
+	const std::string logstr = "[" + this->meta_filepath + "]";
+
 	systems::Logger::information(logstr + "マーカーのロードを開始します");
 
+
+	//ファイルの読み込み
 	std::ifstream ifs(this->meta_filepath);
 	if (ifs.fail())
 	{
@@ -84,9 +87,9 @@ bool jubeat_online::game::Marker::load(void)
 			SPMarkerTextures mktexes(new MarkerTextures(id,duration));
 
 			for (auto p2 = images.begin(); p2 != images.end(); p2++) {
-				
+
 				//それぞれを読み出す
-				
+
 				picojson::array& param = p2->get<picojson::array>();
 
 				if (param.size() != 5) {
@@ -97,20 +100,28 @@ bool jubeat_online::game::Marker::load(void)
 
 				std::string image_str = param[0].get<std::string>();
 				sf::IntRect rectangle;
-				rectangle.left =	static_cast<int>(param[1].get<double>());
-				rectangle.top =		static_cast<int>(param[2].get<double>());
-				rectangle.width	=	static_cast<int>(param[3].get<double>());
-				rectangle.height =	static_cast<int>(param[4].get<double>());
+				rectangle.left = static_cast<int>(param[1].get<double>());
+				rectangle.top = static_cast<int>(param[2].get<double>());
+				rectangle.width = static_cast<int>(param[3].get<double>());
+				rectangle.height = static_cast<int>(param[4].get<double>());
 
 				sf::Clock ckt;
 				ckt.restart();
 
-				sf::Image image_tmp;
-				image_tmp.loadFromFile(this->directory + "/" + image_str);
+				//まず画像がmapにあるかどうか探す
+				if (this->images.find(image_str) == this->images.end()) {
+					//無い
+					//ロードしよう
+					this->images[image_str].loadFromFile(this->directory + "/" + image_str);
+				}
 				
+				//新しいテクスチャを作る
 				std::unique_ptr<sf::Texture> tex(new sf::Texture());
-				//tex->
+
+				//イメージから読み込む
+				tex->loadFromImage(this->images[image_str], rectangle);
 				tex->setSmooth(true);
+
 
 				systems::Logger::information(logstr + "FN[" + this->directory + image_str
 					+ "] RECT[" + std::to_string(rectangle.left) + "," + std::to_string(rectangle.top) + "," + std::to_string(rectangle.width) + "," + std::to_string(rectangle.height)
@@ -157,7 +168,7 @@ const sf::Texture * jubeat_online::game::Marker::getTexturePtr(const int diff_ms
 	return nullptr;
 }
 
-jubeat_online::game::Marker::MarkerTextures::MarkerTextures(int id, unsigned int duration)
+jubeat_online::game::Marker::MarkerTextures::MarkerTextures(const int id, const unsigned int duration)
 	: std::vector<std::unique_ptr<sf::Texture>>(),
 	id(id),
 	duration(duration)
@@ -165,7 +176,7 @@ jubeat_online::game::Marker::MarkerTextures::MarkerTextures(int id, unsigned int
 
 }
 
-int jubeat_online::game::Marker::MarkerTextures::getID()
+int jubeat_online::game::Marker::MarkerTextures::getID() const
 {
 	return this->id;
 }
@@ -178,8 +189,6 @@ const sf::Texture * jubeat_online::game::Marker::MarkerTextures::getTexture(int 
 	double pd = static_cast<double>(diff_ms) * this->size() / this->duration;
 	std::size_t p = static_cast<size_t>(pd);
 
-	if (p < 0 || p >= this->size()) 
-		std::cout << "!!![" << p << "]!!!!!!!!!!";
 	else return this->at(p).get();
 	return false;
 }

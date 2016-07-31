@@ -8,11 +8,14 @@
 #include <string>
 #include <memory>
 #include <fstream>
+#include <map>
 
 #include "JudgeDefinition.hpp"
 
 #include <SFML/Graphics.hpp>
 
+//For Read JSON
+//いずれいちごさんのFileStoragesやらModelやらに置き換わる
 #include "../Systems/picojson.hpp"
 
 namespace jubeat_online {
@@ -23,21 +26,24 @@ namespace jubeat_online {
 			//STLはpublic継承NG
 			class MarkerTextures : protected std::vector<std::unique_ptr<sf::Texture>> {
 			private:
-				unsigned int duration;
-				int id;
 
-				MarkerTextures();
+				const unsigned int duration;
+				const int id;
+
+				MarkerTextures();	//未定義
 			public:
-				MarkerTextures(int id, unsigned int duration);
+				MarkerTextures(const int id, const unsigned int duration);
 
-				int getID();
+				int getID() const;
 
 				const sf::Texture * getTexture(const int diff_ms) const;
 
 				using std::vector<std::unique_ptr<sf::Texture>>::push_back;
 			};
 
-
+			
+			//関連付け
+			std::map<std::string, sf::Image> images;
 
 			//マーカーに関してのメタデータが入ってるファイルのパス
 			std::string meta_filepath;
