@@ -189,6 +189,5 @@ const sf::Texture * jubeat_online::game::Marker::MarkerTextures::getTexture(int 
 	double pd = static_cast<double>(diff_ms) * this->size() / this->duration;
 	std::size_t p = static_cast<size_t>(pd);
 
-	else return this->at(p).get();
-	return false;
+	return this->at(p).get();
 }
