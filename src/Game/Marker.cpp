@@ -145,10 +145,12 @@ const sf::Texture * jubeat_online::game::Marker::MarkerTextures::getTexture(int 
 	if (diff_ms < 0) diff_ms = this->duration + diff_ms;
 	if (diff_ms >= this->duration || diff_ms < 0) return nullptr;	//�͈͊O
 	
-	float p = (diff_ms / (this->duration / this->size()));
+	double pd = static_cast<double>(diff_ms) * this->size() / this->duration;
+	std::size_t p = static_cast<size_t>(pd);
 
 	std::cout << p << std::endl;
-	if (p < 0 || p >= this->size()) std::cout << "!!!!!!!!!!!!!";
+	if (p < 0 || p >= this->size()) 
+		std::cout << "!!![" << p << "]!!!!!!!!!!";
 	else return this->at(p).get();
 	return false;
 }

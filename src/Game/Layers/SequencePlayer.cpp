@@ -64,8 +64,7 @@ void jubeat_online::game::layers::SequencePlayer::Init()
 	//マーカー読み込みテスト
 	this->mk.load();
 
-	//曲を再生
-	this->music->startToPlay();	//名前playで良かったかも
+
 }
 
 void jubeat_online::game::layers::SequencePlayer::Draw()
@@ -85,11 +84,12 @@ void jubeat_online::game::layers::SequencePlayer::Draw()
 	//済、というか持ってる
 
 	//Markerのテクスチャを取得
-	const sf::Texture * tex = this->mk.getTexturePtr((this->music->getPlayingCurrentTime() % 2000) - 1000, NOJUDGE);
+	const sf::Texture * tex = this->mk.getTexturePtr((this->music->getPlayingCurrentTime() % 2000) - 1000, PERFECT);
 	if (tex != nullptr) {
 
 		sf::Sprite markersp(*tex);
 		markersp.setPosition(100, 100);
+		markersp.setScale(163.0f / tex->getSize().x, 163.0f / tex->getSize().y);
 		this->draw(markersp);
 
 	}

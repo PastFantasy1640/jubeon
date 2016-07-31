@@ -25,6 +25,9 @@ void jubeat_online::game::layers::FrameLayer::Draw()
 	//それぞれの画面
 	//TO DO : 設定ファイルとつき合わせて
 	//縦3本
+
+	//黒バー38px
+	//パネルサイズ163px
 	rect.setSize(sf::Vector2f(38.0f, 897.0f));
 	rect.setPosition(sf::Vector2f(164.0f, 463.0f));
 	this->draw(rect);

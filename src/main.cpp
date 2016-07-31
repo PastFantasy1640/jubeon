@@ -36,7 +36,7 @@ int main(int argc, char * argv[]) {
 
 	
 
-	jubeat_online::graphics::layer::LayerManager a("test", sf::VideoMode(1080, 1920), true, 30, sf::Vector2i(1920, -840), sf::Style::None);
+	jubeat_online::graphics::layer::LayerManager a("test", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(1920, -840), sf::Style::None);
 
 	a.createWindow();
 
@@ -95,7 +95,7 @@ int main(int argc, char * argv[]) {
 	a.addLayer(shutterlayer, jubeat_online::graphics::layer::LayerManager::MAIN, 0);
 	a.addLayer(seqplayer, jubeat_online::graphics::layer::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
 	
-	
+	mus.startToPlay();
 
 	a.process();
 
