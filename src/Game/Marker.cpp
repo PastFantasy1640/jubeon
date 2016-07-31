@@ -1,5 +1,5 @@
 #include "Marker.hpp"
-
+#include "../Systems/Logger.hpp"
 
 jubeat_online::game::Marker::MarkerTextures::MarkerTextures()
 {
@@ -18,6 +18,11 @@ jubeat_online::game::Marker::~Marker()
 
 bool jubeat_online::game::Marker::load(void)
 {
+
+	//マーカーのロード開始
+	std::string logstr = "[" + this->meta_filepath + "]";
+	systems::Logger::information(logstr + "マーカーのロードを開始します");
+
 	std::ifstream ifs(this->meta_filepath);
 	if (ifs.fail())
 	{
@@ -26,11 +31,15 @@ bool jubeat_online::game::Marker::load(void)
 	}
 	std::string json((std::istreambuf_iterator<char>(ifs)),std::istreambuf_iterator<char>());
 
+
+	systems::Logger::information(logstr + "json文字列を取得しました");
+
 	picojson::value v;
 	std::string err;
 
 	//パース
 	picojson::parse(v, json.c_str(), json.c_str() + json.size(), &err);
+	systems::Logger::information(logstr + "jsonのパースを完了しました");
 	
 	if (err.empty())
 	{
@@ -109,7 +118,8 @@ bool jubeat_online::game::Marker::load(void)
 		
 	}
 	else {
-		std::cerr << "Illegal json format." << std::endl << "marker name : " << this->marker_name << std::endl << "filename : " << this->meta_filepath << std::endl;
+		std::cerr << "Illegal json format." << std::endl << "error msg : " << err << std::endl << "marker name : " << this->marker_name << std::endl << "filename : " << this->meta_filepath << std::endl;
+		systems::Logger::warning(logstr + "FAILED : jsonフォーマットが不正です -> " + err);
 		return false;
 	}
 
