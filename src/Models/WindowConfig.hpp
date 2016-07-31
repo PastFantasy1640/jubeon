@@ -10,6 +10,11 @@ namespace jubeat_online {namespace models {
 			VERTICAL,
 			HORIZONTAL
 		};
+		WindowConfig()
+			: layoutType(LayoutType::HORIZONTAL),
+			size(sf::Vector2f(0, 0)),
+			position(sf::Vector2f(0, 0)),
+			vsyncEnabled(true) {};
 
 		virtual bool Init(picojson::value) override;
 		virtual picojson::value GetJsonValue() override;
