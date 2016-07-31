@@ -85,8 +85,6 @@ int main(int argc, char * argv[]) {
 	
 	playrecord->setJudgedList(std::move(pi_list));
 
-	//‹È‚ğÄ¶
-	mus.startToPlay();	//–¼‘Oplay‚Å—Ç‚©‚Á‚½‚©‚à
 
 	std::shared_ptr<game::layers::SequencePlayer> seqplayer(new game::layers::SequencePlayer(&seq, &mus, std::move(playrecord)));
 

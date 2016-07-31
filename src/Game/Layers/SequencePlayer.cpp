@@ -63,6 +63,9 @@ void jubeat_online::game::layers::SequencePlayer::Init()
 
 	//マーカー読み込みテスト
 	this->mk.load();
+
+	//曲を再生
+	this->music->startToPlay();	//名前playで良かったかも
 }
 
 void jubeat_online::game::layers::SequencePlayer::Draw()
