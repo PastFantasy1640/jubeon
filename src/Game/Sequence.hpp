@@ -6,20 +6,57 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include "JudgeDefinition.hpp"
 
 
 namespace jubeat_online {
 	namespace game {
-		
-		typedef struct Note {
+
+		class Note{
+
+		private:
+
+			//デフォルトコンストラクタは禁止
+			Note();
+
+		protected:
+			
+			//ジャストタイム(ms)
 			int justTime;
+
+			//パネル番号(0-15)
 			int panelIndex;
+
+			//ホールドの時間
 			int duration;
-			Note()
-				: justTime(0),
-				panelIndex(0),
-				duration(0) {};
-		} Note;
+
+			//ホールドマーカーの出現位置パネル
+			int holdMarkerIndex;
+
+			//このノートに対する判定
+			std::shared_ptr<PlayRecord::PanelInput> judged;
+			
+		public:
+			
+			//普通のマーカーのコンストラクタ
+			Note(const int just_time, const int panel_idx);
+
+			//ホールドマーカーのコンストラクタ
+			Note(const int just_time, const int panel_idx, const int duration, const int holdmarker_panel_idx);
+
+			//ホールドマーカーのコンストラクタ
+			Note(const int just_time, const int panel_idx, const int duration, const int holdmarker_panel_idx, const std::shared_ptr<PanelInput> judge);
+
+			//アクセサ
+			int getJustTime(void) const;
+			int getPanelIndex(void) const;
+			int getHoldDuration(void) const;
+			int getHoldMarkerIndex(void) const;
+
+			//ジャッジ
+			void getJudge(int * ms_diff, Judge * judge) const;
+			
+		};
 
 		typedef std::vector<Note> Notes;
 		typedef std::shared_ptr<Notes> SPNotes;

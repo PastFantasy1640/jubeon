@@ -18,4 +18,3 @@ jubeat_online::game::Sequence::SPNotes jubeat_online::game::Sequence::getNotes(v
 {
 	return this->notes;
 }
-
