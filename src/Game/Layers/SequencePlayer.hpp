@@ -18,6 +18,8 @@
 namespace jubeat_online{
 	namespace game {
 		namespace layers {
+
+			
 			class SequencePlayer : public jubeat_online::graphics::layer::LayerBase {
 			public:
 

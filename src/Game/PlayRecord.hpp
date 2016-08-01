@@ -58,6 +58,9 @@ namespace jubeat_online {
 			//judgedlistの終了イテレータ
 			std::vector<PanelInput>::const_iterator getPanelInputListEnd(void) const;
 
+			//judgedlistの開始イテレータ
+			std::vector<PanelInput>::const_iterator getPanelInputListBegin(void) const;
+
 		private:
 
 			//スレッドセーフ対策

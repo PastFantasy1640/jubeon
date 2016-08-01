@@ -60,26 +60,38 @@ int main(int argc, char * argv[]) {
 	game::PlayRecord::PanelInput tmp;
 	tmp.j = jubeat_online::game::NOJUDGE;
 
-	for (int i = 0; i < 10; i++) {
-		tmp.ms = 4000 + i * 4000; tmp.panel_no = 0; tmp.t = game::PlayRecord::PUSH;
+	for (int i = 0; i < 15; i++) {
+		tmp.ms = i * 4000; tmp.panel_no = 1; tmp.t = game::PlayRecord::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = 5000 + i * 4000; tmp.panel_no = 4; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 2; tmp.t = game::PlayRecord::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = 6000 + i * 4000; tmp.panel_no = 8; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 5; tmp.t = game::PlayRecord::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = 6500 + i * 4000; tmp.panel_no = 9; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 7; tmp.t = game::PlayRecord::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = 7000 + i * 4000; tmp.panel_no = 12; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 8; tmp.t = game::PlayRecord::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = 4500 + i * 4000; tmp.panel_no = 0; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000; tmp.panel_no = 9; tmp.t = game::PlayRecord::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = 5500 + i * 4000; tmp.panel_no = 4; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000; tmp.panel_no = 12; tmp.t = game::PlayRecord::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = 7500 + i * 4000; tmp.panel_no = 8; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000; tmp.panel_no = 13; tmp.t = game::PlayRecord::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = 7500 + i * 4000; tmp.panel_no = 9; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 1; tmp.t = game::PlayRecord::RELEASE;
 		pi_list->push_back(tmp);
-		tmp.ms = 7500 + i * 4000; tmp.panel_no = 12; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 2; tmp.t = game::PlayRecord::RELEASE;
+		pi_list->push_back(tmp);
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 5; tmp.t = game::PlayRecord::RELEASE;
+		pi_list->push_back(tmp);
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 7; tmp.t = game::PlayRecord::RELEASE;
+		pi_list->push_back(tmp);
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 8; tmp.t = game::PlayRecord::RELEASE;
+		pi_list->push_back(tmp);
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 9; tmp.t = game::PlayRecord::RELEASE;
+		pi_list->push_back(tmp);
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 12; tmp.t = game::PlayRecord::RELEASE;
+		pi_list->push_back(tmp);
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 13; tmp.t = game::PlayRecord::RELEASE;
 		pi_list->push_back(tmp);
 	}
 	

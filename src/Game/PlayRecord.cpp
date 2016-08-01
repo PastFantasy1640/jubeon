@@ -119,3 +119,8 @@ std::vector<jubeat_online::game::PlayRecord::PanelInput>::const_iterator jubeat_
 {
 	return this->judged_list.end();
 }
+
+std::vector<jubeat_online::game::PlayRecord::PanelInput>::const_iterator jubeat_online::game::PlayRecord::getPanelInputListBegin(void) const
+{
+	return this->judged_list.begin();
+}

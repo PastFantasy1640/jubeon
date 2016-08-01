@@ -124,11 +124,13 @@ void jubeat_online::game::layers::SequencePlayer::Draw()
 
 	//もしも、bcm以前にPanelInputを追加する場合は、bcmをその時間まで引き戻して記録する。
 	//まず、bcmの時間の場所をに二分探索にて探し出す
-	auto p = this->playrecord->getPanelInputFromTime(this->before_check_ms);
+	auto p = this->playrecord->getPanelInputListBegin();
+	if(this->before_check_ms > 0) p = this->playrecord->getPanelInputFromTime(this->before_check_ms);
+	
 	
 	//前回調査と今回調査のmsが同じ場合はスキップしていい。
 	//違う場合のみ更新
-	if (this->before_check_ms != ms) {
+	if (this->before_check_ms != ms || this->before_check_ms == 0) {
 
 		//それ以降から、現在のmsまでを線形解析し、パネルの押下状態を更新する
 		for (; p != this->playrecord->getPanelInputListEnd(); p++) {
@@ -138,12 +140,10 @@ void jubeat_online::game::layers::SequencePlayer::Draw()
 			if ((*p).t) {
 				//押下
 				this->setPushing((*p).panel_no);
-				std::cout << "調査" << ms << "ms:前回" << this->before_check_ms << "ms:" << to_binString(this->pushing) << "\n";
 			}
 			else {
 				//離した
 				this->setReleasing((*p).panel_no);
-				std::cout << "調査" << ms << "ms:" << to_binString(this->pushing) << "\n";
 			}
 
 			//もしも、曲を巻き戻したりして、描写を一新しなければならない場合、bcmに0msを指定し、全更新しなくてはならない。
