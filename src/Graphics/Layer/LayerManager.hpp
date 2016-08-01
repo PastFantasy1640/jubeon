@@ -51,9 +51,12 @@ namespace jubeat_online {
 
 				void addLayer(std::shared_ptr<LayerBase> layer, const LayerType type, const unsigned char layernumber);
 
-				void process(void);
+				void run(void);
+
+				bool isThreadRunning(void) const;
 
 			private:
+				void process(void);
 				typedef struct {
 					std::shared_ptr<LayerBase> lb;
 					LayerType lt;
@@ -74,6 +77,8 @@ namespace jubeat_online {
 
 				sf::RenderWindow			window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
 				sf::RenderTexture			window_buffer;	//画面調整のためのラストバッファ
+
+				std::shared_ptr<bool>		is_thread_running;
 
 				const static sf::Vector2u RENDER_TEXTURE_SIZE;
 

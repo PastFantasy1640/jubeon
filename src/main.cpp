@@ -109,7 +109,9 @@ int main(int argc, char * argv[]) {
 	
 	mus.startToPlay();
 
-	a.process();
+	a.run();
+
+	while (a.isThreadRunning()) std::this_thread::sleep_for(std::chrono::microseconds(1000));
 
 	return 0;
 }
