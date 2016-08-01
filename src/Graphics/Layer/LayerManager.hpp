@@ -51,9 +51,10 @@ namespace jubeat_online {
 
 				void addLayer(std::shared_ptr<LayerBase> layer, const LayerType type, const unsigned char layernumber);
 
-				void process(void);
+				void run(void);
 
 			private:
+				void process(void);
 				typedef struct {
 					std::shared_ptr<LayerBase> lb;
 					LayerType lt;

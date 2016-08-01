@@ -9,6 +9,7 @@
 #include "LayerManager.hpp"
 #include "LayerBase.hpp"
 #include <exception>
+#include <thread>
 #include "../../Systems/Exceptions.hpp"
 
 using namespace jubeat_online::graphics::layer;
@@ -125,6 +126,12 @@ void jubeat_online::graphics::layer::LayerManager::addLayer(std::shared_ptr<Laye
 	this->layer_list->insert(p,newlb);
 
 	
+}
+
+void jubeat_online::graphics::layer::LayerManager::run(void)
+{
+	std::thread th(&LayerManager::process, this);
+	th.detach();	//スレッドの開始
 }
 
 
