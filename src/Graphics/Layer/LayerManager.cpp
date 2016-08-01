@@ -25,17 +25,18 @@ jubeat_online::graphics::layer::LayerManager::LayerManager()
 
 
 jubeat_online::graphics::layer::LayerManager::LayerManager(
-	const std::string & window_title, 
+	const std::string & window_title,
 	const sf::VideoMode & vmode,
 	const bool isVSync,
-	const unsigned int fpsLimit, 
+	const unsigned int fpsLimit,
 	const sf::Vector2i startWindowPosition,
 	const sf::Uint32 style)
 	: vmode(vmode),
 	window_style(style),
 	window_title(window_title),
 	isVSync(isVSync),
-	fpsLimit(fpsLimit)
+	fpsLimit(fpsLimit),
+	is_thread_running(new bool(false))
 {
 
 	//ウィンドウの生成は別。
@@ -134,11 +135,18 @@ void jubeat_online::graphics::layer::LayerManager::run(void)
 	th.detach();	//スレッドの開始
 }
 
+bool jubeat_online::graphics::layer::LayerManager::isThreadRunning(void) const
+{
+	return *this->is_thread_running;
+}
+
 
 //#############  レイヤー描写フロー  ###############
 void jubeat_online::graphics::layer::LayerManager::process(void)
 {
-	
+
+	*this->is_thread_running = true;
+
 	while (this->window.isOpen()) {
 		sf::Event event;
 		while (this->window.pollEvent(event)) {
@@ -212,5 +220,7 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 		p->lb->Exit();
 		p = this->layer_list->erase(p);
 	}
+
+	*this->is_thread_running = false;
 
 }

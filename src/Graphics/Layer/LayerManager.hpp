@@ -53,6 +53,8 @@ namespace jubeat_online {
 
 				void run(void);
 
+				bool isThreadRunning(void) const;
+
 			private:
 				void process(void);
 				typedef struct {
@@ -75,6 +77,8 @@ namespace jubeat_online {
 
 				sf::RenderWindow			window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
 				sf::RenderTexture			window_buffer;	//画面調整のためのラストバッファ
+
+				std::shared_ptr<bool>		is_thread_running;
 
 				const static sf::Vector2u RENDER_TEXTURE_SIZE;
 
