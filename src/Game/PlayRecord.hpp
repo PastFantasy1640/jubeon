@@ -16,9 +16,13 @@
 namespace jubeon {
 	namespace game {
 
-		typedef struct JudgedPanelInput : jubeon::input::PanelInput {
+		class JudgedPanelInput : public jubeon::input::PanelInput {
+		public:
 			Judge judge;	//ジャッジ情報が追加
-		}JudgedPanelInput;
+			JudgedPanelInput() {}
+			JudgedPanelInput(unsigned char panel_no, jubeon::input::Type t, unsigned int ms, Judge judge)
+				: judge(judge), PanelInput(panel_no,t,ms) {}
+		};
 
 		class PlayRecord {
 		public:
@@ -27,7 +31,7 @@ namespace jubeon {
 			virtual ~PlayRecord();
 
 			//判定済みを追加
-			void addJudged(const jubeon::input::PanelInput & p, Judge & judge);
+			void addJudged(const jubeon::input::PanelInput p, Judge judge);
 			void addJudged(const JudgedPanelInput judged_p);
 
 			//ファイルへ書き出し(TO DO : 未実装)

@@ -52,6 +52,32 @@ int main(int argc, char * argv[]) {
 	mus.soundbuffer.loadFromFile("media/demo.flac");
 	mus.soundplayer.setBuffer(mus.soundbuffer);
 
+	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
+	std::unique_ptr<jubeon::game::PlayRecord> playrecord(new jubeon::game::PlayRecord);
+	
+	PanelInput p;
+
+	for (int i = 0; i < 15; i++) {
+		playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(5, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(7, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(8, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(9, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(12, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(13, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(2, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(5, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(7, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(8, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(9, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(12, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(13, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+	}
+
+
+	//?
+	//shared_ptr<layers::SequencePlayer> seqplayer(new layers::SequencePlayer(sequence, &mus, std::move(playrecord)));
+
 
 
 	mainwindow.addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);

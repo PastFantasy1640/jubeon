@@ -15,7 +15,7 @@ jubeon::game::PlayRecord::~PlayRecord()
 {
 }
 
-void jubeon::game::PlayRecord::addJudged(const jubeon::input::PanelInput & p, Judge & judge)
+void jubeon::game::PlayRecord::addJudged(const jubeon::input::PanelInput p, Judge judge)
 {
 	JudgedPanelInput tmp;
 	tmp.ms = p.ms;
