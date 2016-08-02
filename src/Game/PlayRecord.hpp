@@ -5,7 +5,6 @@
 
 #include <memory>
 #include <vector>
-#include <list>
 #include <string>
 #include <mutex>
 
@@ -29,31 +28,25 @@ namespace jubeon {
 
 			//判定済みを追加
 			void addJudged(const jubeon::input::PanelInput & p, Judge & judge);
-			void addJudged(const JudgedPanelInput & judged_p);
+			void addJudged(const JudgedPanelInput judged_p);
 
-			//ファイルへ書き出し
+			//ファイルへ書き出し(TO DO : 未実装)
 			bool writeToFile(const std::string dst);
 
-			//ファイルから読み出し
+			//ファイルから読み出し(TO DO : 未実装)
 			bool readFromFile(const std::string src);
 			
-			//judgedlist[idx]の取得
-			const JudgedPanelInput & getJudgedInput(const size_t idx) const;
+			//リストを参照として取得する
+			const std::shared_ptr<std::vector<JudgedPanelInput>> getJudgedList() const;
 
-			//judgedlistの指定されたmsより遅く、かつ一番近いもののconst_iteratorを返す
-			std::vector<JudgedPanelInput>::const_iterator & getPanelInputFromTime(const unsigned int ms) const;
-
-			//judgedlistの終了イテレータ
-			std::vector<JudgedPanelInput>::const_iterator & getPanelInputListEnd(void) const;
-
-			//judgedlistの開始イテレータ
-			std::vector<JudgedPanelInput>::const_iterator & getPanelInputListBegin(void) const;
+			//検索関数
+			static std::vector<JudgedPanelInput>::const_iterator getIteratorFromTime(const std::vector<JudgedPanelInput> & list ,const int ms);
 
 		private:
 			
 			
 			//判定済みのリスト
-			std::vector <JudgedPanelInput> judged_list;
+			std::shared_ptr<std::vector<JudgedPanelInput>> judged_list;
 
 		};
 	}
