@@ -16,13 +16,13 @@
 namespace jubeon {
 	namespace game {
 
-		class JudgedPanelInput : public jubeon::input::PanelInput {
+		typedef struct JudgedPanelInput : jubeon::input::PanelInput {
 		public:
 			Judge judge;	//ƒWƒƒƒbƒWî•ñ‚ª’Ç‰Á
 			JudgedPanelInput() {}
 			JudgedPanelInput(unsigned char panel_no, jubeon::input::Type t, unsigned int ms, Judge judge)
 				: judge(judge), PanelInput(panel_no,t,ms) {}
-		};
+		}JudgedPanelInput;
 
 		class PlayRecord {
 		public:
