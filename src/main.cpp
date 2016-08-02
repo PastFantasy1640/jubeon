@@ -54,48 +54,27 @@ int main(int argc, char * argv[]) {
 	mus.soundplayer.setBuffer(mus.soundbuffer);
 
 	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
-	//std::unique_ptr<jubeon::game::PlayRecord> playrecord(new jubeon::game::PlayRecord);
+	std::unique_ptr<jubeon::game::PlayRecord> playrecord(new jubeon::game::PlayRecord);
 	
-	/*PlayRecord::NoJudgedList pi_list(new std::list<PanelInput>());
-	PanelInput tmp;
-	tmp.j = jubeon::game::NOJUDGE;
+	PanelInput p;
 
 	for (int i = 0; i < 15; i++) {
-		tmp.ms = i * 4000; tmp.panel_no = 1; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 2; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 5; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 7; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 8; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 9; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 12; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 13; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 1; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 2; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 5; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 7; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 8; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 9; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 12; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 13; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
+		playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(5, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(7, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(8, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(9, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(12, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(13, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(2, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(5, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(7, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(8, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(9, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(12, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(13, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
 	}
-	
-	playrecord->setJudgedList(std::move(pi_list));*/
+
 
 	//?
 	//shared_ptr<layers::SequencePlayer> seqplayer(new layers::SequencePlayer(sequence, &mus, std::move(playrecord)));
