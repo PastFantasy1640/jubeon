@@ -16,14 +16,18 @@
 
 namespace jubeat_online {
 	namespace game {
+
+
+		typedef struct {
+			unsigned char panel_no;
+			jubeat_online::input::PanelEvent::Type t;
+			unsigned int ms;	//これは曲と同期するが、offsetを加算後のもの
+			Judge j;			//未判定リストのものは関係なし。
+		}PanelInput;
+
+
 		class PlayRecord : public jubeat_online::input::PanelEvent {
 		public:
-			typedef struct {
-				unsigned char panel_no;
-				Type t;
-				unsigned int ms;	//これは曲と同期するが、offsetを加算後のもの
-				Judge j;			//未判定リストのものは関係なし。
-			}PanelInput;
 
 			PlayRecord();
 			virtual ~PlayRecord();

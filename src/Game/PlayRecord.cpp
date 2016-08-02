@@ -13,7 +13,7 @@ jubeat_online::game::PlayRecord::~PlayRecord()
 {
 }
 
-std::unique_ptr<std::list<jubeat_online::game::PlayRecord::PanelInput>> jubeat_online::game::PlayRecord::getNoJudgedList(void)
+std::unique_ptr<std::list<jubeat_online::game::PanelInput>> jubeat_online::game::PlayRecord::getNoJudgedList(void)
 {
 	return std::move(this->no_judge_list);
 }
@@ -75,13 +75,13 @@ unsigned int jubeat_online::game::PlayRecord::getTime() const
 	return this->ck.getElapsedTime().asMicroseconds();
 }
 
-const jubeat_online::game::PlayRecord::PanelInput * jubeat_online::game::PlayRecord::getJudgedInput(const size_t idx) const
+const jubeat_online::game::PanelInput * jubeat_online::game::PlayRecord::getJudgedInput(const size_t idx) const
 {
 	if(idx < this->judged_list.size())	return &this->judged_list[idx];
 	return nullptr;
 }
 
-std::vector<jubeat_online::game::PlayRecord::PanelInput>::const_iterator jubeat_online::game::PlayRecord::getPanelInputFromTime(const unsigned int ms) const
+std::vector<jubeat_online::game::PanelInput>::const_iterator jubeat_online::game::PlayRecord::getPanelInputFromTime(const unsigned int ms) const
 {
 	//後ろじゃないので、二分探索
 	//ラムダ式使ってみる？
@@ -115,12 +115,12 @@ std::vector<jubeat_online::game::PlayRecord::PanelInput>::const_iterator jubeat_
 	return this->judged_list.begin() + idx;
 }
 
-std::vector<jubeat_online::game::PlayRecord::PanelInput>::const_iterator jubeat_online::game::PlayRecord::getPanelInputListEnd(void) const
+std::vector<jubeat_online::game::PanelInput>::const_iterator jubeat_online::game::PlayRecord::getPanelInputListEnd(void) const
 {
 	return this->judged_list.end();
 }
 
-std::vector<jubeat_online::game::PlayRecord::PanelInput>::const_iterator jubeat_online::game::PlayRecord::getPanelInputListBegin(void) const
+std::vector<jubeat_online::game::PanelInput>::const_iterator jubeat_online::game::PlayRecord::getPanelInputListBegin(void) const
 {
 	return this->judged_list.begin();
 }

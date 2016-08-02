@@ -5,9 +5,8 @@
 #include <iostream>
 
 #include "../PlayRecord.hpp"
-#include "../../Input/PanelEvent.hpp"
 
-jubeat_online::game::layers::SequencePlayer::SequencePlayer(const Sequence * sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord)
+jubeat_online::game::layers::SequencePlayer::SequencePlayer(std::shared_ptr<Sequence> sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord)
 	: LayerBase(),
 	sequence(sequence),
 	music(music),
@@ -35,10 +34,16 @@ void jubeat_online::game::layers::SequencePlayer::process(void)
 	unsigned int panel_ms = this->playrecord->getTime();
 	int diff_ms = panel_ms - music_ms;
 
-	for (auto p : *no_judge_list) {
+	/*for (auto p : *no_judge_list) {
 		p.j = Judge::NOJUDGE;	//TEMPORARY
 		p.ms -= diff_ms;	//‹È‚Ìms‚Ö
 		if (p.ms <= this->before_check_ms) this->before_check_ms = p.ms;	//ˆø‚«–ß‚·
+	}*/
+
+	for (std::list<PanelInput>::iterator p = no_judge_list->begin(); p != no_judge_list->end(); p++) {
+		p->j = Judge::NOJUDGE;	//TEMPORARY
+		p->ms -= diff_ms;	//‹È‚Ìms‚Ö
+		if (p->ms <= this->before_check_ms) this->before_check_ms = p->ms;	//ˆø‚«–ß‚·
 	}
 
 	//PlayRecord‚Ö”»’è‚ğXV

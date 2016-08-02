@@ -45,7 +45,9 @@ int main(int argc, char * argv[]) {
 	std::shared_ptr<game::layers::MusicInfoLayer> musicinfo(new game::layers::MusicInfoLayer);
 	std::shared_ptr<game::layers::ShutterLayer> shutterlayer(new game::layers::ShutterLayer);
 	
-	game::Sequence seq("hogehoge");
+	std::vector<jubeat_online::game::Note> hoge;
+	std::shared_ptr<game::Sequence> sequence(new jubeat_online::game::Sequence(hoge));
+	
 	game::Music mus;
 
 	//まずmusicに何か指定
@@ -56,8 +58,8 @@ int main(int argc, char * argv[]) {
 	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
 	std::unique_ptr<game::PlayRecord> playrecord(new jubeat_online::game::PlayRecord);
 	
-	std::unique_ptr<std::list<game::PlayRecord::PanelInput>> pi_list(new std::list<game::PlayRecord::PanelInput>());
-	game::PlayRecord::PanelInput tmp;
+	std::unique_ptr<std::list<game::PanelInput>> pi_list(new std::list<game::PanelInput>());
+	game::PanelInput tmp;
 	tmp.j = jubeat_online::game::NOJUDGE;
 
 	for (int i = 0; i < 15; i++) {
@@ -97,8 +99,8 @@ int main(int argc, char * argv[]) {
 	
 	playrecord->setJudgedList(std::move(pi_list));
 
-
-	std::shared_ptr<game::layers::SequencePlayer> seqplayer(new game::layers::SequencePlayer(&seq, &mus, std::move(playrecord)));
+	//?
+	std::shared_ptr<game::layers::SequencePlayer> seqplayer(new game::layers::SequencePlayer(sequence, &mus, std::move(playrecord)));
 
 
 	a.addLayer(bg, jubeat_online::graphics::layer::LayerManager::BACKGROUND, 0);

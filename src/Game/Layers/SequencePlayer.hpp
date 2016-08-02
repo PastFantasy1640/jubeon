@@ -15,15 +15,15 @@
 
 #include "../Marker.hpp"
 
-namespace jubeat_online{
+namespace jubeat_online {
 	namespace game {
 		namespace layers {
 
-			
+
 			class SequencePlayer : public jubeat_online::graphics::layer::LayerBase {
 			public:
 
-				SequencePlayer(const Sequence * sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord);
+				SequencePlayer(std::shared_ptr<Sequence> sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord);
 
 				void process(void);
 
@@ -32,7 +32,7 @@ namespace jubeat_online{
 				virtual void Exit() override;
 
 			private:
-				const Sequence * sequence;
+				std::shared_ptr<Sequence> sequence;
 				const Music * music;
 				std::unique_ptr<PlayRecord> playrecord;
 

@@ -8,9 +8,10 @@
 #include <memory>
 #include "JudgeDefinition.hpp"
 
-
 namespace jubeat_online {
 	namespace game {
+
+		//class PanelInput;
 
 		class Note{
 
@@ -34,7 +35,8 @@ namespace jubeat_online {
 			int holdMarkerIndex;
 
 			//このノートに対する判定
-			std::shared_ptr<PlayRecord::PanelInput> judged;
+			//delete禁止
+			//const PanelInput * judged;
 			
 		public:
 			
@@ -44,8 +46,6 @@ namespace jubeat_online {
 			//ホールドマーカーのコンストラクタ
 			Note(const int just_time, const int panel_idx, const int duration, const int holdmarker_panel_idx);
 
-			//ホールドマーカーのコンストラクタ
-			Note(const int just_time, const int panel_idx, const int duration, const int holdmarker_panel_idx, const std::shared_ptr<PanelInput> judge);
 
 			//アクセサ
 			int getJustTime(void) const;
