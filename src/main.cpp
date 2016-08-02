@@ -41,6 +41,7 @@ int main(int argc, char * argv[]) {
 	//a.createWindow();
 
 	std::shared_ptr<game::layers::BackgroundLayer> bg(new game::layers::BackgroundLayer);
+	std::shared_ptr<game::layers::BackgroundLayer> bg2(new game::layers::BackgroundLayer);
 	std::shared_ptr<game::layers::FrameLayer> frame(new game::layers::FrameLayer);
 	std::shared_ptr<game::layers::MusicInfoLayer> musicinfo(new game::layers::MusicInfoLayer);
 	std::shared_ptr<game::layers::ShutterLayer> shutterlayer(new game::layers::ShutterLayer);
@@ -115,9 +116,10 @@ int main(int argc, char * argv[]) {
 	jubeat_online::graphics::layer::LayerManager b("main", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(0, 0), sf::Style::Default);
 
 	//b.createWindow();
-
+	//b.addLayer(bg2, jubeat_online::graphics::layer::LayerManager::BACKGROUND, 0);
 
 	a.run();
+	b.run();
 
 	while (a.isThreadRunning()) std::this_thread::sleep_for(std::chrono::microseconds(1000));
 

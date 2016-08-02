@@ -73,7 +73,7 @@ jubeat_online::graphics::layer::LayerManager::~LayerManager()
 	}
 
 	//ウィンドウの終了
-	this->window.close();
+	//this->window->close();
 }
 
 
@@ -81,13 +81,14 @@ jubeat_online::graphics::layer::LayerManager::~LayerManager()
 
 void jubeat_online::graphics::layer::LayerManager::createWindow(void)
 {
-	
-	this->window.create(this->vmode, this->window_title, this->window_style);
-	this->window.clear();
+	this->window.reset(new sf::RenderWindow());
 
-	this->window.setVerticalSyncEnabled(this->isVSync);
-	this->window.setFramerateLimit(this->fpsLimit);
-	this->window.setPosition(this->window_position);
+	this->window->create(this->vmode, this->window_title, this->window_style);
+	this->window->clear();
+
+	this->window->setVerticalSyncEnabled(this->isVSync);
+	this->window->setFramerateLimit(this->fpsLimit);
+	this->window->setPosition(this->window_position);
 
 	this->window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y);
 	this->window_buffer.clear();
@@ -133,6 +134,7 @@ void jubeat_online::graphics::layer::LayerManager::run(void)
 {
 	std::thread th(&LayerManager::process, this);
 	th.detach();	//スレッドの開始
+	*this->is_thread_running = true;
 }
 
 bool jubeat_online::graphics::layer::LayerManager::isThreadRunning(void) const
@@ -146,20 +148,19 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 {
 	this->createWindow();
 
-	*this->is_thread_running = true;
 
 	sf::Event event;
-	while (this->window.isOpen()) {
+	while (this->window->isOpen()) {
 	
-		if(this->window.pollEvent(event)) {
+		if(this->window->pollEvent(event)) {
 			//「クローズが要求された」イベント：ウインドウを閉じる
-			if (event.type == sf::Event::Closed) this->window.close();
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) this->window.close();
+			if (event.type == sf::Event::Closed) this->window->close();
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) this->window->close();
 			continue;
 		}
 
 
-		this->window.clear();
+		this->window->clear();
 		this->window_buffer.clear();
 
 		if (this->layer_list->size() > 0) {
@@ -199,8 +200,8 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 
 		//スプライトごにょごにょ
 		sf::Vector2f scale;
-		scale.x = static_cast<float>(this->window.getSize().x) / static_cast<float>(this->window_buffer.getSize().x);
-		scale.y = static_cast<float>(this->window.getSize().y) / static_cast<float>(this->window_buffer.getSize().y);
+		scale.x = static_cast<float>(this->window->getSize().x) / static_cast<float>(this->window_buffer.getSize().x);
+		scale.y = static_cast<float>(this->window->getSize().y) / static_cast<float>(this->window_buffer.getSize().y);
 
 		if (scale.x > scale.y) scale.x = scale.y;
 		else scale.y = scale.x;
@@ -210,10 +211,10 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 		wsp.setScale(scale);
 		
 		//画面描写
-		this->window.draw(wsp);
+		this->window->draw(wsp);
 
 		//画面アップデート
-		this->window.display();
+		this->window->display();
 
 	}
 
