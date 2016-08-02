@@ -51,6 +51,9 @@ namespace jubeat_online {
 
 				void addLayer(std::shared_ptr<LayerBase> layer, const LayerType type, const unsigned char layernumber);
 
+				//スレッドを立てて起動
+				//一つ目のウィンドウは必ずprocessを用いて起動すること。
+				//つまりその前に、別で
 				void run(void);
 
 				bool isThreadRunning(void) const;
@@ -75,7 +78,7 @@ namespace jubeat_online {
 				sf::Vector2i				window_position;//ウィンドウを生成するポジション
 
 
-				sf::RenderWindow			window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
+				std::unique_ptr<sf::RenderWindow> window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
 				sf::RenderTexture			window_buffer;	//画面調整のためのラストバッファ
 
 				std::shared_ptr<bool>		is_thread_running;

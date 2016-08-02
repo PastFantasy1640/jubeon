@@ -38,7 +38,7 @@ int main(int argc, char * argv[]) {
 
 	jubeat_online::graphics::layer::LayerManager a("test", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(1920, -840), sf::Style::None);
 
-	a.createWindow();
+	//a.createWindow();
 
 	std::shared_ptr<game::layers::BackgroundLayer> bg(new game::layers::BackgroundLayer);
 	std::shared_ptr<game::layers::FrameLayer> frame(new game::layers::FrameLayer);
@@ -114,14 +114,14 @@ int main(int argc, char * argv[]) {
 
 	jubeat_online::graphics::layer::LayerManager b("main", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(0, 0), sf::Style::Default);
 
-	b.createWindow();
+	//b.createWindow();
 
 
 	a.run();
 
-	//while (a.isThreadRunning()) std::this_thread::sleep_for(std::chrono::microseconds(1000));
+	while (a.isThreadRunning()) std::this_thread::sleep_for(std::chrono::microseconds(1000));
 
-	b.process();
+	//b.process();
 
 	return 0;
 }

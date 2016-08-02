@@ -144,6 +144,7 @@ bool jubeat_online::graphics::layer::LayerManager::isThreadRunning(void) const
 //#############  レイヤー描写フロー  ###############
 void jubeat_online::graphics::layer::LayerManager::process(void)
 {
+	this->createWindow();
 
 	*this->is_thread_running = true;
 
