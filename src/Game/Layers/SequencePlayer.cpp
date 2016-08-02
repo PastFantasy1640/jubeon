@@ -7,7 +7,7 @@
 #include "../PlayRecord.hpp"
 #include "../../Input/PanelEvent.hpp"
 
-jubeat_online::game::layers::SequencePlayer::SequencePlayer(const Sequence * sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord)
+jubeat_online::game::layers::SequencePlayer::SequencePlayer(const Sequence * sequence, Music * music, std::unique_ptr<PlayRecord> playrecord)
 	: LayerBase(),
 	sequence(sequence),
 	music(music),
