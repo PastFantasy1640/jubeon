@@ -1,6 +1,6 @@
 #include "BackgroundLayer.hpp"
 #include <math.h>
-#define PI 3.1415926535
+#define PI 3.1415926535f
 #include <random>
 
 //’è”éŒ¾
@@ -60,7 +60,7 @@ void jubeat_online::game::layers::BackgroundLayer::createDrop(void)
 
 	tmp->setFillColor(this->COLOR_NORMAL_BLUE);
 	tmp->setPosition(this->BORN_POSITION_LEFT);
-	tmp->move2(sf::Vector2f(0.3 + this->getRandom() * 0.1, 1.5 + this->getRandom() * 0.1), sf::Vector2f(1.0008f, 1.0008f));
+	tmp->move2(sf::Vector2f(0.3f + this->getRandom() * 0.1f, 1.5f + this->getRandom() * 0.1f), sf::Vector2f(1.0008f, 1.0008f));
 	this->dropping.push_back(std::move(tmp));
 
 	//ŽŸ‚É‰E‚©‚ç‰º‚Ö—Ž‚¿‚Ä‚¢‚­‚â‚Â
@@ -69,7 +69,7 @@ void jubeat_online::game::layers::BackgroundLayer::createDrop(void)
 
 	tmp->setFillColor(this->COLOR_NORMAL_PINK);
 	tmp->setPosition(this->BORN_POSITION_RIGHT);
-	tmp->move2(sf::Vector2f(-0.33 + this->getRandom() * 0.1, 1.5 + this->getRandom() * 0.1), sf::Vector2f(1.0008f, 1.0008f));
+	tmp->move2(sf::Vector2f(-0.33f + this->getRandom() * 0.1f, 1.5f + this->getRandom() * 0.1f), sf::Vector2f(1.0008f, 1.0008f));
 	this->dropping.push_back(std::move(tmp));
 
 
@@ -83,14 +83,14 @@ void jubeat_online::game::layers::BackgroundLayer::createDrop2(void)
 
 	tmp->setFillColor(this->COLOR_NORMAL_BLUE);
 	tmp->setPosition(this->BORN_POSITION_TOP);
-	tmp->move2(sf::Vector2f(this->getRandom() * 0.1 + 0.05, 0.8 + this->getRandom() * 0.1), sf::Vector2f(1.0008f, 1.0008f));
+	tmp->move2(sf::Vector2f(this->getRandom() * 0.1f + 0.05f, 0.8f + this->getRandom() * 0.1f), sf::Vector2f(1.0008f, 1.0008f));
 	this->dropping.push_back(std::move(tmp));
 
 	tmp.reset(new Theme::Drop<5>(this->genRandomPoints<5>(this->BORN_R_SIZE), this->BEZIER_RESOLUTION));
 
 	tmp->setFillColor(this->COLOR_NORMAL_PINK);
 	tmp->setPosition(this->BORN_POSITION_TOP);
-	tmp->move2(sf::Vector2f(this->getRandom() * -0.1 - 0.05, 0.8 + this->getRandom() * 0.1), sf::Vector2f(1.0008f, 1.0008f));
+	tmp->move2(sf::Vector2f(this->getRandom() * -0.1f - 0.05f, 0.8f + this->getRandom() * 0.1f), sf::Vector2f(1.0008f, 1.0008f));
 	this->dropping.push_back(std::move(tmp));
 }
 
@@ -137,7 +137,7 @@ std::array<sf::Vector2f, S> jubeat_online::game::layers::BackgroundLayer::genRan
 	for (int i = 0; i < points.size(); i++) {
 
 		float degree = i * 360 / static_cast<float>(S);
-		float scale = 1 - (static_cast<double>(rnd()) / 0xffffffff) / 3.0f;
+		float scale = 1.0f - (static_cast<double>(rnd()) / 0xffffffff) / 3.0f;
 		float tx = cos(degree * PI / 180.0f) * r;
 		float ty = sin(degree * PI / 180.0f) * r;
 		points[i] = (sf::Vector2f(scale * tx, scale * ty));

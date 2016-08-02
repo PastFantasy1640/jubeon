@@ -171,7 +171,7 @@ void jubeat_online::game::layers::SequencePlayer::Draw()
 			//˜g‚Ì‘¾‚³‚Í38
 			//0”Ô–Ú‚Ìƒpƒlƒ‹‚Ì¶ãÀ•W‚Í(1,593)
 			sf::Sprite sp(this->panel_frame);
-			sp.setPosition(1 + (i % 4) * (163 + 38), 593 + (i / 4) * (163 + 38));
+			sp.setPosition(static_cast<float>(1 + (i % 4) * (163 + 38)), static_cast<float>(593 + (i / 4) * (163 + 38)));
 			sp.setScale(163.0f / 190.0f, 163.0f / 190.0f);
 			this->draw(sp);
 		}
