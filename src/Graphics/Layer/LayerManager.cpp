@@ -121,15 +121,15 @@ bool jubeon::graphics::LayerManager::getWindowEvent(sf::Event & e)
 //レイヤー描写
 void jubeon::graphics::LayerManager::process(void)
 {
-	//次にウィンドウバッファの生成
-	this->window_buffer.reset(new sf::RenderTexture());
+	//ウィンドウバッファの生成
+	sf::RenderTexture window_buffer;
 
-	if (!this->window_buffer->create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y)) {
+	if (!window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y)) {
 		jubeat_online::systems::Logger::error("ウィンドウバッファの生成に失敗しました");
 		return;
 	}
-	this->window_buffer->clear();
-	this->window_buffer->setSmooth(true);
+	window_buffer.clear();
+	window_buffer.setSmooth(true);
 
 	//ループ開始
 	while (this->window->isOpen()) {
@@ -141,7 +141,7 @@ void jubeon::graphics::LayerManager::process(void)
 			break;	//終了へ
 		}
 
-		this->window_buffer->clear();
+		window_buffer.clear();
 		this->window->clear(sf::Color::Black);
 
 		if (this->layer_list.size() > 0) {
@@ -165,7 +165,7 @@ void jubeon::graphics::LayerManager::process(void)
 					//sf::Sprite sp((*p)->getTexture());
 					//this->window->draw(sp);
 					//ウィンドウバッファに描写
-					this->window_buffer->draw(sf::Sprite((*p)->getTexture()));
+					window_buffer.draw(sf::Sprite((*p)->getTexture()));
 				}
 
 				if (p == this->layer_list.begin()) break;	//全てのレイヤーを描写済み
@@ -175,15 +175,15 @@ void jubeon::graphics::LayerManager::process(void)
 
 
 		//ウィンドウバッファのアップデート
-		this->window_buffer->display();
+		window_buffer.display();
 
 		//スプライトの作成
-		sf::Sprite wsp(this->window_buffer->getTexture());
+		sf::Sprite wsp(window_buffer.getTexture());
 
 		//スプライトごにょごにょ
 		sf::Vector2f scale;
-		scale.x = static_cast<float>(this->window->getSize().x) / static_cast<float>(this->window_buffer->getSize().x);
-		scale.y = static_cast<float>(this->window->getSize().y) / static_cast<float>(this->window_buffer->getSize().y);
+		scale.x = static_cast<float>(this->window->getSize().x) / static_cast<float>(window_buffer.getSize().x);
+		scale.y = static_cast<float>(this->window->getSize().y) / static_cast<float>(window_buffer.getSize().y);
 
 		if (scale.x > scale.y) scale.x = scale.y;
 		else scale.y = scale.x;

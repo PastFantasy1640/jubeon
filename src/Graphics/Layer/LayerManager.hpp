@@ -86,7 +86,7 @@ namespace jubeon{
 
 
 			std::shared_ptr<sf::RenderWindow>	window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
-			std::unique_ptr<sf::RenderTexture>	window_buffer;	//画面調整のためのラストバッファ
+			//std::unique_ptr<sf::RenderTexture>	window_buffer;	//画面調整のためのラストバッファ
 
 			std::shared_ptr<bool>				is_thread_running;
 			std::shared_ptr<bool>				is_open_window;
