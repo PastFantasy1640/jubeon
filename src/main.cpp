@@ -104,10 +104,10 @@ int main(int argc, char * argv[]) {
 
 
 	a.addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
-//	a.addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
-//	a.addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
-//	a.addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
-//	a.addLayer(seqplayer, jubeon::graphics::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
+	a.addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
+	a.addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
+	a.addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
+	a.addLayer(seqplayer, jubeon::graphics::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
 	
 	mus.startToPlay();
 

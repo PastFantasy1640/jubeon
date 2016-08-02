@@ -88,17 +88,10 @@ void jubeon::graphics::LayerManager::run(void)
 	this->window->setVerticalSyncEnabled(this->isVSync);
 	this->window->setFramerateLimit(this->fpsLimit);
 	this->window->setPosition(this->window_position);
+	this->window->setActive(false);
 
 
-	//次にウィンドウバッファの生成
-	this->window_buffer.reset(new sf::RenderTexture());
-
-	if (!this->window_buffer->create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y)) {
-		jubeat_online::systems::Logger::error("ウィンドウバッファの生成に失敗しました");
-		return;
-	}
-	this->window_buffer->clear();
-	this->window_buffer->setSmooth(true);
+	
 
 	//スレッドの生成
 	*this->is_thread_running = true;
@@ -110,7 +103,7 @@ void jubeon::graphics::LayerManager::run(void)
 //ウィンドウが開いているか
 bool jubeon::graphics::LayerManager::isWindowOpening(void) const
 {
-	return *this->is_thread_running;
+	return *this->is_thread_running || this->window->isOpen();
 }
 
 //ウィンドウを終了させる
@@ -128,7 +121,15 @@ bool jubeon::graphics::LayerManager::getWindowEvent(sf::Event & e)
 //レイヤー描写
 void jubeon::graphics::LayerManager::process(void)
 {
+	//次にウィンドウバッファの生成
+	this->window_buffer.reset(new sf::RenderTexture());
 
+	if (!this->window_buffer->create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y)) {
+		jubeat_online::systems::Logger::error("ウィンドウバッファの生成に失敗しました");
+		return;
+	}
+	this->window_buffer->clear();
+	this->window_buffer->setSmooth(true);
 
 	//ループ開始
 	while (this->window->isOpen()) {
@@ -141,6 +142,7 @@ void jubeon::graphics::LayerManager::process(void)
 		}
 
 		this->window_buffer->clear();
+		this->window->clear(sf::Color::Black);
 
 		if (this->layer_list.size() > 0) {
 			for (auto p = --this->layer_list.end(); ; p--) {
@@ -160,10 +162,10 @@ void jubeon::graphics::LayerManager::process(void)
 					//画面更新
 					(*p)->display();
 
-					sf::Sprite sp((*p)->getTexture());
-					this->window_buffer->draw(sp);
+					//sf::Sprite sp((*p)->getTexture());
+					//this->window->draw(sp);
 					//ウィンドウバッファに描写
-					//this->window_buffer->draw(sf::Sprite((*p)->getTexture()));
+					this->window_buffer->draw(sf::Sprite((*p)->getTexture()));
 				}
 
 				if (p == this->layer_list.begin()) break;	//全てのレイヤーを描写済み
@@ -171,10 +173,6 @@ void jubeon::graphics::LayerManager::process(void)
 		}
 
 
-		sf::CircleShape cshape = sf::CircleShape(50, 20);
-		cshape.setFillColor(sf::Color::Red);
-		cshape.setPosition(200, 200);
-		this->window_buffer->draw(cshape);
 
 		//ウィンドウバッファのアップデート
 		this->window_buffer->display();
@@ -195,8 +193,7 @@ void jubeon::graphics::LayerManager::process(void)
 		wsp.setScale(scale);
 		
 		//画面描写
-		this->window->clear();
-		this->window->draw(sf::Sprite((this->window_buffer)->getTexture()));
+		this->window->draw(wsp);
 
 		//画面アップデート
 		this->window->display();
