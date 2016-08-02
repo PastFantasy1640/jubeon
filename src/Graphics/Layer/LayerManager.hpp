@@ -54,9 +54,9 @@ namespace jubeat_online {
 				void run(void);
 
 				bool isThreadRunning(void) const;
+				void process(void);
 
 			private:
-				void process(void);
 				typedef struct {
 					std::shared_ptr<LayerBase> lb;
 					LayerType lt;

@@ -111,9 +111,17 @@ int main(int argc, char * argv[]) {
 	
 	mus.startToPlay();
 
+
+	jubeat_online::graphics::layer::LayerManager b("main", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(0, 0), sf::Style::Default);
+
+	b.createWindow();
+
+
 	a.run();
 
-	while (a.isThreadRunning()) std::this_thread::sleep_for(std::chrono::microseconds(1000));
+	//while (a.isThreadRunning()) std::this_thread::sleep_for(std::chrono::microseconds(1000));
+
+	b.process();
 
 	return 0;
 }

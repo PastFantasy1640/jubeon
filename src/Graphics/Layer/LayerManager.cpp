@@ -147,13 +147,14 @@ void jubeat_online::graphics::layer::LayerManager::process(void)
 
 	*this->is_thread_running = true;
 
+	sf::Event event;
 	while (this->window.isOpen()) {
-		sf::Event event;
-		while (this->window.pollEvent(event)) {
+	
+		if(this->window.pollEvent(event)) {
 			//「クローズが要求された」イベント：ウインドウを閉じる
-			if (event.type == sf::Event::Closed)
-				this->window.close();
+			if (event.type == sf::Event::Closed) this->window.close();
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) this->window.close();
+			continue;
 		}
 
 
