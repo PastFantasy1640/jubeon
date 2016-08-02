@@ -13,7 +13,7 @@
 namespace jubeat_online {
 	namespace game {
 		namespace layers {
-			class BackgroundLayer : public jubeat_online::graphics::layer::LayerBase{
+			class BackgroundLayer : public jubeon::graphics::LayerBase{
 			private:
 
 				sf::Int32 born_time;

@@ -9,7 +9,7 @@
 namespace jubeat_online {
 	namespace game {
 		namespace layers {
-			class ShutterLayer : public jubeat_online::graphics::layer::LayerBase {
+			class ShutterLayer : public jubeon::graphics::LayerBase {
 			private:
 				sf::Texture dummy;
 

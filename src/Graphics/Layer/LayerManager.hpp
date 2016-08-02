@@ -7,6 +7,7 @@
 #include <list>
 #include <memory>
 #include <map>
+#include <mutex>
 #include <SFML/Graphics.hpp>
 
 #include "LayerBase.hpp"

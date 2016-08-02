@@ -5,7 +5,7 @@
 namespace jubeat_online {
 	namespace game {
 		namespace layers {
-			class TestLayer : public jubeat_online::graphics::layer::LayerBase{
+			class TestLayer : public jubeon::graphics::LayerBase{
 			public:
 				void			Init();						//‰Šú‰»ŠÖ”
 				void			Update();					//ˆ—ŠÖ”

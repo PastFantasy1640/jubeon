@@ -9,7 +9,7 @@
 namespace jubeat_online {
 	namespace game {
 		namespace layers {
-			class FrameLayer : public jubeat_online::graphics::layer::LayerBase {
+			class FrameLayer : public jubeon::graphics::LayerBase {
 			private:
 				//sf::Texture frame;
 

@@ -20,7 +20,7 @@ namespace jubeat_online {
 		namespace layers {
 
 
-			class SequencePlayer : public jubeat_online::graphics::layer::LayerBase {
+			class SequencePlayer : public jubeon::graphics::LayerBase {
 			public:
 
 				SequencePlayer(std::shared_ptr<Sequence> sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord);

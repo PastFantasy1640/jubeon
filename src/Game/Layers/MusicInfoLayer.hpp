@@ -10,7 +10,7 @@
 namespace jubeat_online {
 	namespace game {
 		namespace layers {
-			class MusicInfoLayer : public jubeat_online::graphics::layer::LayerBase {
+			class MusicInfoLayer : public jubeon::graphics::LayerBase {
 			private:
 				sf::Texture dummy;
 
