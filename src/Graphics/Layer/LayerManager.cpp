@@ -89,8 +89,6 @@ void jubeon::graphics::LayerManager::run(void)
 	this->window->setFramerateLimit(this->fpsLimit);
 	this->window->setPosition(this->window_position);
 	this->window->setActive(false);
-
-
 	
 
 	//ƒXƒŒƒbƒh‚Ì¶¬
