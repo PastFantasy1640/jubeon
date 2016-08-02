@@ -1,12 +1,12 @@
 #include "ShutterLayer.hpp"
 
-void jubeat_online::game::layers::ShutterLayer::Init()
+void jubeon::game::layers::ShutterLayer::Init()
 {
 	this->dummy.loadFromFile("media/image/combowhite.png");
 	this->dummy.setSmooth(true);
 }
 
-void jubeat_online::game::layers::ShutterLayer::Draw()
+void jubeon::game::layers::ShutterLayer::Draw()
 {
 	this->clearBuffer();
 	sf::Sprite sp(this->dummy);
@@ -15,6 +15,6 @@ void jubeat_online::game::layers::ShutterLayer::Draw()
 	this->draw(sp);
 }
 
-void jubeat_online::game::layers::ShutterLayer::Exit()
+void jubeon::game::layers::ShutterLayer::Exit()
 {
 }

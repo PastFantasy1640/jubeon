@@ -5,8 +5,8 @@
 #include <iostream>
 
 #include "../PlayRecord.hpp"
-
-jubeat_online::game::layers::SequencePlayer::SequencePlayer(std::shared_ptr<Sequence> sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord)
+#ifdef HOGEHOGEHOGHEOHGOEHGOEHOGHOEGOH
+jubeon::game::layers::SequencePlayer::SequencePlayer(std::shared_ptr<jubeon::game::Sequence> sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord)
 	: LayerBase(),
 	sequence(sequence),
 	music(music),
@@ -17,7 +17,7 @@ jubeat_online::game::layers::SequencePlayer::SequencePlayer(std::shared_ptr<Sequ
 {
 }
 
-void jubeat_online::game::layers::SequencePlayer::process(void)
+void jubeon::game::layers::SequencePlayer::process(void)
 {
 	//processŠÖ”‚Å‚ÍA•ˆ–Ê‚Ì”»’è‚ðs‚¢‚Ü‚·B
 	
@@ -40,7 +40,7 @@ void jubeat_online::game::layers::SequencePlayer::process(void)
 		if (p.ms <= this->before_check_ms) this->before_check_ms = p.ms;	//ˆø‚«–ß‚·
 	}*/
 
-	for (std::list<PanelInput>::iterator p = no_judge_list->begin(); p != no_judge_list->end(); p++) {
+	for (auto p = no_judge_list->begin(); p != no_judge_list->end(); p++) {
 		p->j = Judge::NOJUDGE;	//TEMPORARY
 		p->ms -= diff_ms;	//‹È‚Ìms‚Ö
 		if (p->ms <= this->before_check_ms) this->before_check_ms = p->ms;	//ˆø‚«–ß‚·
@@ -56,7 +56,7 @@ void jubeat_online::game::layers::SequencePlayer::process(void)
 	//TO DO : ‚Ü‚¾(ry
 }
 
-void jubeat_online::game::layers::SequencePlayer::Init()
+void jubeon::game::layers::SequencePlayer::Init()
 {
 	//‰Šú‰»ˆ—
 
@@ -72,7 +72,7 @@ void jubeat_online::game::layers::SequencePlayer::Init()
 
 }
 
-void jubeat_online::game::layers::SequencePlayer::Draw()
+void jubeon::game::layers::SequencePlayer::Draw()
 {
 
 	this->clearBuffer();
@@ -181,6 +181,8 @@ void jubeat_online::game::layers::SequencePlayer::Draw()
 
 }
 
-void jubeat_online::game::layers::SequencePlayer::Exit()
+void jubeon::game::layers::SequencePlayer::Exit()
 {
 }
+
+#endif

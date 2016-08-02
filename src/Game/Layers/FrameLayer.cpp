@@ -1,11 +1,11 @@
 #include "FrameLayer.hpp"
 
-void jubeat_online::game::layers::FrameLayer::Init()
+void jubeon::game::layers::FrameLayer::Init()
 {
 	//this->frame.loadFromFile("media/image/frame-01.png");
 }
 
-void jubeat_online::game::layers::FrameLayer::Draw()
+void jubeon::game::layers::FrameLayer::Draw()
 {
 	//this->clear(sf::Color(0,0,0,0));
 	//s//f::Sprite sp(this->frame);
@@ -67,7 +67,7 @@ void jubeat_online::game::layers::FrameLayer::Draw()
 
 }
 
-void jubeat_online::game::layers::FrameLayer::Exit()
+void jubeon::game::layers::FrameLayer::Exit()
 {
 
 }

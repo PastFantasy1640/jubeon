@@ -1,9 +1,9 @@
 #pragma once
 
-#ifndef JUBEAT_ONLINE_GAME_JUDGEDEFINITION_HPP
-#define JUBEAT_ONLINE_GAME_JUDGEDEFINITION_HPP
+#ifndef jubeon_GAME_JUDGEDEFINITION_HPP
+#define jubeon_GAME_JUDGEDEFINITION_HPP
 
-namespace jubeat_online {
+namespace jubeon {
 	namespace game {
 		enum Judge : size_t {
 			PERFECT = 0,

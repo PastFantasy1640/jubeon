@@ -22,7 +22,10 @@
 #include <crtdbg.h>	//メモリリークログ用
 #endif
 
-using namespace jubeat_online;
+using namespace jubeon::game;
+using namespace jubeon::graphics;
+using namespace jubeon::input;
+using namespace std;
 
 int main(int argc, char * argv[]) {
 
@@ -31,24 +34,19 @@ int main(int argc, char * argv[]) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	jubeat_online::systems::Logger::information("jubeonが起動しました");
-
-
+	jubeon::systems::Logger::information("jubeonが起動しました");
 	
-
-	jubeon::graphics::LayerManager a("test", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(1920, -840), sf::Style::None);
-
-
-	std::shared_ptr<game::layers::BackgroundLayer> bg(new game::layers::BackgroundLayer);
-	std::shared_ptr<game::layers::BackgroundLayer> bg2(new game::layers::BackgroundLayer);
-	std::shared_ptr<game::layers::FrameLayer> frame(new game::layers::FrameLayer);
-	std::shared_ptr<game::layers::MusicInfoLayer> musicinfo(new game::layers::MusicInfoLayer);
-	std::shared_ptr<game::layers::ShutterLayer> shutterlayer(new game::layers::ShutterLayer);
+	jubeon::graphics::LayerManager mainwindow("test", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(1920, -840), sf::Style::None);
 	
-	std::vector<jubeat_online::game::Note> hoge;
-	std::shared_ptr<game::Sequence> sequence(new jubeat_online::game::Sequence(hoge));
+	shared_ptr<layers::BackgroundLayer> bg			(new layers::BackgroundLayer);
+	shared_ptr<layers::FrameLayer> frame			(new layers::FrameLayer);
+	shared_ptr<layers::MusicInfoLayer> musicinfo	(new layers::MusicInfoLayer);
+	shared_ptr<layers::ShutterLayer> shutterlayer	(new layers::ShutterLayer);
 	
-	game::Music mus;
+	vector<Note> hoge;
+	//shared_ptr<Sequence> sequence(new Sequence(hoge));
+	
+	Music mus;
 
 	//まずmusicに何か指定
 	//ここはアクセサを介した実装へ
@@ -56,69 +54,68 @@ int main(int argc, char * argv[]) {
 	mus.soundplayer.setBuffer(mus.soundbuffer);
 
 	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
-	std::unique_ptr<game::PlayRecord> playrecord(new jubeat_online::game::PlayRecord);
+	//std::unique_ptr<jubeon::game::PlayRecord> playrecord(new jubeon::game::PlayRecord);
 	
-	std::unique_ptr<std::list<game::PanelInput>> pi_list(new std::list<game::PanelInput>());
-	game::PanelInput tmp;
-	tmp.j = jubeat_online::game::NOJUDGE;
+	/*PlayRecord::NoJudgedList pi_list(new std::list<PanelInput>());
+	PanelInput tmp;
+	tmp.j = jubeon::game::NOJUDGE;
 
 	for (int i = 0; i < 15; i++) {
-		tmp.ms = i * 4000; tmp.panel_no = 1; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 1; tmp.t = PanelEvent::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 2; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 2; tmp.t = PanelEvent::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 5; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 5; tmp.t = PanelEvent::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 7; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 7; tmp.t = PanelEvent::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 8; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 8; tmp.t = PanelEvent::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 9; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 9; tmp.t = PanelEvent::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 12; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 12; tmp.t = PanelEvent::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 13; tmp.t = game::PlayRecord::PUSH;
+		tmp.ms = i * 4000; tmp.panel_no = 13; tmp.t = PanelEvent::PUSH;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 1; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 1; tmp.t = PanelEvent::RELEASE;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 2; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 2; tmp.t = PanelEvent::RELEASE;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 5; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 5; tmp.t = PanelEvent::RELEASE;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 7; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 7; tmp.t = PanelEvent::RELEASE;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 8; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 8; tmp.t = PanelEvent::RELEASE;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 9; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 9; tmp.t = PanelEvent::RELEASE;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 12; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 12; tmp.t = PanelEvent::RELEASE;
 		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 13; tmp.t = game::PlayRecord::RELEASE;
+		tmp.ms = i * 4000 + 2000; tmp.panel_no = 13; tmp.t = PanelEvent::RELEASE;
 		pi_list->push_back(tmp);
 	}
 	
-	playrecord->setJudgedList(std::move(pi_list));
+	playrecord->setJudgedList(std::move(pi_list));*/
 
 	//?
-	std::shared_ptr<game::layers::SequencePlayer> seqplayer(new game::layers::SequencePlayer(sequence, &mus, std::move(playrecord)));
+	//shared_ptr<layers::SequencePlayer> seqplayer(new layers::SequencePlayer(sequence, &mus, std::move(playrecord)));
 
 
-	a.addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
-	a.addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
-	a.addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
-	a.addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
-	a.addLayer(seqplayer, jubeon::graphics::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
+	mainwindow.addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
+	mainwindow.addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
+	mainwindow.addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
+	mainwindow.addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
+	//mainwindow.addLayer(seqplayer, jubeon::graphics::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
 	
 	mus.startToPlay();
 
-	a.run();
-	//b.run();
+	mainwindow.run();
 
-	while (a.isWindowOpening()) {
+	while (mainwindow.isWindowOpening()) {
 		sf::Event e;
-		while (a.getWindowEvent(e)) {
-			if (e.type == sf::Event::Closed) a.closeWindow();
-			else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) a.closeWindow();
+		while (mainwindow.getWindowEvent(e)) {
+			if (e.type == sf::Event::Closed) mainwindow.closeWindow();
+			else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) mainwindow.closeWindow();
 		}
 
 		std::this_thread::sleep_for(std::chrono::microseconds(1));

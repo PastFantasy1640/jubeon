@@ -1,17 +1,18 @@
 #pragma once
 
-#ifndef JUBEAT_ONLINE_SEQUENCE_HPP
-#define JUBEAT_ONLINE_SEQUENCE_HPP
+#ifndef jubeon_SEQUENCE_HPP
+#define jubeon_SEQUENCE_HPP
 
 #include <vector>
 #include <string>
 #include <memory>
 #include "JudgeDefinition.hpp"
+#include "../Input/PanelInput.hpp"
 
-namespace jubeat_online {
+namespace jubeon {
 	namespace game {
 
-		//class PanelInput;
+		//extern class PanelInput;
 
 		class Note{
 
@@ -54,7 +55,7 @@ namespace jubeat_online {
 			int getHoldMarkerIndex(void) const;
 
 			//ƒWƒƒƒbƒW
-			void getJudge(int * ms_diff, Judge * judge) const;
+			void getJudge(int * ms_diff, jubeon::game::Judge * judge) const;
 			
 		};
 

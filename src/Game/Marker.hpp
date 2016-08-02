@@ -18,7 +18,7 @@
 //いずれいちごさんのFileStoragesやらModelやらに置き換わる
 #include "../Systems/picojson.hpp"
 
-namespace jubeat_online {
+namespace jubeon {
 	namespace game {
 		class Marker {
 		private:
@@ -78,7 +78,7 @@ namespace jubeat_online {
 
 			//時間を指定して適切なテクスチャを返す関数
 			//マイナスを指定した場合はappear
-			const sf::Texture * getTexturePtr(const int diff_ms, const jubeat_online::game::Judge judge) const;
+			const sf::Texture * getTexturePtr(const int diff_ms, const jubeon::game::Judge judge) const;
 
 
 		};

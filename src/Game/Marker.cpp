@@ -4,19 +4,19 @@
 
 //************************** MarkerTexture関連 ******************************
 //コンストラクタ
-jubeat_online::game::Marker::Marker(const std::string directory, const std::string meta_filepath)
+jubeon::game::Marker::Marker(const std::string directory, const std::string meta_filepath)
 	: directory(directory),
 	meta_filepath(directory + "/" +  meta_filepath)
 {
 }
 
 //デストラクタ
-jubeat_online::game::Marker::~Marker()
+jubeon::game::Marker::~Marker()
 {
 }
 
 //読み込み
-bool jubeat_online::game::Marker::load(void)
+bool jubeon::game::Marker::load(void)
 {
 
 	//マーカーのロード開始
@@ -157,7 +157,7 @@ bool jubeat_online::game::Marker::load(void)
 	return true;
 }
 
-const sf::Texture * jubeat_online::game::Marker::getTexturePtr(const int diff_ms, const jubeat_online::game::Judge judge) const
+const sf::Texture * jubeon::game::Marker::getTexturePtr(const int diff_ms, const jubeon::game::Judge judge) const
 {
 	if (diff_ms < 0) {
 		return this->appear->getTexture(diff_ms);
@@ -168,7 +168,7 @@ const sf::Texture * jubeat_online::game::Marker::getTexturePtr(const int diff_ms
 	return nullptr;
 }
 
-jubeat_online::game::Marker::MarkerTextures::MarkerTextures(const int id, const unsigned int duration)
+jubeon::game::Marker::MarkerTextures::MarkerTextures(const int id, const unsigned int duration)
 	: std::vector<std::unique_ptr<sf::Texture>>(),
 	id(id),
 	duration(duration)
@@ -176,12 +176,12 @@ jubeat_online::game::Marker::MarkerTextures::MarkerTextures(const int id, const 
 
 }
 
-int jubeat_online::game::Marker::MarkerTextures::getID() const
+int jubeon::game::Marker::MarkerTextures::getID() const
 {
 	return this->id;
 }
 
-const sf::Texture * jubeat_online::game::Marker::MarkerTextures::getTexture(int diff_ms) const
+const sf::Texture * jubeon::game::Marker::MarkerTextures::getTexture(int diff_ms) const
 {
 	if (diff_ms < 0) diff_ms = this->duration + diff_ms;
 	if (diff_ms >= this->duration || diff_ms < 0) return nullptr;	//範囲外

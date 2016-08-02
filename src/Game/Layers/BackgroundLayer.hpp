@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef TEMP_JUBEAT_ONLINE_BACKGROUND_LAYER_HPP
-#define TEMP_JUBEAT_ONLINE_BACKGROUND_LAYER_HPP
+#ifndef TEMP_jubeon_BACKGROUND_LAYER_HPP
+#define TEMP_jubeon_BACKGROUND_LAYER_HPP
 
 #include <memory>
 #include <random>
@@ -10,7 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include "../../Theme/Drop.hpp"
 
-namespace jubeat_online {
+namespace jubeon {
 	namespace game {
 		namespace layers {
 			class BackgroundLayer : public jubeon::graphics::LayerBase{

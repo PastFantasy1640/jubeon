@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef JUBEAT_ONLINE_SEQUENCE_PLAYER_HPP
-#define JUBEAT_ONLINE_SEQUENCE_PLAYER_HPP
+#ifndef jubeon_SEQUENCE_PLAYER_HPP
+#define jubeon_SEQUENCE_PLAYER_HPP
 
 #include <memory>
 
@@ -15,7 +15,7 @@
 
 #include "../Marker.hpp"
 
-namespace jubeat_online {
+namespace jubeon {
 	namespace game {
 		namespace layers {
 
@@ -23,7 +23,7 @@ namespace jubeat_online {
 			class SequencePlayer : public jubeon::graphics::LayerBase {
 			public:
 
-				SequencePlayer(std::shared_ptr<Sequence> sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord);
+				SequencePlayer(std::shared_ptr<jubeon::game::Sequence> sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord);
 
 				void process(void);
 
@@ -32,7 +32,7 @@ namespace jubeat_online {
 				virtual void Exit() override;
 
 			private:
-				std::shared_ptr<Sequence> sequence;
+				std::shared_ptr<jubeon::game::Sequence> sequence;
 				const Music * music;
 				std::unique_ptr<PlayRecord> playrecord;
 

@@ -23,7 +23,7 @@ void jubeon::graphics::LayerBase::setExitCode(const int code)
 {
 	this->exit_code = code;
 	if (this->exit_code != 0) {
-		jubeat_online::systems::Logger::information("終了コード" + std::to_string(code) + "にてレイヤーが終了します。");
+		jubeon::systems::Logger::information("終了コード" + std::to_string(code) + "にてレイヤーが終了します。");
 	}
 }
 

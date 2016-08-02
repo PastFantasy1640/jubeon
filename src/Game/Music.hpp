@@ -1,12 +1,12 @@
 #pragma once
 
-#ifndef JUBEAT_ONLINE_MUSIC_HPP
-#define JUBEAT_ONLINE_MUSIC_HPP
+#ifndef jubeon_MUSIC_HPP
+#define jubeon_MUSIC_HPP
 
 #include <mutex>
 #include <SFML/Audio.hpp>
 
-namespace jubeat_online {
+namespace jubeon {
 	namespace game {
 		class Music {
 		public:

@@ -123,7 +123,7 @@ void jubeon::graphics::LayerManager::process(void)
 	sf::RenderTexture window_buffer;
 
 	if (!window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y)) {
-		jubeat_online::systems::Logger::error("ウィンドウバッファの生成に失敗しました");
+		jubeon::systems::Logger::error("ウィンドウバッファの生成に失敗しました");
 		return;
 	}
 	window_buffer.clear();

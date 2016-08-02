@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef JUBEAT_ONLINE_PLAYRECORD_HPP
-#define JUBEAT_ONLINE_PLAYRECORD_HPP
+#ifndef jubeon_GAME_PLAYRECORD_HPP
+#define jubeon_GAME_PLAYRECORD_HPP
 
 #include <memory>
 #include <vector>
@@ -11,73 +11,50 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../Input/PanelEvent.hpp"
+#include "../Input/PanelInput.hpp"
 #include "JudgeDefinition.hpp"
 
-namespace jubeat_online {
+namespace jubeon {
 	namespace game {
 
+		typedef struct JudgedPanelInput : jubeon::input::PanelInput {
+			Judge judge;	//ジャッジ情報が追加
+		}JudgedPanelInput;
 
-		typedef struct {
-			unsigned char panel_no;
-			jubeat_online::input::PanelEvent::Type t;
-			unsigned int ms;	//これは曲と同期するが、offsetを加算後のもの
-			Judge j;			//未判定リストのものは関係なし。
-		}PanelInput;
-
-
-		class PlayRecord : public jubeat_online::input::PanelEvent {
+		class PlayRecord {
 		public:
 
 			PlayRecord();
 			virtual ~PlayRecord();
 
-			//めんどくさいから未判定リストはtypedefする
-			typedef std::unique_ptr<std::list<PanelInput>> NoJudgedList;
-
-			//未判定リストを取得
-			NoJudgedList getNoJudgedList(void);
-
-			//判定済みリストを追加
-			void setJudgedList(NoJudgedList list);
+			//判定済みを追加
+			void addJudged(const jubeon::input::PanelInput & p, Judge & judge);
+			void addJudged(const JudgedPanelInput & judged_p);
 
 			//ファイルへ書き出し
 			bool writeToFile(const std::string dst);
 
 			//ファイルから読み出し
 			bool readFromFile(const std::string src);
-
-			//Panelが押された時のイベント
-			virtual void process(const unsigned char panel_no, const Type type) override;
-
-			//対策してないけど読み出しのみなのでスレッドセーフ？
-			unsigned int getTime() const;
-
+			
 			//judgedlist[idx]の取得
-			const PanelInput * getJudgedInput(const size_t idx) const;
+			const JudgedPanelInput & getJudgedInput(const size_t idx) const;
 
 			//judgedlistの指定されたmsより遅く、かつ一番近いもののconst_iteratorを返す
-			std::vector<PanelInput>::const_iterator getPanelInputFromTime(const unsigned int ms) const;
+			std::vector<JudgedPanelInput>::const_iterator & getPanelInputFromTime(const unsigned int ms) const;
 
 			//judgedlistの終了イテレータ
-			std::vector<PanelInput>::const_iterator getPanelInputListEnd(void) const;
+			std::vector<JudgedPanelInput>::const_iterator & getPanelInputListEnd(void) const;
 
 			//judgedlistの開始イテレータ
-			std::vector<PanelInput>::const_iterator getPanelInputListBegin(void) const;
+			std::vector<JudgedPanelInput>::const_iterator & getPanelInputListBegin(void) const;
 
 		private:
-
-			//スレッドセーフ対策
-			std::mutex mtx;
-
-			//未判定分のリスト
-			NoJudgedList no_judge_list;
-
+			
+			
 			//判定済みのリスト
-			std::vector <PanelInput> judged_list;
+			std::vector <JudgedPanelInput> judged_list;
 
-			//時間
-			sf::Clock ck;
 		};
 	}
 }

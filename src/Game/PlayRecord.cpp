@@ -4,21 +4,24 @@
 
 #include <iostream>
 
-jubeat_online::game::PlayRecord::PlayRecord()
+
+
+/*
+jubeon::game::PlayRecord::PlayRecord()
 {
 	this->ck.restart();
 }
 
-jubeat_online::game::PlayRecord::~PlayRecord()
+jubeon::game::PlayRecord::~PlayRecord()
 {
 }
 
-std::unique_ptr<std::list<jubeat_online::game::PanelInput>> jubeat_online::game::PlayRecord::getNoJudgedList(void)
+std::unique_ptr<std::list<jubeon::game::PanelInput>> jubeon::game::PlayRecord::getNoJudgedList(void)
 {
 	return std::move(this->no_judge_list);
 }
 
-void jubeat_online::game::PlayRecord::setJudgedList(NoJudgedList list)
+void jubeon::game::PlayRecord::setJudgedList(NoJudgedList list)
 {
 
 
@@ -47,8 +50,8 @@ void jubeat_online::game::PlayRecord::setJudgedList(NoJudgedList list)
 
 
 }
-
-void jubeat_online::game::PlayRecord::process(const unsigned char panel_no, const Type type)
+/*
+void jubeon::game::PlayRecord::process(const unsigned char panel_no, const Type type)
 {
 	//スレッドセーフに作る必要がある。
 	//あとno_judge_listのインスタンスがあるか確認
@@ -57,31 +60,31 @@ void jubeat_online::game::PlayRecord::process(const unsigned char panel_no, cons
 	//インスタンスがあるか
 	if (!this->no_judge_list) {
 		//インスタンス生成
-		this->no_judge_list.reset(new std::list<PanelInput>());
+		this->no_judge_list.reset(new std::list<jubeon::game::PanelInput>());
 	}
 
 	//追加
-	PanelInput pi;
+	jubeon::game::PanelInput pi;
 	pi.ms = this->ck.getElapsedTime().asMilliseconds();
 	pi.t = type;
 	pi.panel_no = panel_no;
-	pi.j = jubeat_online::game::Judge::NOJUDGE;
+	pi.j = jubeon::game::Judge::NOJUDGE;
 
 	this->no_judge_list->push_back(pi);
-}
-
-unsigned int jubeat_online::game::PlayRecord::getTime() const
+}*/
+/*
+unsigned int jubeon::game::PlayRecord::getTime() const
 {
 	return this->ck.getElapsedTime().asMicroseconds();
 }
 
-const jubeat_online::game::PanelInput * jubeat_online::game::PlayRecord::getJudgedInput(const size_t idx) const
+const jubeon::game::PanelInput * jubeon::game::PlayRecord::getJudgedInput(const size_t idx) const
 {
 	if(idx < this->judged_list.size())	return &this->judged_list[idx];
 	return nullptr;
 }
 
-std::vector<jubeat_online::game::PanelInput>::const_iterator jubeat_online::game::PlayRecord::getPanelInputFromTime(const unsigned int ms) const
+std::vector<jubeon::game::PanelInput>::const_iterator jubeon::game::PlayRecord::getPanelInputFromTime(const unsigned int ms) const
 {
 	//後ろじゃないので、二分探索
 	//ラムダ式使ってみる？
@@ -115,12 +118,13 @@ std::vector<jubeat_online::game::PanelInput>::const_iterator jubeat_online::game
 	return this->judged_list.begin() + idx;
 }
 
-std::vector<jubeat_online::game::PanelInput>::const_iterator jubeat_online::game::PlayRecord::getPanelInputListEnd(void) const
+std::vector<jubeon::game::PanelInput>::const_iterator jubeon::game::PlayRecord::getPanelInputListEnd(void) const
 {
 	return this->judged_list.end();
 }
 
-std::vector<jubeat_online::game::PanelInput>::const_iterator jubeat_online::game::PlayRecord::getPanelInputListBegin(void) const
+std::vector<jubeon::game::PanelInput>::const_iterator jubeon::game::PlayRecord::getPanelInputListBegin(void) const
 {
 	return this->judged_list.begin();
 }
+*/

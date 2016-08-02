@@ -1,12 +1,12 @@
 #pragma once
 
-#ifndef JUBEAT_ONLINE_FRAME_LAYER_HPP
-#define JUBEAT_ONLINE_FRAME_LAYER_HPP
+#ifndef jubeon_FRAME_LAYER_HPP
+#define jubeon_FRAME_LAYER_HPP
 
 #include "../../Graphics/Layer/LayerBase.hpp"
 #include <SFML/Graphics.hpp>
 
-namespace jubeat_online {
+namespace jubeon {
 	namespace game {
 		namespace layers {
 			class FrameLayer : public jubeon::graphics::LayerBase {

@@ -3,38 +3,38 @@
 #include <sstream>
 #include <iostream>
 
-std::ofstream jubeat_online::systems::Logger::_fst;	//ファイルストリーム
-std::chrono::time_point<std::chrono::system_clock> jubeat_online::systems::Logger::_stc = std::chrono::system_clock::now();	//現在時間
-std::mutex jubeat_online::systems::Logger::_mtx;	//スレッドロック
-bool jubeat_online::systems::Logger::_fir = false;	//最初のログか
+std::ofstream jubeon::systems::Logger::_fst;	//ファイルストリーム
+std::chrono::time_point<std::chrono::system_clock> jubeon::systems::Logger::_stc = std::chrono::system_clock::now();	//現在時間
+std::mutex jubeon::systems::Logger::_mtx;	//スレッドロック
+bool jubeon::systems::Logger::_fir = false;	//最初のログか
 #ifdef _DEBUG
-jubeat_online::systems::Logger::LogLevel jubeat_online::systems::Logger::_llv = jubeat_online::systems::Logger::ALL;	//ログレベル(debug)
-bool jubeat_online::systems::Logger::_sdo = true;
+jubeon::systems::Logger::LogLevel jubeon::systems::Logger::_llv = jubeon::systems::Logger::ALL;	//ログレベル(debug)
+bool jubeon::systems::Logger::_sdo = true;
 #else
-jubeat_online::systems::Logger::LogLevel jubeat_online::systems::Logger::_llv = jubeat_online::systems::Logger::ERROR_ONLY;	//ログレベル(release)
-bool jubeat_online::systems::Logger::_sdo = false;
+jubeon::systems::Logger::LogLevel jubeon::systems::Logger::_llv = jubeon::systems::Logger::ERROR_ONLY;	//ログレベル(release)
+bool jubeon::systems::Logger::_sdo = false;
 #endif
 
-using namespace jubeat_online::systems;
+using namespace jubeon::systems;
 
 //絶対に実体は生成されない
-jubeat_online::systems::Logger::Logger()
+jubeon::systems::Logger::Logger()
 {
 }
 
 //から壊すこともできないよね
-jubeat_online::systems::Logger::~Logger()
+jubeon::systems::Logger::~Logger()
 {
 }
 
 //ログレベルのセット
-void jubeat_online::systems::Logger::setLogLevel(const LogLevel new_log_level)
+void jubeon::systems::Logger::setLogLevel(const LogLevel new_log_level)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);
 	Logger::_llv = new_log_level;
 }
 
-void jubeat_online::systems::Logger::_Write(const std::string text)
+void jubeon::systems::Logger::_Write(const std::string text)
 {
 	if (text.length() > 4) {
 		//形式はINFO[Th(thread_no)](current_time):hogehoge
@@ -79,7 +79,7 @@ void jubeat_online::systems::Logger::_Write(const std::string text)
 }
 
 //情報
-void jubeat_online::systems::Logger::information(const std::string text)
+void jubeon::systems::Logger::information(const std::string text)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);
 	//レベルのチェック
@@ -89,7 +89,7 @@ void jubeat_online::systems::Logger::information(const std::string text)
 }
 
 //警告
-void jubeat_online::systems::Logger::warning(const std::string text)
+void jubeon::systems::Logger::warning(const std::string text)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);
 	//レベルチェック
@@ -99,7 +99,7 @@ void jubeat_online::systems::Logger::warning(const std::string text)
 }
 
 //エラー
-void jubeat_online::systems::Logger::error(const std::string text)
+void jubeon::systems::Logger::error(const std::string text)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);
 	Logger::_Write("ERRO" + text);
@@ -107,14 +107,14 @@ void jubeat_online::systems::Logger::error(const std::string text)
 
 
 //例外
-void jubeat_online::systems::Logger::exception(const std::string text)
+void jubeon::systems::Logger::exception(const std::string text)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);
 	Logger::_Write("EXCP" + text);
 }
 
 
-void jubeat_online::systems::Logger::setOutputStdO(const bool new_value)
+void jubeon::systems::Logger::setOutputStdO(const bool new_value)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);
 	Logger::_sdo = new_value;

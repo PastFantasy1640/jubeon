@@ -1,12 +1,12 @@
 #include "Music.hpp"
 
-unsigned int jubeat_online::game::Music::getPlayingCurrentTime(void) const
+unsigned int jubeon::game::Music::getPlayingCurrentTime(void) const
 {	
 	//時間を取得
 	return this->soundplayer.getPlayingOffset().asMilliseconds();
 }
 
-void jubeat_online::game::Music::startToPlay(void)
+void jubeon::game::Music::startToPlay(void)
 {
 	//スレッドセーフ対策
 	//std::lock_guard<std::mutex> lock(this->mtx);
@@ -15,6 +15,6 @@ void jubeat_online::game::Music::startToPlay(void)
 	this->soundplayer.play();
 }
 
-void jubeat_online::game::Music::startToPlayForSM(void)
+void jubeon::game::Music::startToPlayForSM(void)
 {
 }

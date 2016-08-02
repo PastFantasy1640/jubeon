@@ -5,21 +5,21 @@
 
 //定数宣言
 //ここで動作を定義
-const sf::Int32 jubeat_online::game::layers::BackgroundLayer::REBORN_TIME = 580;
-const unsigned int jubeat_online::game::layers::BackgroundLayer::BEZIER_RESOLUTION = 10;
-const unsigned int jubeat_online::game::layers::BackgroundLayer::BORN_R_SIZE = 80;
-const sf::Color jubeat_online::game::layers::BackgroundLayer::COLOR_NORMAL_BLUE(0x45D5FEff);
-const sf::Color jubeat_online::game::layers::BackgroundLayer::COLOR_NORMAL_PINK(0xff3a7dff);
-const sf::Vector2f jubeat_online::game::layers::BackgroundLayer::BORN_POSITION_LEFT(-100, 0);
-const sf::Vector2f jubeat_online::game::layers::BackgroundLayer::BORN_POSITION_RIGHT(820, 0);
-const sf::Vector2f jubeat_online::game::layers::BackgroundLayer::BORN_POSITION_TOP(384, -100);
+const sf::Int32 jubeon::game::layers::BackgroundLayer::REBORN_TIME = 580;
+const unsigned int jubeon::game::layers::BackgroundLayer::BEZIER_RESOLUTION = 10;
+const unsigned int jubeon::game::layers::BackgroundLayer::BORN_R_SIZE = 80;
+const sf::Color jubeon::game::layers::BackgroundLayer::COLOR_NORMAL_BLUE(0x45D5FEff);
+const sf::Color jubeon::game::layers::BackgroundLayer::COLOR_NORMAL_PINK(0xff3a7dff);
+const sf::Vector2f jubeon::game::layers::BackgroundLayer::BORN_POSITION_LEFT(-100, 0);
+const sf::Vector2f jubeon::game::layers::BackgroundLayer::BORN_POSITION_RIGHT(820, 0);
+const sf::Vector2f jubeon::game::layers::BackgroundLayer::BORN_POSITION_TOP(384, -100);
 
 
-jubeat_online::game::layers::BackgroundLayer::BackgroundLayer()
+jubeon::game::layers::BackgroundLayer::BackgroundLayer()
 {
 }
 
-void jubeat_online::game::layers::BackgroundLayer::Init()
+void jubeon::game::layers::BackgroundLayer::Init()
 {
 
 	//クロックをリスタート
@@ -29,7 +29,7 @@ void jubeat_online::game::layers::BackgroundLayer::Init()
 }
 
 
-void jubeat_online::game::layers::BackgroundLayer::update(void)
+void jubeon::game::layers::BackgroundLayer::update(void)
 {
 	//一定秒ごとに生成する
 	if (times >= this->REBORN_TIME) {
@@ -50,7 +50,7 @@ void jubeat_online::game::layers::BackgroundLayer::update(void)
 	this->times++;
 }
 
-void jubeat_online::game::layers::BackgroundLayer::createDrop(void)
+void jubeon::game::layers::BackgroundLayer::createDrop(void)
 {
 	//発火
 
@@ -75,7 +75,7 @@ void jubeat_online::game::layers::BackgroundLayer::createDrop(void)
 
 }
 
-void jubeat_online::game::layers::BackgroundLayer::createDrop2(void)
+void jubeon::game::layers::BackgroundLayer::createDrop2(void)
 {
 	//真ん中から下へ
 	std::unique_ptr<Theme::Drop<5>> tmp;
@@ -94,17 +94,17 @@ void jubeat_online::game::layers::BackgroundLayer::createDrop2(void)
 	this->dropping.push_back(std::move(tmp));
 }
 
-float jubeat_online::game::layers::BackgroundLayer::getRandom(void)
+float jubeon::game::layers::BackgroundLayer::getRandom(void)
 {
 	return static_cast<float>(this->rnd()) / 0xffffffff;
 }
 
-bool jubeat_online::game::layers::BackgroundLayer::isOutOfScreen(const std::vector<std::unique_ptr<Theme::Drop<5>>>::const_iterator & p) const
+bool jubeon::game::layers::BackgroundLayer::isOutOfScreen(const std::vector<std::unique_ptr<Theme::Drop<5>>>::const_iterator & p) const
 {
 	return !(sf::FloatRect(-100, -100, 1000, 2000).contains((*p)->getPosition()));
 }
 
-void jubeat_online::game::layers::BackgroundLayer::Draw()
+void jubeon::game::layers::BackgroundLayer::Draw()
 {
 
 	//アップデート
@@ -123,13 +123,13 @@ void jubeat_online::game::layers::BackgroundLayer::Draw()
 
 }
 
-void jubeat_online::game::layers::BackgroundLayer::Exit()
+void jubeon::game::layers::BackgroundLayer::Exit()
 {
 
 }
 
 template<std::size_t S>
-std::array<sf::Vector2f, S> jubeat_online::game::layers::BackgroundLayer::genRandomPoints(unsigned int r)
+std::array<sf::Vector2f, S> jubeon::game::layers::BackgroundLayer::genRandomPoints(unsigned int r)
 {
 	// 五角形の各頂点を生成
 	std::array<sf::Vector2f, S> points;
