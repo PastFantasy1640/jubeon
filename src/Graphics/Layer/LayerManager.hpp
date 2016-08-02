@@ -62,6 +62,8 @@ namespace jubeon{
 			//ウィンドウを終了させる
 			void closeWindow(void);
 
+			//ウィンドウのイベントを取得する
+			bool getWindowEvent(sf::Event & e);
 
 		private:
 

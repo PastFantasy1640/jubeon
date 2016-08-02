@@ -21,15 +21,15 @@ const sf::Vector2u jubeon::graphics::LayerManager::RENDER_TEXTURE_SIZE = sf::Vec
 
 //コンストラクタ
 jubeon::graphics::LayerManager::LayerManager(
-	const std::string & window_title, 
-	const sf::VideoMode & vmode, 
-	const bool isVSync, 
-	const unsigned int fpsLimit, 
-	const sf::Vector2i startWindowPosition, 
+	const std::string & window_title,
+	const sf::VideoMode & vmode,
+	const bool isVSync,
+	const unsigned int fpsLimit,
+	const sf::Vector2i startWindowPosition,
 	const sf::Uint32 style)
 	: vmode(vmode),
 	window_title(window_title),
-	window_style(window_style),
+	window_style(style),
 	isVSync(isVSync),
 	fpsLimit(fpsLimit),
 	window_position(startWindowPosition),
@@ -82,9 +82,7 @@ void jubeon::graphics::LayerManager::addLayer(std::shared_ptr<LayerBase> layer, 
 void jubeon::graphics::LayerManager::run(void)
 {
 	//まずウィンドウを生成
-	this->window.reset(new sf::RenderWindow());
-
-	this->window->create(this->vmode, this->window_title, this->window_style);
+	this->window.reset(new sf::RenderWindow(this->vmode, this->window_title, this->window_style));
 	this->window->clear();
 
 	this->window->setVerticalSyncEnabled(this->isVSync);
@@ -98,10 +96,10 @@ void jubeon::graphics::LayerManager::run(void)
 	this->window_buffer->setSmooth(true);
 
 	//スレッドの生成
-	std::thread th(&LayerManager::process, this);
-	th.detach();	//スレッドの開始
 	*this->is_thread_running = true;
 	*this->is_open_window = true;
+	std::thread th(&LayerManager::process, this);
+	th.detach();	//スレッドの開始
 }
 
 //ウィンドウが開いているか
@@ -115,6 +113,11 @@ void jubeon::graphics::LayerManager::closeWindow(void)
 {
 	*this->is_open_window = false;
 	while(*this->is_thread_running) std::this_thread::sleep_for(std::chrono::microseconds(1000));	//1ms待って問い合わせ（ロッキング）
+}
+
+bool jubeon::graphics::LayerManager::getWindowEvent(sf::Event & e)
+{
+	return this->window->pollEvent(e);
 }
 
 //レイヤー描写

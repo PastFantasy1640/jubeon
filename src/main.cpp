@@ -103,26 +103,26 @@ int main(int argc, char * argv[]) {
 	std::shared_ptr<game::layers::SequencePlayer> seqplayer(new game::layers::SequencePlayer(sequence, &mus, std::move(playrecord)));
 
 
-	a.addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
-	a.addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
+//	a.addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
+//	a.addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
 	a.addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
-	a.addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
-	a.addLayer(seqplayer, jubeon::graphics::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
+//	a.addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
+//	a.addLayer(seqplayer, jubeon::graphics::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
 	
 	mus.startToPlay();
-
-
-	jubeon::graphics::LayerManager b("main", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(0, 0), sf::Style::Default);
-
-	//b.createWindow();
-	//b.addLayer(bg2, jubeat_online::graphics::layer::LayerManager::BACKGROUND, 0);
 
 	a.run();
 	//b.run();
 
-	while (a.isWindowOpening()) std::this_thread::sleep_for(std::chrono::microseconds(1000));
+	while (a.isWindowOpening()) {
+		sf::Event e;
+		while (a.getWindowEvent(e)) {
+			if (e.type == sf::Event::Closed) a.closeWindow();
+			else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) a.closeWindow();
+		}
 
-	//b.process();
+		std::this_thread::sleep_for(std::chrono::microseconds(1));
+	}
 
 	return 0;
 }
