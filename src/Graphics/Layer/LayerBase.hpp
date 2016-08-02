@@ -21,9 +21,17 @@ namespace jubeon {
 		protected:
 			//コンストラクタ、デストラクタ
 			LayerBase();
+
+			//透過情報を持たせてバッファをクリア
 			inline void clearBuffer(void) {
 				this->clear(sf::Color(0, 0, 0, 0));
 			}
+
+
+			/** レイヤーを終了します。0以外のコードを設定することでレイヤーの終了判定を有効にします。
+			* @param code 終了コード
+			*/
+			void setExitCode(const int code);
 
 		public:
 
@@ -33,15 +41,12 @@ namespace jubeon {
 
 			virtual ~LayerBase();
 
-			/** レイヤーを終了します。0以外のコードを設定することでレイヤーの終了判定を有効にします。
-			 * @param code 終了コード
-			 */
-			void setExitCode(const int code);
 
 			/** 終了コードを取得します。ただし取得できるのはインスタンスが存在する間のみです。
 			 * @returns 終了コード
 			 */
 			unsigned int getExitCode(void) const;
+
 
 		};	//end of LayerBase
 
