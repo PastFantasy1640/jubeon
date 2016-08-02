@@ -44,7 +44,6 @@ int main(int argc, char * argv[]) {
 	shared_ptr<layers::ShutterLayer> shutterlayer	(new layers::ShutterLayer);
 	
 	vector<Note> hoge;
-	//shared_ptr<Sequence> sequence(new Sequence(hoge));
 	
 	Music mus;
 
@@ -53,59 +52,12 @@ int main(int argc, char * argv[]) {
 	mus.soundbuffer.loadFromFile("media/demo.flac");
 	mus.soundplayer.setBuffer(mus.soundbuffer);
 
-	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
-	//std::unique_ptr<jubeon::game::PlayRecord> playrecord(new jubeon::game::PlayRecord);
-	
-	/*PlayRecord::NoJudgedList pi_list(new std::list<PanelInput>());
-	PanelInput tmp;
-	tmp.j = jubeon::game::NOJUDGE;
-
-	for (int i = 0; i < 15; i++) {
-		tmp.ms = i * 4000; tmp.panel_no = 1; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 2; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 5; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 7; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 8; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 9; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 12; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000; tmp.panel_no = 13; tmp.t = PanelEvent::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 1; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 2; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 5; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 7; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 8; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 9; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 12; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = i * 4000 + 2000; tmp.panel_no = 13; tmp.t = PanelEvent::RELEASE;
-		pi_list->push_back(tmp);
-	}
-	
-	playrecord->setJudgedList(std::move(pi_list));*/
-
-	//?
-	//shared_ptr<layers::SequencePlayer> seqplayer(new layers::SequencePlayer(sequence, &mus, std::move(playrecord)));
 
 
 	mainwindow.addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
 	mainwindow.addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
 	mainwindow.addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow.addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
-	//mainwindow.addLayer(seqplayer, jubeon::graphics::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
 	
 	mus.startToPlay();
 
