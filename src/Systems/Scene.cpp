@@ -11,20 +11,28 @@ void jubeon::systems::Scene::setNextScene(std::unique_ptr<Scene> next_scene)
 
 int jubeon::systems::Scene::process(std::unique_ptr<Scene> first_scene)
 {
-	//初回のシーン代入
-	Scene::setNextScene(std::move(first_scene));
+	if (!Scene::is_running) {
+		Scene::is_running = true;	//インクルードガード的な
 
-	int ret = 0;
-	while (ret == 0 && Scene::next_scene) {
-		std::unique_ptr<Scene> current;			//現在のシーン
-		current = std::move(Scene::next_scene);	//所有権の移動
+		//初回のシーン代入
+		Scene::setNextScene(std::move(first_scene));
 
-		//実行
-		ret = current->process();
+		int ret = 0;
+		while (ret == 0 && Scene::next_scene) {
+			std::unique_ptr<Scene> current;			//現在のシーン
+			current = std::move(Scene::next_scene);	//所有権の移動
 
-		//ここでcurrentはデストラクト
+			//実行
+			ret = current->process();
+
+			//ここでcurrentはデストラクト
+		}
+
+		//返す
+		Scene::is_running = false;
+		return ret;
 	}
 
-	//返す
-	return ret;
+	//再帰的実行
+	return -1;
 }
