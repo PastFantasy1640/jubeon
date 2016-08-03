@@ -11,6 +11,7 @@ using namespace jubeon::graphics;
 
 jubeon::graphics::LayerBase::LayerBase()
 	: exit_code(0),
+	is_create_buffer(false),
 	sf::RenderTexture()
 {
 }
@@ -18,6 +19,17 @@ jubeon::graphics::LayerBase::LayerBase()
 jubeon::graphics::LayerBase::~LayerBase()
 {
 }
+
+void jubeon::graphics::LayerBase::prepareBuffer(const sf::Vector2u size)
+{
+	if (!this->is_create_buffer) {
+		this->create(size.x, size.y);
+		this->setSmooth(true);
+		this->is_create_buffer = true;
+	}
+}
+
+
 
 void jubeon::graphics::LayerBase::setExitCode(const int code)
 {

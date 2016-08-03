@@ -15,10 +15,6 @@
 #include "Systems/Logger.hpp"
 
 
-#include "Game/Layers/BackgroundLayer.hpp"
-
-
-
 #ifdef _DEBUG
 #include <crtdbg.h>	//メモリリークログ用
 #endif
@@ -49,20 +45,9 @@ int main(int argc, char * argv[]) {
 	mainwindow.run();
 
 	//シーン処理開始
-	//int ret = Scene::process(&mainwindow, std::move(upGameSceneInstance));
-	shared_ptr<layers::BackgroundLayer> bg(new layers::BackgroundLayer);
-	mainwindow.addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
-	while (mainwindow.isWindowOpening()) {
-		sf::Event e;
-		while (mainwindow.getWindowEvent(e)) {
-			if (e.type == sf::Event::Closed) mainwindow.closeWindow();
-			else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) mainwindow.closeWindow();
-		}
-
-		std::this_thread::sleep_for(std::chrono::microseconds(1));
-	}
+	int ret = Scene::process(&mainwindow, std::move(upGameSceneInstance));
 
 	//システム終了
-	//return ret;
+	return ret;
 
 }

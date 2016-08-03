@@ -17,6 +17,8 @@ namespace jubeon {
 			//終了コード
 			int						exit_code;
 
+			bool					is_create_buffer;
+			void createBuffer(const sf::Vector2u size);
 
 		protected:
 			//コンストラクタ、デストラクタ
@@ -26,8 +28,7 @@ namespace jubeon {
 			inline void clearBuffer(void) {
 				this->clear(sf::Color(0, 0, 0, 0));
 			}
-
-
+			
 			/** レイヤーを終了します。0以外のコードを設定することでレイヤーの終了判定を有効にします。
 			* @param code 終了コード
 			*/
@@ -41,6 +42,7 @@ namespace jubeon {
 
 			virtual ~LayerBase();
 
+			void prepareBuffer(const sf::Vector2u size);
 
 			/** 終了コードを取得します。ただし取得できるのはインスタンスが存在する間のみです。
 			 * @returns 終了コード

@@ -48,8 +48,6 @@ jubeon::graphics::LayerManager::~LayerManager()
 void jubeon::graphics::LayerManager::addLayer(std::shared_ptr<LayerBase> layer, const LayerType type, const unsigned char layernumber)
 {
 	//まずレイヤーの初期化を行う。
-	layer->create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y);
-	layer->setSmooth(true);
 	layer->Init();
 
 	{
@@ -151,6 +149,8 @@ void jubeon::graphics::LayerManager::process(void)
 
 			if (this->layer_list.size() > 0) {
 				for (auto p = --this->layer_list.end(); ; p--) {
+					(*p)->prepareBuffer(this->RENDER_TEXTURE_SIZE);
+
 					//描写
 					(*p)->Draw();
 
