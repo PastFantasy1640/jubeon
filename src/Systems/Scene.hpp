@@ -6,7 +6,7 @@
 #include <memory>
 
 namespace jubeon {
-	namespace system {
+	namespace systems {
 
 		//SceneƒNƒ‰ƒX
 		class Scene {
