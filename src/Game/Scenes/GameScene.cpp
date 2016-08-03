@@ -61,13 +61,13 @@ int jubeon::game::scenes::GameScene::process(void)
 
 
 	this->getMainWindow()->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
-	this->getMainWindow()->addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
-	this->getMainWindow()->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
-	this->getMainWindow()->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
+//	this->getMainWindow()->addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
+//	this->getMainWindow()->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
+//	this->getMainWindow()->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 
 	mus.startToPlay();
 
-
+	/*
 	while (this->getMainWindow()->isWindowOpening()) {
 		sf::Event e;
 		while (this->getMainWindow()->getWindowEvent(e)) {
@@ -76,7 +76,9 @@ int jubeon::game::scenes::GameScene::process(void)
 		}
 
 		std::this_thread::sleep_for(std::chrono::microseconds(1));
-	}
+	}*/
+
+	while(1) std::this_thread::sleep_for(std::chrono::microseconds(1));
 
 
 	return 1;	//ソフト終了

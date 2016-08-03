@@ -128,6 +128,7 @@ void jubeon::graphics::LayerManager::process(void)
 	}
 	window_buffer.clear();
 	window_buffer.setSmooth(true);
+	window_buffer.setActive(false);
 
 	//ループ開始
 	while (this->window->isOpen()) {
@@ -200,9 +201,16 @@ void jubeon::graphics::LayerManager::process(void)
 		//画面描写
 		this->window->draw(wsp);
 
+		sf::CircleShape cp(50, 10);
+		cp.setPosition(200, 200);
+		cp.setFillColor(sf::Color::Red);
+		//this->window->draw(cp);
+
 		//画面アップデート
 		this->window->display();
 
+		//もしも垂直同期無しでfps制限もないとき、少し待つ
+		if(this->isVSync == false && this->fpsLimit == 0) std::this_thread::sleep_for(std::chrono::microseconds(1));
 	}
 
 	//残ってるものすべて削除
