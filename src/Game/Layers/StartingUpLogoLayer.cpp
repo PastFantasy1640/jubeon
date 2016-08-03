@@ -12,7 +12,14 @@ void jubeon::game::layers::StartingUpLogoLayer::Init()
 
 void jubeon::game::layers::StartingUpLogoLayer::Draw()
 {
-	this->clearBuffer();
+	this->clear(sf::Color::White);
 
 
+
+	this->scene->ck.getElapsedTime().asMilliseconds();
+
+}
+
+void jubeon::game::layers::StartingUpLogoLayer::Exit()
+{
 }

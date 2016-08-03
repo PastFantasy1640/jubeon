@@ -9,7 +9,7 @@
 #include "Systems/Scene.hpp"
 
 //Starting Scene
-#include "Game/Scenes/GameScene.hpp"
+#include "Game/Scenes/StartingUpScene.hpp"
 
 #include "Storages/JsonFileStorage.hpp"
 #include "Models/WindowConfig.hpp"
@@ -43,7 +43,7 @@ int main(int argc, char * argv[]) {
 	LayerManager mainwindow("jubeon v0.1", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(1920, -840), sf::Style::None);
 	
 	//最初に使用するシーンを生成
-	unique_ptr<scenes::GameScene> upGameSceneInstance(new scenes::GameScene());
+	unique_ptr<scenes::StartingUpScene> upGameSceneInstance(new scenes::StartingUpScene());
 
 	//ウィンドウの生成
 	mainwindow.run();

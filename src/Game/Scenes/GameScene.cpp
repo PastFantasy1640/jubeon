@@ -2,7 +2,6 @@
 
 //Layer include
 #include "Game/Layers/BackgroundLayer.hpp"
-#include "Game/Layers/FrameLayer.hpp"
 #include "Game/Layers/MusicInfoLayer.hpp"
 #include "Game/Layers/SequencePlayer.hpp"
 #include "Game/Layers/ShutterLayer.hpp"
@@ -23,7 +22,6 @@ int jubeon::game::scenes::GameScene::process(void)
 {
 	
 	shared_ptr<layers::BackgroundLayer> bg			(new layers::BackgroundLayer);
-	shared_ptr<layers::FrameLayer> frame			(new layers::FrameLayer);
 	shared_ptr<layers::MusicInfoLayer> musicinfo	(new layers::MusicInfoLayer);
 	shared_ptr<layers::ShutterLayer> shutterlayer	(new layers::ShutterLayer);
 	
@@ -61,7 +59,6 @@ int jubeon::game::scenes::GameScene::process(void)
 
 
 	this->getMainWindow()->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
-	this->getMainWindow()->addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
 	this->getMainWindow()->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
 	this->getMainWindow()->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 
