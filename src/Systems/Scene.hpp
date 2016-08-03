@@ -12,15 +12,16 @@ namespace jubeon {
 		class Scene {
 		private:
 			//次のシーン
-			std::unique_ptr<Scene> next_scene;
+			static std::unique_ptr<Scene> next_scene;
 
 			//すでにstatic processメソッドは動いて居るか
 			//スレッドアンセーフ
-			bool is_running;
+			static bool is_running;
 
 		protected:
 			//次のシーンを設定する
-			virtual void setNextScene(std::unique_ptr<Scene> next_scene) final;
+			//設定した後のnext_sceneには所有権が無いため注意
+			static void setNextScene(std::unique_ptr<Scene> next_scene);
 
 		public:
 			//コンストラクタ
