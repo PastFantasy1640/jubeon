@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef JUBEAT_ONLINE_SYSTEMS_EXCEPTIONS_HPP
-#define JUBEAT_ONLINE_SYSTEMS_EXCEPTIONS_HPP
+#ifndef jubeon_SYSTEMS_EXCEPTIONS_HPP
+#define jubeon_SYSTEMS_EXCEPTIONS_HPP
 
 #include <exception>
 #include <string>
@@ -11,11 +11,11 @@
 
 //**********************************************************
 //*   std::exception系の継承、もしくはオーバーライドをする
-//*   名前空間はjubeat_online::systems::exceptions
+//*   名前空間はjubeon::systems::exceptions
 
 
 //基本よく使う例外はログを一緒に残す
-namespace jubeat_online {
+namespace jubeon {
 	namespace systems {
 		namespace exceptions {
 			class bad_alloc : ::std::bad_alloc {

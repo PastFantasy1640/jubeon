@@ -2,10 +2,10 @@
 
 #include "../../Graphics/Layer/LayerBase.hpp"
 
-namespace jubeat_online {
+namespace jubeon {
 	namespace game {
 		namespace layers {
-			class TestLayer : public jubeat_online::graphics::layer::LayerBase{
+			class TestLayer : public jubeon::graphics::LayerBase{
 			public:
 				void			Init();						//‰Šú‰»ŠÖ”
 				void			Update();					//ˆ—ŠÖ”

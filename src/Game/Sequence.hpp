@@ -1,52 +1,87 @@
 #pragma once
 
-#ifndef JUBEAT_ONLINE_SEQUENCE_HPP
-#define JUBEAT_ONLINE_SEQUENCE_HPP
+#ifndef jubeon_SEQUENCE_HPP
+#define jubeon_SEQUENCE_HPP
 
 #include <vector>
 #include <string>
-#include "Note.hpp"
+#include <memory>
+#include "JudgeDefinition.hpp"
+#include "../Input/PanelInput.hpp"
 
-
-namespace jubeat_online {
+namespace jubeon {
 	namespace game {
+
+		//extern class PanelInput;
+
+		class Note{
+
+		private:
+
+			//デフォルトコンストラクタは禁止
+			Note();
+
+		protected:
+			
+			//ジャストタイム(ms)
+			int justTime;
+
+			//パネル番号(0-15)
+			int panelIndex;
+
+			//ホールドの時間
+			int duration;
+
+			//ホールドマーカーの出現位置パネル
+			int holdMarkerIndex;
+
+			//このノートに対する判定
+			//delete禁止
+			//const PanelInput * judged;
+			
+		public:
+			
+			//普通のマーカーのコンストラクタ
+			Note(const int just_time, const int panel_idx);
+
+			//ホールドマーカーのコンストラクタ
+			Note(const int just_time, const int panel_idx, const int duration, const int holdmarker_panel_idx);
+
+
+			//アクセサ
+			int getJustTime(void) const;
+			int getPanelIndex(void) const;
+			int getHoldDuration(void) const;
+			int getHoldMarkerIndex(void) const;
+
+			//ジャッジ
+			void getJudge(int * ms_diff, jubeon::game::Judge * judge) const;
+			
+		};
+
+		typedef std::vector<Note> Notes;
+		typedef std::shared_ptr<Notes> SPNotes;
+
 		class Sequence {
 
+		private:
 			//譜面本体
-			std::vector<Note> notes;
-			std::vector<HoldNote> hold_notes;
-
-			//譜面名
-			std::string filename;
-
+			SPNotes notes;
+			
 			//デフォルトコンストラクタは禁止
 			Sequence();
 
 			//コピーコンストラクタも禁止。
 			Sequence(const Sequence & cp);
 
-			//ロードしたか
-			bool is_loaded;
-
 		public:
 
 			//初期化
 			//ロードまではしない
-			Sequence(const std::string & filename);
-
-			//譜面のロード
-			bool load(void);
-
-			//譜面の破棄
-			void deleteNotes(void);
-
-			//getアクセサ
-			const std::vector<Note> * getNotes() const;
-			const std::vector<HoldNote> * getHoldNote() const;
-			std::string getNotesFileName(void) const;
-
-			//ロードしたか
-			bool isLoad(void) const;
+			Sequence(const std::vector<Note> notes);
+			
+			//ノートを取得
+			SPNotes getNotes(void);
 			
 		};
 	}

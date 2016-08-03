@@ -1,30 +1,32 @@
+
+//shared_ptr, unique_ptr
 #include <memory>
 
-
+//LayerManager
 #include "Graphics/Layer/LayerManager.hpp"
 
-//Layer include
-#include "Game/Layers/BackgroundLayer.hpp"
-#include "Game/Layers/FrameLayer.hpp"
-#include "Game/Layers/MusicInfoLayer.hpp"
-#include "Game/Layers/SequencePlayer.hpp"
-#include "Game/Layers/ShutterLayer.hpp"
+//Scene
+#include "Systems/Scene.hpp"
 
-//for test
-#include "Game/Sequence.hpp"
-#include "Game/Music.hpp"
-#include "Game/PlayRecord.hpp"
+//Starting Scene
+#include "Game/Scenes/GameScene.hpp"
 
 #include "Storages/JsonFileStorage.hpp"
 #include "Models/WindowConfig.hpp"
 
+
+//Logger
 #include "Systems/Logger.hpp"
+
 
 #ifdef _DEBUG
 #include <crtdbg.h>	//メモリリークログ用
 #endif
 
-using namespace jubeat_online;
+using namespace jubeon::game;
+using namespace jubeon::graphics;
+using namespace jubeon::systems;
+using namespace std;
 
 int main(int argc, char * argv[]) {
 
@@ -33,70 +35,23 @@ int main(int argc, char * argv[]) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	jubeat_online::systems::Logger::information("jubeonが起動しました");
-
-	jubeat_online::graphics::layer::LayerManager a("test", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(1920, -840), sf::Style::None);
-
-	a.createWindow();
-
-	std::shared_ptr<game::layers::BackgroundLayer> bg(new game::layers::BackgroundLayer);
-	std::shared_ptr<game::layers::FrameLayer> frame(new game::layers::FrameLayer);
-	std::shared_ptr<game::layers::MusicInfoLayer> musicinfo(new game::layers::MusicInfoLayer);
-	std::shared_ptr<game::layers::ShutterLayer> shutterlayer(new game::layers::ShutterLayer);
+	//起動時のログ
+	Logger::information("jubeonが起動しました");
 	
-	game::Sequence seq("hogehoge");
-	game::Music mus;
-
-	//まずmusicに何か指定
-	//ここはアクセサを介した実装へ
-	mus.soundbuffer.loadFromFile("media/demo.flac");
-	mus.soundplayer.setBuffer(mus.soundbuffer);
-
-	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
-	std::unique_ptr<game::PlayRecord> playrecord(new jubeat_online::game::PlayRecord);
+	//メインウィンドウのインスタンスを生成
+	//TO DO : 設定ファイルからの読み出し
+	LayerManager mainwindow("jubeon v0.1", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(1920, -840), sf::Style::None);
 	
-	std::unique_ptr<std::list<game::PlayRecord::PanelInput>> pi_list(new std::list<game::PlayRecord::PanelInput>());
-	game::PlayRecord::PanelInput tmp;
-	tmp.j = jubeat_online::game::NOJUDGE;
+	//最初に使用するシーンを生成
+	unique_ptr<scenes::GameScene> upGameSceneInstance(new scenes::GameScene());
 
-	for (int i = 0; i < 10; i++) {
-		tmp.ms = 4000 + i * 4000; tmp.panel_no = 0; tmp.t = game::PlayRecord::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = 5000 + i * 4000; tmp.panel_no = 4; tmp.t = game::PlayRecord::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = 6000 + i * 4000; tmp.panel_no = 8; tmp.t = game::PlayRecord::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = 6500 + i * 4000; tmp.panel_no = 9; tmp.t = game::PlayRecord::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = 7000 + i * 4000; tmp.panel_no = 12; tmp.t = game::PlayRecord::PUSH;
-		pi_list->push_back(tmp);
-		tmp.ms = 4500 + i * 4000; tmp.panel_no = 0; tmp.t = game::PlayRecord::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = 5500 + i * 4000; tmp.panel_no = 4; tmp.t = game::PlayRecord::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = 7500 + i * 4000; tmp.panel_no = 8; tmp.t = game::PlayRecord::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = 7500 + i * 4000; tmp.panel_no = 9; tmp.t = game::PlayRecord::RELEASE;
-		pi_list->push_back(tmp);
-		tmp.ms = 7500 + i * 4000; tmp.panel_no = 12; tmp.t = game::PlayRecord::RELEASE;
-		pi_list->push_back(tmp);
-	}
-	
-	playrecord->setJudgedList(std::move(pi_list));
+	//ウィンドウの生成
+	mainwindow.run();
 
+	//シーン処理開始
+	int ret = Scene::process(&mainwindow, std::move(upGameSceneInstance));
 
-	std::shared_ptr<game::layers::SequencePlayer> seqplayer(new game::layers::SequencePlayer(&seq, &mus, std::move(playrecord)));
+	//システム終了
+	return ret;
 
-
-	a.addLayer(bg, jubeat_online::graphics::layer::LayerManager::BACKGROUND, 0);
-	a.addLayer(frame, jubeat_online::graphics::layer::LayerManager::FOREGROUND, 0);
-	a.addLayer(musicinfo, jubeat_online::graphics::layer::LayerManager::MAIN, 0);
-	a.addLayer(shutterlayer, jubeat_online::graphics::layer::LayerManager::MAIN, 0);
-	a.addLayer(seqplayer, jubeat_online::graphics::layer::LayerManager::MAIN, 0);	//上に追加。番号は重複しても全然問題ない。
-	
-	mus.startToPlay();
-
-	a.process();
-
-	return 0;
 }

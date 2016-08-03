@@ -1,9 +1,9 @@
 #pragma once
 
-#ifndef JUBEAT_ONLINE_EVENT_HPP
-#define JUBEAT_ONLINE_EVENT_HPP
+#ifndef jubeon_EVENT_HPP
+#define jubeon_EVENT_HPP
 /* –¢ŽÀ‘•
-namespace jubeat_online {
+namespace jubeon {
 	namespace systems {
 		class Event {
 		public:

@@ -5,7 +5,8 @@
 #include <iostream>
 
 #include "../PlayRecord.hpp"
-#include "../../Input/PanelEvent.hpp"
+
+#ifdef HOGEHOGE
 
 jubeat_online::game::layers::SequencePlayer::SequencePlayer(const Sequence * sequence, Music * music, std::unique_ptr<PlayRecord> playrecord)
 	: LayerBase(),
@@ -179,3 +180,5 @@ void jubeat_online::game::layers::SequencePlayer::Draw()
 void jubeat_online::game::layers::SequencePlayer::Exit()
 {
 }
+
+#endif

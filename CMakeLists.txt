@@ -23,6 +23,7 @@ source_group("Graphics" REGULAR_EXPRESSION "src/Graphics/(.*).(cpp|hpp)")
 source_group("Graphics\\Layer" REGULAR_EXPRESSION "src/Graphics/Layer/(.*).(cpp|hpp)")
 source_group("Game" REGULAR_EXPRESSION "src/Game/(.*).(cpp|hpp)")
 source_group("Game\\Layers" REGULAR_EXPRESSION "src/Game/Layers/(.*).(cpp|hpp)")
+source_group("Game\\Scenes" REGULAR_EXPRESSION "src/Game/Scenes/(.*).(cpp|hpp)")
 source_group("Systems" REGULAR_EXPRESSION "src/Systems/(.*).(cpp|hpp)")
 source_group("Main" FILES src/main.cpp)
 

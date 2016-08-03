@@ -1,15 +1,15 @@
 #pragma once
 
-#ifndef JUBEAT_ONLINE_SYSTEMS_LOGGER_HPP
-#define JUBEAT_ONLINE_SYSTEMS_LOGGER_HPP
+#ifndef jubeon_SYSTEMS_LOGGER_HPP
+#define jubeon_SYSTEMS_LOGGER_HPP
 
 #include <fstream>
 #include <chrono>
 #include <mutex>
 
-#define JUBEAT_ONLINE_SYSTEM_LOGGER_DEFAULT_PATH "Logger.ini"
+#define jubeon_SYSTEM_LOGGER_DEFAULT_PATH "Logger.ini"
 
-namespace jubeat_online {
+namespace jubeon {
 	namespace systems {
 
 		/// <summary>ログ出力を行うstaticクラス</summary>
