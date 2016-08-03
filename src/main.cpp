@@ -8,8 +8,13 @@
 //Scene
 #include "Systems/Scene.hpp"
 
+<<<<<<< HEAD
 //Starting Scene
 #include "Game/Scenes/GameScene.hpp"
+=======
+#include "Storages/JsonFileStorage.hpp"
+#include "Models/WindowConfig.hpp"
+>>>>>>> develop
 
 //Logger
 #include "Systems/Logger.hpp"

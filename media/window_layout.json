@@ -1,0 +1,12 @@
+{
+  "layout_type": "vertical",
+  "vsync_enabled": false,
+  "size": {
+    "width": 800,
+    "height": 600
+  },
+  "position": {
+    "x": 0,
+    "y": 0
+  }
+}
