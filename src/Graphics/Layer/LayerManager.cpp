@@ -131,7 +131,7 @@ void jubeon::graphics::LayerManager::process(void)
 
 	//ループ開始
 	while (this->window->isOpen()) {
-	
+
 		//スレッド終了検知
 		if (*this->is_open_window == false) {
 			this->window->close();
@@ -142,31 +142,38 @@ void jubeon::graphics::LayerManager::process(void)
 		window_buffer.clear();
 		this->window->clear(sf::Color::Black);
 
-		if (this->layer_list.size() > 0) {
-			for (auto p = --this->layer_list.end(); ; p--) {
-				//描写
-				(*p)->Draw();
-								
-				//終了検知
-				if ((*p)->getExitCode() != 0) {
-					//終了処理
-					(*p)->Exit();
-					//リストから削除
-					//デクリメントだから全ループにおいてp--が可能
-					p = this->layer_list.erase(p);
+		{
+			//レイヤーの追加
+			//以下はlayer_listに対してロックを掛けた状態で実行される
+			//分かりやすいようにスコープを分ける
+			std::lock_guard<std::mutex> lock(this->layer_list_mtx);
+
+			if (this->layer_list.size() > 0) {
+				for (auto p = --this->layer_list.end(); ; p--) {
+					//描写
+					(*p)->Draw();
+
+					//終了検知
+					if ((*p)->getExitCode() != 0) {
+						//終了処理
+						(*p)->Exit();
+						//リストから削除
+						//デクリメントだから全ループにおいてp--が可能
+						p = this->layer_list.erase(p);
+					}
+					else {
+
+						//画面更新
+						(*p)->display();
+
+						//sf::Sprite sp((*p)->getTexture());
+						//this->window->draw(sp);
+						//ウィンドウバッファに描写
+						window_buffer.draw(sf::Sprite((*p)->getTexture()));
+					}
+
+					if (p == this->layer_list.begin()) break;	//全てのレイヤーを描写済み
 				}
-				else {
-
-					//画面更新
-					(*p)->display();
-
-					//sf::Sprite sp((*p)->getTexture());
-					//this->window->draw(sp);
-					//ウィンドウバッファに描写
-					window_buffer.draw(sf::Sprite((*p)->getTexture()));
-				}
-
-				if (p == this->layer_list.begin()) break;	//全てのレイヤーを描写済み
 			}
 		}
 
