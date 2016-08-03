@@ -37,10 +37,9 @@
 
 #include <memory>
 
+#include "Graphics/Layer/LayerManager.hpp"
+
 namespace jubeon {
-	namespace graphics {
-		class LayerManager;
-	}
 
 	namespace systems {
 
