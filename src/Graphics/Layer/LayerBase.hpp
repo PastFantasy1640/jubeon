@@ -4,6 +4,7 @@
 #define JUBEON_GRAPHICS_LAYERBASE_HPP
 
 #include <SFML/Graphics.hpp>
+#include <atomic>
 
 namespace jubeon {
 	namespace graphics {
@@ -15,10 +16,9 @@ namespace jubeon {
 			LayerBase(const LayerBase & copy);
 
 			//終了コード
-			int						exit_code;
+			std::atomic<int>		exit_code;
 
 			bool					is_create_buffer;
-			void createBuffer(const sf::Vector2u size);
 
 		protected:
 			//コンストラクタ、デストラクタ
@@ -29,10 +29,6 @@ namespace jubeon {
 				this->clear(sf::Color(0, 0, 0, 0));
 			}
 			
-			/** レイヤーを終了します。0以外のコードを設定することでレイヤーの終了判定を有効にします。
-			* @param code 終了コード
-			*/
-			void setExitCode(const int code);
 
 		public:
 
@@ -48,6 +44,11 @@ namespace jubeon {
 			 * @returns 終了コード
 			 */
 			unsigned int getExitCode(void) const;
+
+			/** レイヤーを終了します。0以外のコードを設定することでレイヤーの終了判定を有効にします。
+			* @param code 終了コード
+			*/
+			void setExitCode(const int code);
 
 
 		};	//end of LayerBase
