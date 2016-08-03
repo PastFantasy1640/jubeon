@@ -33,7 +33,7 @@ int jubeon::game::scenes::StartingUpScene::process(void)
 			else if (e.type == sf::Event::KeyReleased && e.key.code == sf::Keyboard::Return) {
 				//ƒƒS‚ð‚·‚Á”ò‚Î‚·
 				this->setNextScene(std::move(std::unique_ptr<scenes::GameScene>(new scenes::GameScene())));
-				
+				sull->setExitCode(1);
 				return 0;
 			}
 		}
@@ -41,6 +41,7 @@ int jubeon::game::scenes::StartingUpScene::process(void)
 
 		if (ck.getElapsedTime().asMilliseconds() > 5000) {
 			this->setNextScene(std::move(std::unique_ptr<scenes::GameScene>(new scenes::GameScene())));
+			sull->setExitCode(1);
 			return 0;
 		}
 
