@@ -51,9 +51,14 @@ int main(int argc, char * argv[]) {
 	LayerManager mainwindow("jubeon v0.1", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(1920, -840), sf::Style::None);
 	
 	//最初に使用するシーンを生成
-	unique_ptr<scenes::GameScene> upGameSceneInstance;
+	unique_ptr<scenes::GameScene> upGameSceneInstance(new scenes::GameScene());
 
-	Scene::process(&mainwindow, std::move(upGameSceneInstance));
+	//シーン処理開始
+	int ret = Scene::process(&mainwindow, std::move(upGameSceneInstance));
+
+	//システム終了
+	return ret;
+
 
 	/*
 	shared_ptr<layers::BackgroundLayer> bg			(new layers::BackgroundLayer);
@@ -62,7 +67,7 @@ int main(int argc, char * argv[]) {
 	shared_ptr<layers::ShutterLayer> shutterlayer	(new layers::ShutterLayer);
 	*/
 
-
+	/*
 	vector<Note> hoge;
 	
 	Music mus;
@@ -125,5 +130,5 @@ int main(int argc, char * argv[]) {
 
 	
 
-	return 0;
+	return 0;*/
 }
