@@ -2,6 +2,7 @@
 
 
 #include "Graphics/Layer/LayerManager.hpp"
+#include "Systems/Scene.hpp"
 
 //Layer include
 #include "Game/Layers/BackgroundLayer.hpp"
@@ -88,6 +89,10 @@ int main(int argc, char * argv[]) {
 	
 	mus.startToPlay();
 
+
+
+	jubeon::systems::Scene::process(;
+
 	mainwindow.run();
 
 	while (mainwindow.isWindowOpening()) {
@@ -99,6 +104,8 @@ int main(int argc, char * argv[]) {
 
 		std::this_thread::sleep_for(std::chrono::microseconds(1));
 	}
+
+	
 
 	return 0;
 }
