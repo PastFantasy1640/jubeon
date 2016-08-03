@@ -38,6 +38,10 @@
 #include <memory>
 
 namespace jubeon {
+	namespace graphics {
+		class LayerManager;
+	}
+
 	namespace systems {
 
 		//Sceneクラス
@@ -52,10 +56,17 @@ namespace jubeon {
 			//スレッドアンセーフ
 			static bool is_running;
 
+			//メインウィンドウ
+			static jubeon::graphics::LayerManager * main_window;
+
 		protected:
 			//次のシーンを設定する
 			//設定した後のnext_sceneには所有権が無いため注意
 			static void setNextScene(std::unique_ptr<Scene> next_scene);
+
+			//メインウィンドウのインスタンスを取得する
+			//TO DO : 出来ればconstを付けたいけど、どう？
+			static jubeon::graphics::LayerManager * getMainWindow();
 
 		public:
 			//コンストラクタ
@@ -72,7 +83,7 @@ namespace jubeon {
 			//メインスレッドで実行されるprocess関数。
 			//再帰してはならないし、できない設計にしてある
 			//メインスレッドで実行する。戻り値は終了ステータス
-			static int process(std::unique_ptr<Scene> first_scene);
+			static int process(jubeon::graphics::LayerManager * main_window, std::unique_ptr<Scene> first_scene);
 
 		};	
 	};
