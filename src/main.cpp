@@ -1,8 +1,15 @@
+
+//shared_ptr, unique_ptr
 #include <memory>
 
-
+//LayerManager
 #include "Graphics/Layer/LayerManager.hpp"
+
+//Scene
 #include "Systems/Scene.hpp"
+
+//Starting Scene
+#include "Game/Scenes/GameScene.hpp"
 
 //Layer include
 #include "Game/Layers/BackgroundLayer.hpp"
@@ -26,6 +33,7 @@
 using namespace jubeon::game;
 using namespace jubeon::graphics;
 using namespace jubeon::input;
+using namespace jubeon::systems;
 using namespace std;
 
 int main(int argc, char * argv[]) {
@@ -35,15 +43,26 @@ int main(int argc, char * argv[]) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	jubeon::systems::Logger::information("jubeonが起動しました");
+	//起動時のログ
+	Logger::information("jubeonが起動しました");
 	
-	jubeon::graphics::LayerManager mainwindow("test", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(1920, -840), sf::Style::None);
+	//メインウィンドウのインスタンスを生成
+	//TO DO : 設定ファイルからの読み出し
+	LayerManager mainwindow("jubeon v0.1", sf::VideoMode(1080, 1920), false, 0, sf::Vector2i(1920, -840), sf::Style::None);
 	
+	//最初に使用するシーンを生成
+	unique_ptr<scenes::GameScene> upGameSceneInstance;
+
+	Scene::process(&mainwindow, std::move(upGameSceneInstance));
+
+	/*
 	shared_ptr<layers::BackgroundLayer> bg			(new layers::BackgroundLayer);
 	shared_ptr<layers::FrameLayer> frame			(new layers::FrameLayer);
 	shared_ptr<layers::MusicInfoLayer> musicinfo	(new layers::MusicInfoLayer);
 	shared_ptr<layers::ShutterLayer> shutterlayer	(new layers::ShutterLayer);
-	
+	*/
+
+
 	vector<Note> hoge;
 	//shared_ptr<Sequence> sequence(new Sequence(hoge));
 	
