@@ -201,10 +201,6 @@ void jubeon::graphics::LayerManager::process(void)
 		//画面描写
 		this->window->draw(wsp);
 
-		sf::CircleShape cp(50, 10);
-		cp.setPosition(200, 200);
-		cp.setFillColor(sf::Color::Red);
-		//this->window->draw(cp);
 
 		//画面アップデート
 		this->window->display();
@@ -215,6 +211,7 @@ void jubeon::graphics::LayerManager::process(void)
 
 	//残ってるものすべて削除
 	for (auto p = this->layer_list.begin(); p != this->layer_list.end(); ) {
+		(*p)->setExitCode(0);
 		(*p)->Exit();
 		p = this->layer_list.erase(p);
 	}
