@@ -211,7 +211,7 @@ void jubeon::graphics::LayerManager::process(void)
 
 	//c‚Á‚Ä‚é‚à‚Ì‚·‚×‚Äíœ
 	for (auto p = this->layer_list.begin(); p != this->layer_list.end(); ) {
-		(*p)->setExitCode(0);
+		(*p)->setExitCode(1);
 		(*p)->Exit();
 		p = this->layer_list.erase(p);
 	}
