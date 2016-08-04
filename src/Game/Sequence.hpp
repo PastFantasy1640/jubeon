@@ -65,6 +65,9 @@ namespace jubeon {
 			//コピーコンストラクタも禁止。
 			Sequence(const Sequence & cp);
 
+			//マージソート（再帰）
+			static void sort(const std::vector<Note>::iterator & begin, const std::vector<Note>::iterator & end, std::vector<Note> * ws);
+
 		public:
 
 			//初期化
@@ -80,6 +83,8 @@ namespace jubeon {
 
 			const std::vector<Note>::const_iterator search(const int ms) const;
 
+			//マージソート
+			static void sort(std::vector<Note> * src);
 		};
 	}
 }
