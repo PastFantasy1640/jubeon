@@ -7,13 +7,10 @@
 #include <string>
 #include <memory>
 #include "JudgeDefinition.hpp"
-#include "../Input/PanelInput.hpp"
 
 namespace jubeon {
 	namespace game {
-
-		//extern class PanelInput;
-
+		
 		class Note{
 
 		private:
@@ -29,15 +26,12 @@ namespace jubeon {
 			//パネル番号(0-15)
 			int panelIndex;
 
-			//ホールドの時間
+			//ホールドの時間(0の場合はタッチ譜面）
 			int duration;
 
 			//ホールドマーカーの出現位置パネル
 			int holdMarkerIndex;
 
-			//このノートに対する判定
-			//delete禁止
-			//const PanelInput * judged;
 			
 		public:
 			
@@ -53,9 +47,8 @@ namespace jubeon {
 			int getPanelIndex(void) const;
 			int getHoldDuration(void) const;
 			int getHoldMarkerIndex(void) const;
+			bool isHold(void) const;
 
-			//ジャッジ
-			void getJudge(int * ms_diff, jubeon::game::Judge * judge) const;
 			
 		};
 
@@ -77,11 +70,12 @@ namespace jubeon {
 		public:
 
 			//初期化
-			//ロードまではしない
-			Sequence(const std::vector<Note> notes);
+			Sequence(const SPNotes notes);
 			
 			//ノートを取得
 			SPNotes getNotes(void);
+
+			Note operator[] (const size_t idx);
 			
 		};
 	}
