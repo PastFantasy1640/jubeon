@@ -19,7 +19,11 @@ namespace jubeon {
 				virtual ~TemplateScene();
 
 				//プロセス関数
+				//呼ばれる関数。
 				virtual int process(void) override;
+
+				//のこり適宜メンバを定義してください。
+				//もしもLayerからのアクセスがある場合はスレッドセーフに気をつけてください。
 			};
 		};
 	};
