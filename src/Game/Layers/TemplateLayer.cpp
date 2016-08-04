@@ -1,6 +1,9 @@
 //レイヤーのヘッダを読み込み
 #include "TemplateLayer.hpp"
 
+//auther white
+//動作確認済み2016/08/04
+
 //名前空間を設定しても良い
 //using namespace std;
 //using namespace jubeon::game;
