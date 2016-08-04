@@ -55,11 +55,9 @@ namespace jubeon {
 		typedef std::vector<Note> Notes;
 		typedef std::shared_ptr<Notes> SPNotes;
 
-		class Sequence {
+		class Sequence : protected SPNotes{
 
 		private:
-			//譜面本体
-			SPNotes notes;
 			
 			//デフォルトコンストラクタは禁止
 			Sequence();
@@ -71,12 +69,7 @@ namespace jubeon {
 
 			//初期化
 			Sequence(const SPNotes notes);
-			
-			//ノートを取得
-			SPNotes getNotes(void);
-
-			Note operator[] (const size_t idx);
-			
+						
 		};
 	}
 }
