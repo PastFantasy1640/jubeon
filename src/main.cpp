@@ -51,6 +51,9 @@ int main(int argc, char * argv[]) {
 	//シーン処理開始
 	int ret = Scene::process(&mainwindow, std::move(upGameSceneInstance));
 
+	//現在起動中のウィンドウを終了し、レイヤーを全部解放
+	mainwindow.closeWindow();
+
 	//システム終了
 	return ret;
 
