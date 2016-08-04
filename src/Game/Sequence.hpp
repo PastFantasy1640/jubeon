@@ -11,6 +11,7 @@
 namespace jubeon {
 	namespace game {
 		
+		//Noteはconst付きメソッドのみでRead Onlyなためスレッドセーフ
 		class Note{
 
 		private:
@@ -49,18 +50,17 @@ namespace jubeon {
 			int getHoldMarkerIndex(void) const;
 			bool isHold(void) const;
 
+
 			
 		};
-
-		typedef std::vector<Note> Notes;
-		typedef std::shared_ptr<Notes> SPNotes;
-
-		class Sequence : protected SPNotes{
+		
+		//Noteはconst付きメソッドのみでRead Onlyなためスレッドセーフ
+		class Sequence : protected std::vector<Note>{
 
 		private:
 			
 			//デフォルトコンストラクタは禁止
-			Sequence();
+			Sequence(void);
 
 			//コピーコンストラクタも禁止。
 			Sequence(const Sequence & cp);
@@ -68,8 +68,18 @@ namespace jubeon {
 		public:
 
 			//初期化
-			Sequence(const SPNotes notes);
-						
+			Sequence(const std::vector<Note> notes);
+			
+			const Note & operator[] (size_t idx) const;
+
+			const Note & at(size_t idx) const;
+
+			const std::vector<Note>::const_iterator begin() const;
+
+			const std::vector<Note>::const_iterator end() const;
+
+			const std::vector<Note>::const_iterator search(const int ms) const;
+
 		};
 	}
 }

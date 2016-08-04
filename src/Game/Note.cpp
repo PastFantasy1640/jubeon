@@ -38,3 +38,8 @@ int jubeon::game::Note::getHoldMarkerIndex(void) const
 {
 	return this->holdMarkerIndex;
 }
+
+bool jubeon::game::Note::isHold(void) const
+{
+	return this->getHoldDuration() != 0;
+}
