@@ -130,9 +130,10 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 		}
 
 		//おかしい
-		if (tmp_vector.size() != 4)
+		if (tmp_vector.size() != 4) {
 			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: 要素数が異常です。");
-		return false;
+			return false;
+		}
 
 		//分析
 		try {
