@@ -47,8 +47,8 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 	}
 
 	//ヘッダの追加
-	ofst << "date:" + this->date.load() << std::endl;
-	ofst << "name:" + this->name.load() << std::endl;
+	ofst << "date:" << this->date << std::endl;
+	ofst << "name:" << this->name << std::endl;
 
 	//情報の書き出し
 	std::string type_str;
@@ -103,7 +103,7 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 		systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: dateがありません");
 		return false;
 	}
-	this->date.store(str);
+	this->date = str;
 
 	//nameを読み込む
 	std::getline(ifst, str);
@@ -111,7 +111,7 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 		systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: nameがありません");
 		return false;
 	}
-	this->name.store(str);
+	this->name = str;
 
 	//終わるまでループ
 	std::vector<std::string> tmp_vector;
