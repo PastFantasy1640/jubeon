@@ -5,7 +5,7 @@
 #include <fstream>
 #include "Models/ModelBase.hpp"
 
-namespace jubeat_online { namespace storages {
+namespace jubeon{ namespace storages {
 
 	class JsonFileStorage {
 	public:
@@ -13,11 +13,11 @@ namespace jubeat_online { namespace storages {
 		
 		template<typename T>
 		inline std::shared_ptr<T> getModel() {
-			static_assert(std::is_base_of<jubeat_online::models::ModelBase, T>::value, "");
+			static_assert(std::is_base_of<jubeon::models::ModelBase, T>::value, "");
 			std::ifstream ifs(filename);
 			std::istreambuf_iterator<char> it(ifs), itEnd;
 			std::shared_ptr<T> model(new T());
-			model->jubeat_online::models::ModelBase::Init(std::string(it, itEnd));
+			model->jubeon::models::ModelBase::Init(std::string(it, itEnd));
 			return model;
 		};
 	private:
