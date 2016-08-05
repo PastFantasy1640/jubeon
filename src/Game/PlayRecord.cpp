@@ -18,14 +18,8 @@ jubeon::game::PlayRecord::~PlayRecord()
 
 void jubeon::game::PlayRecord::addJudged(const jubeon::input::PanelInput p, Judge judge)
 {
-	JudgedPanelInput tmp;
-	tmp.ms = p.ms;
-	tmp.panel_no = p.panel_no;
-	tmp.t = p.t;
-	tmp.judge = judge;
-
 	//í«â¡
-	this->addJudged(tmp);
+	this->addJudged(JudgedPanelInput(p, judge));
 }
 
 void jubeon::game::PlayRecord::addJudged(const JudgedPanelInput judged_p)
@@ -36,6 +30,15 @@ void jubeon::game::PlayRecord::addJudged(const JudgedPanelInput judged_p)
 
 bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 {
+	//èëÇ´èoÇµ
+	//èëéÆ->ASCII
+	//date:"20xx-xx-xx xx:xx:xx"
+	//name:"wHite"
+	//[ms],[panel],[type],[judge]
+	//à»å„EOFÇ‹Ç≈
+
+	
+
 	return false;
 }
 
