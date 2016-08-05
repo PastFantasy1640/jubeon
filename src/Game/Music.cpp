@@ -11,6 +11,8 @@ jubeon::game::Music::~Music()
 
 bool jubeon::game::Music::load(void)
 {
+	//ƒ[ƒh‚µ‚æ‚¤
+
 	return false;
 }
 
