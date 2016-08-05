@@ -1,6 +1,8 @@
 #include "PlayRecord.hpp"
 
 #include <fstream>
+#include <sstream>   // istringstream
+
 #include "../Systems/Logger.hpp"
 
 
@@ -45,8 +47,8 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 	}
 
 	//ヘッダの追加
-	ofst << "date:" + this->date << std::endl;
-	ofst << "name:" + this->name << std::endl;
+	ofst << "date:" + this->date.load() << std::endl;
+	ofst << "name:" + this->name.load() << std::endl;
 
 	//情報の書き出し
 	std::string type_str;
@@ -76,7 +78,96 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 
 bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 {
-	return false;
+	systems::Logger::information("プレイ記録ファイルの保存を開始します。");
+
+	//ファイルストリーム
+	std::ifstream ifst(src);
+
+	if (!ifst || ifst.fail()) {
+		systems::Logger::warning("プレイ記録ファイル" + src + "を読み込めませんでした。");
+		return false;
+	}
+
+	//ヘッダの読み込み
+	//データの間違いがあれば即終了
+	std::string str;
+	std::string str2;
+	JudgedPanelInput tmp;
+
+	//dateを読み込む
+	std::getline(ifst, str);
+	if (!str.substr(0, 5).compare("date:") == 0) {
+		systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: dateがありません");
+		return false;
+	}
+	this->date.store(str);
+
+	//nameを読み込む
+	std::getline(ifst, str);
+	if (!str.substr(0, 5).compare("name:") == 0) {
+		systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: nameがありません");
+		return false;
+	}
+	this->name.store(str);
+
+	//終わるまでループ
+	std::vector<std::string> tmp_vector;
+	while (!ifst.eof())
+	{
+		// read by line
+		std::getline(ifst, str);
+
+		//spilt
+		const char delimiter = ',';
+		std::istringstream line_separater(str);
+		tmp_vector.clear();
+
+		while (std::getline(line_separater, str2, delimiter)) {
+			tmp_vector.push_back(str2);
+		}
+
+		//おかしい
+		if (tmp_vector.size() != 4)
+			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: 要素数が異常です。");
+		return false;
+
+		//分析
+		try {
+			tmp.ms = std::stoi(tmp_vector[0]);
+			tmp.panel_no = std::stoi(tmp_vector[1]);
+		}
+		catch (std::invalid_argument e) {
+			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: 数値に変換できません");
+			return false;
+		}
+
+		//タイプ
+		if (tmp_vector[2].compare("PUSH") == 0) tmp.t = input::PUSH;
+		else if (tmp_vector[2].compare("RELEASE") == 0) tmp.t = input::RELEASE;
+		else {
+			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: PUSH、RELEASE以外の値が指定されています");
+			return false;
+		}
+
+		//判定
+		if (tmp_vector[3].compare("PERFECT") == 0) tmp.judge = PERFECT;
+		else if (tmp_vector[3].compare("GREAT") == 0) tmp.judge = GREAT;
+		else if (tmp_vector[3].compare("GOOD") == 0) tmp.judge = GOOD;
+		else if (tmp_vector[3].compare("EARLY") == 0) tmp.judge = EARLY;
+		else if (tmp_vector[3].compare("LATE") == 0) tmp.judge = LATE;
+		else if (tmp_vector[3].compare("MISS") == 0) tmp.judge = MISS;
+		else if (tmp_vector[3].compare("NOJUDGE") == 0) tmp.judge = NOJUDGE;
+		else {
+			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: 判定の値が異常です");
+			return false;
+		}
+
+		this->judged_list->push_back(tmp);
+	}
+
+	systems::Logger::information("プレイ記録ファイルの読み込みを完了しました");
+
+	return true;
 }
 
 const std::shared_ptr<std::vector<jubeon::game::JudgedPanelInput>> jubeon::game::PlayRecord::getJudgedList() const

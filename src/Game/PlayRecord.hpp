@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include <mutex>
+#include <atomic>
 
 #include <SFML/Graphics.hpp>
 
@@ -56,8 +56,8 @@ namespace jubeon {
 
 		private:
 			
-			std::string name;
-			std::string date;
+			std::atomic<std::string> name;
+			std::atomic<std::string> date;
 			
 			//”»’èÏ‚İ‚ÌƒŠƒXƒg
 			std::shared_ptr<std::vector<JudgedPanelInput>> judged_list;
