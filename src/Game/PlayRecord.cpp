@@ -1,8 +1,5 @@
 #include "PlayRecord.hpp"
 
-//#include <functional>
-
-
 #include <fstream>
 #include "../Systems/Logger.hpp"
 
@@ -37,9 +34,44 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 	//[ms],[panel],[type],[judge]
 	//以後EOFまで
 
-	
+	systems::Logger::information("プレイ記録ファイルの保存を開始します。");
 
-	return false;
+	//ファイルストリーム
+	std::ofstream ofst(dst, std::ios::trunc);
+
+	if (!ofst) {
+		systems::Logger::warning("プレイ記録ファイル" + dst + "を作成できませんでした。記録は中止されます。");
+		return false;
+	}
+
+	//ヘッダの追加
+	ofst << "date:" + this->date << std::endl;
+	ofst << "name:" + this->name << std::endl;
+
+	//情報の書き出し
+	std::string type_str;
+	std::string judge_str;
+	for (auto p = this->judged_list->begin(); p != this->judged_list->end(); p++) {
+		switch (p->t) {
+		case input::Type::PUSH: type_str = "PUSH"; break;
+		case input::Type::RELEASE: type_str = "RELEASE"; break;
+		}
+
+		switch (p->judge) {
+		case PERFECT:	judge_str = "PERFECT";
+		case GREAT:		judge_str = "GREAT";
+		case GOOD:		judge_str = "GOOD";
+		case EARLY:		judge_str = "EARLY";
+		case LATE:		judge_str = "LATE";
+		case MISS:		judge_str = "MISS";
+		case NOJUDGE:	judge_str = "NOJUDGE";
+		}
+		ofst << std::to_string(p->ms) << "," << std::to_string(p->panel_no) << "," << type_str << "," << judge_str << std::endl;
+	}
+
+	systems::Logger::information("プレイ記録ファイルの保存を完了しました");
+
+	return true;
 }
 
 bool jubeon::game::PlayRecord::readFromFile(const std::string src)
