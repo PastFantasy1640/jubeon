@@ -26,7 +26,7 @@ namespace jubeon {
 		public:
 			
 			//コンストラクタ
-			Music(const std::string meta_filepath);
+			Music(const int id, const std::string meta_filepath);
 
 			//デストラクタ
 			virtual ~Music();
