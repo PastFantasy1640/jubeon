@@ -66,6 +66,10 @@ int jubeon::game::scenes::GameScene::process(void)
 	this->getMainWindow()->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 
 	mus.startToPlay();
+	
+	//PlayRecord‚ÌƒeƒXƒg
+	playrecord->writeToFile("hogehoge.txt");
+	playrecord->readFromFile("hogehoge2.txt");
 
 	
 	while (this->getMainWindow()->isWindowOpening()) {

@@ -56,8 +56,8 @@ namespace jubeon {
 
 		private:
 			
-			std::atomic<std::string> name;
-			std::atomic<std::string> date;
+			std::string name;
+			std::string date;
 			
 			//”»’èÏ‚İ‚ÌƒŠƒXƒg
 			std::shared_ptr<std::vector<JudgedPanelInput>> judged_list;
