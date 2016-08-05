@@ -78,7 +78,10 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 
 bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 {
-	systems::Logger::information("プレイ記録ファイルの保存を開始します。");
+	systems::Logger::information("プレイ記録ファイルの読み込みを開始します。");
+
+	//まず既存のlistを削除
+	this->judged_list->clear();
 
 	//ファイルストリーム
 	std::ifstream ifst(src);
