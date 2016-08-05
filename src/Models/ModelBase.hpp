@@ -3,7 +3,7 @@
 #include <string>
 #include "Systems/picojson.hpp"
 
-namespace jubeat_online { namespace models {
+namespace jubeon { namespace models {
 	class ModelBase {
 	public:
 		inline bool Init(std::string jsonStr) {

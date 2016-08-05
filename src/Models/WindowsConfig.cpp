@@ -3,7 +3,7 @@
 #include "Systems/picojson.hpp"
 #include <iostream>
 
-namespace jubeat_online { namespace models {
+namespace jubeon { namespace models {
 	bool WindowConfig::Init(picojson::value val) {
 		if (!val.is<picojson::object>()) {
 			return false;
