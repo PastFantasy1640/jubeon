@@ -77,11 +77,11 @@ namespace jubeon {
 
 			const Note & at(size_t idx) const;
 
-			const std::vector<Note>::const_iterator begin() const;
+			std::vector<Note>::const_iterator begin() const;
 
-			const std::vector<Note>::const_iterator end() const;
+			std::vector<Note>::const_iterator end() const;
 
-			const std::vector<Note>::const_iterator search(const int ms) const;
+			std::vector<Note>::const_iterator search(const int ms) const;
 
 			//マージソート
 			static void sort(std::vector<Note> * src);

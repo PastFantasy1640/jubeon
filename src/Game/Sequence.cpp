@@ -16,17 +16,17 @@ const jubeon::game::Note & jubeon::game::Sequence::at(size_t idx) const
 	return std::vector<Note>::at(idx);
 }
 
-const std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::begin() const
+std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::begin() const
 {
 	return std::vector<Note>::begin();
 }
 
-const std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::end() const
+std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::end() const
 {
 	return std::vector<Note>::end();
 }
 
-const std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::search(const int ms) const
+std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::search(const int ms) const
 {
 	//“ñ•ª’Tõ
 	//ƒ‰ƒ€ƒ_®
@@ -60,6 +60,7 @@ const std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::se
 	
 }
 
+//###### Merge Sort ######
 void jubeon::game::Sequence::sort(std::vector<Note>* src)
 {
 	//Ä‹Aˆ—
