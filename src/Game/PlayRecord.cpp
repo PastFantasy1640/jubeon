@@ -120,6 +120,8 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 		// read by line
 		std::getline(ifst, str);
 
+		if (str.compare("") == 0) continue;
+
 		//spilt
 		const char delimiter = ',';
 		std::istringstream line_separater(str);
