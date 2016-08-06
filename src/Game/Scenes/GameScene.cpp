@@ -31,7 +31,7 @@ int jubeon::game::scenes::GameScene::process(void)
 	
 	vector<Note> hoge;
 
-	std::shared_ptr<Music> music = Music::load("musics/testmusic/testmusic.json");
+	std::shared_ptr<Music> music = Music::load("musics/testmuisic/testmusic.json");
 
 
 
@@ -85,13 +85,11 @@ int jubeon::game::scenes::GameScene::process(void)
 	notes_sort = notes;
 
 	//ソートしてみる
-	Sequence::sort(&notes);
-
-	int ms = 0;
+	int ms = 0;/*
 	for (auto p : notes) {
 		if (ms > p.getJustTime()) std::cout << "eeeeeeeeeeeeeerorr" << std::endl;	//ソートできてない
 		ms = p.getJustTime();
-	}
+	}*/
 
 	Sequence sequence(notes);
 	//シーケンステストここまで
