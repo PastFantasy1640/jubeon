@@ -33,7 +33,7 @@ jubeon::graphics::LayerManager::LayerManager(
 	isVSync(isVSync),
 	fpsLimit(fpsLimit),
 	window_position(startWindowPosition),
-	is_open_window(new bool(false))
+	is_open_window(false)
 {
 }
 
@@ -100,7 +100,14 @@ bool jubeon::graphics::LayerManager::isWindowOpening(void) const
 //ウィンドウを終了させる
 void jubeon::graphics::LayerManager::closeWindow(void)
 {
-	this->is_open_window = false;
+	
+	//まずすべてのExitを呼ぶ
+	for (auto p = this->layer_list.begin(); p != this->layer_list.end(); p++) {
+		(*p)->setExitCode(1);
+		(*p)->Exit();
+	}
+
+	this->window->close();
 }
 
 bool jubeon::graphics::LayerManager::getWindowEvent(sf::Event & e)

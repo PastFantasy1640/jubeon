@@ -79,8 +79,12 @@ int jubeon::game::scenes::GameScene::process(void)
 
 	sf::Event e;
 	while (this->getMainWindow()->getWindowEvent(e)) {
-		if (e.type == sf::Event::Closed) this->getMainWindow()->closeWindow();
-		else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) this->getMainWindow()->closeWindow();
+		if (e.type == sf::Event::Closed) {
+			return 1;
+		}
+		else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
+			return 1;
+		}
 	}
 
 	std::this_thread::sleep_for(std::chrono::microseconds(1));
