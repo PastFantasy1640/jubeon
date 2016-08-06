@@ -68,6 +68,7 @@ void jubeon::game::scenes::GameScene::init() {
 
 		this->isinited = true;
 
+		bg->setExitCode(1);
 	
 	}
 }
