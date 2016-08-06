@@ -8,6 +8,7 @@
 #include <mutex>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "Models/ModelBase.hpp"
 
 namespace jubeon {
 	namespace game {
@@ -22,18 +23,16 @@ namespace jubeon {
 		//レベルのtypedef。1～10
 		typedef unsigned char Level;
 
-		class Music {
+		class Music : protected jubeon::models::ModelBase {
+				
 		public:
 			
-			//コンストラクタ
-			Music(const int id, const std::string meta_filepath);
 
 			//デストラクタ
 			virtual ~Music();
 
-			//ロードを行う
-			bool load(void);
-
+			//Musicの生成とロードを同時に行う
+			static std::shared_ptr<Music> load(const std::string meta_file_name);
 
 			//***** アクセサ *****
 			//楽曲IDを取得する
@@ -87,13 +86,14 @@ namespace jubeon {
 
 			//メンバー変数(*がついているものは、loadした後はアクセサがあり、かつスレッドセーフ）
 			int									music_id;					//*楽曲ID
-			const std::string					metafile_path;				//メタファイルパス
+			std::string							metafile_path;				//メタファイルパス
 
 			//管理を画像ベースに
 
 			//*** ノーツ関連 ***
 			std::array<std::string, 3>			notes_filepath;				//*ノーツの譜面ファイルパス
 			sf::Texture							bpm_texture;				//*曲のbpmが記された画像
+			std::string							decode_type;				//ノーツファイルの形式	TO DO : 継承クラスを実装
 
 			//*** 曲関係 ***
 			//const std::string					name;						//*曲名
@@ -111,9 +111,10 @@ namespace jubeon {
 			std::array<unsigned int, 3>			high_score;					//*ハイスコア
 			std::array<std::string, 3>			high_score_pr_filepath;		//*プレイ記録ファイル（最高）のファイルパス
 			std::array<std::string, 3>			latest_score_pr_filepath;	//*プレイ記録ファイル（直近）のファイルパス
-
-
+			
 			std::mutex							mtx;
+
+			bool								is_init_success;
 
 			//TO DO : MusicBarは未定義
 			//std::array<MusicBar, 3>	musicbar_challenge;	//ミュージックバーチャレンジ
@@ -121,6 +122,12 @@ namespace jubeon {
 
 			//例のごとくデフォルトコンストラクタは禁止。
 			Music(void);
+
+			void set(const int music_id, const std::string meta_file_name);
+
+			virtual bool Init(picojson::value val) override;
+			virtual picojson::value GetJsonValue() override;
+
 		};
 	}
 }
