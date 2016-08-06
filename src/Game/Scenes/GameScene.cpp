@@ -12,7 +12,8 @@
 #include "Game/Music.hpp"
 #include "Game/PlayRecord.hpp"
 
-
+//for sort
+#include <algorithm>
 
 using namespace jubeon::game;
 using namespace jubeon::graphics;
@@ -69,7 +70,7 @@ int jubeon::game::scenes::GameScene::process(void)
 
 
 	//シーケンステスト
-	std::vector<Note> notes, notes_sort;
+	std::vector<Note> notes;
 	for (int i = 0; i < 50; i++) {
 		notes.push_back(Note(500 + 4000 * i, 1));
 		notes.push_back(Note(2000 + 4000 * i, 4));
@@ -82,18 +83,13 @@ int jubeon::game::scenes::GameScene::process(void)
 		notes.push_back(Note(0 + 4000 * i, 0));
 	}
 
-	notes_sort = notes;
+	std::sort(notes.begin(), notes.end(), [](Note x, Note y) -> int { return (x.getJustTime() < y.getJustTime()); });
 
-	//ソートしてみる
-	int ms = 0;/*
-	for (auto p : notes) {
-		if (ms > p.getJustTime()) std::cout << "eeeeeeeeeeeeeerorr" << std::endl;	//ソートできてない
-		ms = p.getJustTime();
-	}*/
+	//*********シーケンステストここまで
 
+	//ファイルを読み込んでセット
 	Sequence sequence(notes);
-	//シーケンステストここまで
-
+	
 	while (this->getMainWindow()->isWindowOpening()) {
 		sf::Event e;
 		while (this->getMainWindow()->getWindowEvent(e)) {
