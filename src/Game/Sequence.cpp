@@ -30,7 +30,7 @@ std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::search(c
 {
 	//二分探索
 	//ラムダ式
-	std::function<size_t(size_t, size_t, unsigned int)> search = [&](size_t left, size_t right, unsigned int ms)
+	std::function<size_t(size_t, size_t, unsigned int)> search = [&](size_t left, size_t right, int ms)
 	{
 		//探索の左右を指定して、最後に挿入するインデックスの位置を返す
 		//終了条件

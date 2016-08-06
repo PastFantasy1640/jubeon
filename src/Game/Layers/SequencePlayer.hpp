@@ -23,18 +23,17 @@ namespace jubeon {
 			class SequencePlayer : public jubeon::graphics::LayerBase {
 			public:
 
-				SequencePlayer(std::shared_ptr<jubeon::game::Sequence> sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord);
-
-				void process(void);
-
+				SequencePlayer(std::shared_ptr<jubeon::game::Sequence> sequence, std::shared_ptr<jubeon::game::Music> music, std::shared_ptr<jubeon::game::PlayRecord> playrecord, std::shared_ptr<std::map<const Note *, const JudgedPanelInput *>> seq_pr_mapping);
+				
 				virtual void Init() override;
 				virtual void Draw() override;
 				virtual void Exit() override;
 
 			private:
-				std::shared_ptr<jubeon::game::Sequence> sequence;
-				const Music * music;
-				std::unique_ptr<PlayRecord> playrecord;
+				const std::shared_ptr<jubeon::game::Sequence> sequence;
+				const std::shared_ptr<jubeon::game::Music> music;
+				const std::shared_ptr<jubeon::game::PlayRecord> playrecord;
+				const std::shared_ptr<std::map<const Note *, const JudgedPanelInput *>> seq_pr_mapping;
 
 				//どのマーカーが押されたままか
 				unsigned int pushing;
@@ -48,7 +47,8 @@ namespace jubeon {
 				sf::Texture panel_frame;
 
 				//TEMPORARY
-				Marker mk;
+				std::shared_ptr<Marker> mk;
+
 
 			};
 		}

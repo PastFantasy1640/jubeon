@@ -49,8 +49,13 @@ namespace jubeon {
 			int getHoldDuration(void) const;
 			int getHoldMarkerIndex(void) const;
 			bool isHold(void) const;
-
-
+			/*
+			bool operator == (Note n) { 
+				return (n.duration == this->duration
+					&& n.holdMarkerIndex == this->holdMarkerIndex
+					&& n.justTime == this->justTime
+					&& n.panelIndex == this->panelIndex);
+			}*/
 			
 		};
 		

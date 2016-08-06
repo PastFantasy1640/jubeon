@@ -259,7 +259,11 @@ void jubeon::game::Music::playSound(void)
 
 unsigned int jubeon::game::Music::getPlayingCurrentTime(void) const
 {
-	return this->sound.getPlayingOffset().asMilliseconds();
+	if (this->isInit()) {
+		if (this->sound.getStatus() == sf::SoundSource::Status::Playing)
+			return this->sound.getPlayingOffset().asMilliseconds();
+	}
+	return 0;
 }
 
 void jubeon::game::Music::deleteSound(void)
