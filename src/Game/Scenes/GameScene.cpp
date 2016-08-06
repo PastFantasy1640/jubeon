@@ -46,7 +46,7 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	for (int i = 0; i < 15; i++) {
 		this->playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(3, PUSH, i * 4000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(1, PUSH, i * 4000), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(5, PUSH, i * 4000), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(7, PUSH, i * 4000), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(8, PUSH, i * 4000), Judge::NOJUDGE);
@@ -54,7 +54,7 @@ void jubeon::game::scenes::GameScene::init(void)
 		this->playrecord->addJudged(PanelInput(12, PUSH, i * 4000), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(13, PUSH, i * 4000), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(2, RELEASE, i * 4000 + 50), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(3, RELEASE, i * 4000 + 100), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(1, RELEASE, i * 4000 + 100), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(5, RELEASE, i * 4000 + 200), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(7, RELEASE, i * 4000 + 500), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(8, RELEASE, i * 4000 + 1000), Judge::NOJUDGE);
@@ -70,7 +70,7 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	//シーケンステスト
 	std::vector<Note> notes;
-	for (int i = 0; i < 50; i++) {
+	for (int i = 1; i < 50; i++) {
 		notes.push_back(Note(500 + 4000 * i, 1));
 		notes.push_back(Note(2000 + 4000 * i, 4));
 		notes.push_back(Note(1000 + 4000 * i, 2));
