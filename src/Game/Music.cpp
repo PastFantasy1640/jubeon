@@ -1,6 +1,7 @@
 #include "Music.hpp"
 #include "Systems/Logger.hpp"
 #include "Storages/JsonFileStorage.hpp"
+#include "Systems/picojson_util.h"
 
 jubeon::game::Music::Music()
 {
@@ -11,10 +12,11 @@ jubeon::game::Music::~Music()
 }
 
 
-inline void jubeon::game::Music::set(const int music_id, const std::string meta_file_name)
+void jubeon::game::Music::set(const int music_id, const std::string meta_file_name)
 {
+	this->music_id = music_id;
+	this->metafile_path = meta_file_name;
 }
-;
 
 std::shared_ptr<jubeon::game::Music> jubeon::game::Music::load(const std::string meta_file_name)
 {
@@ -29,9 +31,16 @@ std::shared_ptr<jubeon::game::Music> jubeon::game::Music::load(const std::string
 
 	if (ret) {
 		//正常に代入されている
-		
+		if (ret->isInit()) {
+			systems::Logger::information("楽曲[メタ:" + meta_file_name + "]の読み込みが完了しました。");
+		}
+		else {
+			systems::Logger::warning("楽曲[メタ:" + meta_file_name + "]の読み込みに失敗しました。");
+		}
 	}
 	else systems::Logger::error("プログラムエラー:Music.cpp");
+
+	return ret;
 }
 
 bool jubeon::game::Music::Init(picojson::value val)
@@ -44,8 +53,7 @@ bool jubeon::game::Music::Init(picojson::value val)
 	auto root = val.get<picojson::object>();
 
 	//notes{}があるか
-	if (root.find("notes") == root.end()
-		|| !root["notes"].is<picojson::object>()) {
+	if (!picojson_util::has_field<picojson::object>(val, "notes")){
 		systems::Logger::warning("読み込みに失敗 : notesが見つからないか異常な値です。");
 		return false;
 	}
@@ -54,15 +62,19 @@ bool jubeon::game::Music::Init(picojson::value val)
 	auto notes = root["notes"].get<picojson::object>();
 
 	//notes.filename
-	if (notes.find("filename") == notes.end()
-		|| !notes["filename"].is<std::string>()) {
+	if (!picojson_util::has_field<picojson::array>(root["notes"], "filename")) {
 		systems::Logger::warning("読み込みに失敗 : notes.filenameが見つからないか異常な値です。");
 		return false;
 	}
 
+	auto filenames = notes["filename"].get<picojson::array>();
+	if (filenames.size() != 3) {
+		systems::Logger::warning("読み込みに失敗 : notes.filenameが異常な値です。");
+		return false;
+	}
+
 	//notes.type
-	if (notes.find("type") == notes.end()
-		|| !notes["type"].is<std::string>()) {
+	if (!picojson_util::has_field<picojson::array>(root["notes"], "type")) {
 		systems::Logger::warning("読み込みに失敗 : notes.typeが見つからないか異常な値です。");
 		return false;
 	}
@@ -70,8 +82,7 @@ bool jubeon::game::Music::Init(picojson::value val)
 	//TO DO : いずれここでデコーダーの有無を確認する
 
 	//music{}があるか
-	if (root.find("music") == root.end()
-		|| !root["music"].is<picojson::object>()) {
+	if (!picojson_util::has_field<picojson::array>(val, "music")) {
 		systems::Logger::warning("読み込みに失敗 : musicが見つからないか異常な値です。");
 		return false;
 	}
@@ -80,52 +91,52 @@ bool jubeon::game::Music::Init(picojson::value val)
 	auto music = root["music"].get<picojson::object>();
 
 	//music.name_artist
-	if (music.find("name_artist") == music.end()
-		|| !music["name_artist"].is<std::string>()) {
+	if (!picojson_util::has_field<picojson::array>(root["music"], "name_artist")) {
 		systems::Logger::warning("読み込みに失敗 : music.name_artistが見つからないか異常な値です。");
 		return false;
 	}
 
 	//music.name_small
-	if (music.find("name_small") == music.end()
-		|| !music["name_small"].is<std::string>()) {
+	if (!picojson_util::has_field<picojson::array>(root["music"], "name_small")) {
 		systems::Logger::warning("読み込みに失敗 : music.name_smallが見つからないか異常な値です。");
 		return false;
 	}
 
 	//music.soundfile
-	if (music.find("soundfile") == music.end()
-		|| !music["soundfile"].is<std::string>()) {
+	if (!picojson_util::has_field<picojson::array>(root["music"], "soundfile")) {
 		systems::Logger::warning("読み込みに失敗 : music.soundfileが見つからないか異常な値です。");
 		return false;
 	}
 
 	//music.shortsoundfile
-	if (music.find("shortsoundfile") == music.end()
-		|| !music["shortsoundfile"].is<std::string>()) {
+	if (!picojson_util::has_field<picojson::array>(root["music"], "shortsoundfile")) {
 		systems::Logger::warning("読み込みに失敗 : music.shortsoundfileが見つからないか異常な値です。");
 		return false;
 	}
 
 	//music.thumbnail
-	if (music.find("thumbnail") == music.end()
-		|| !music["thumbnail"].is<std::string>()) {
+	if (!picojson_util::has_field<picojson::array>(root["music"], "thumbnail")) {
+		systems::Logger::warning("読み込みに失敗 : music.thumbnailが見つからないか異常な値です。");
+		return false;
+	}
+		
+	//music.bpm_string
+	if (!picojson_util::has_field<picojson::array>(root["music"], "bpm_string")) {
 		systems::Logger::warning("読み込みに失敗 : music.thumbnailが見つからないか異常な値です。");
 		return false;
 	}
 
 
+
 	//gameがあるか
-	if (root.find("game") == root.end()
-		|| !root["game"].is<picojson::object>()) {
+	if (!picojson_util::has_field<picojson::array>(val, "game")) {
 		systems::Logger::warning("読み込みに失敗 : gameが見つからないか異常な値です。");
 		return false;
 	}
 
 	//game
 	auto game = root["game"].get<picojson::object>();
-	if (game.find("level") == game.end()
-		|| !game["level"].is<picojson::array>()) {
+	if (!picojson_util::has_field<picojson::array>(root["game"], "level")) {
 		systems::Logger::warning("読み込みに失敗 : game.levelが見つからないか異常な値です。");
 		return false;
 	}
@@ -137,10 +148,22 @@ bool jubeon::game::Music::Init(picojson::value val)
 	}
 
 
+
 	//エラーチェックは大丈夫だった
 	//だいにゅー
 
-	this->notes_filepath = notes["filename"].get<std::string>();
+	for (int i = 0; i < 3;i++) this->notes_filepath[i] = filenames[i].get<std::string>();
+	this->decode_type = notes["type"].get<std::string>();
+
+	this->music_name_artist.loadFromFile(music["name_artist"].get<std::string>());
+	this->music_name_mini.loadFromFile(music["name_mini"].get<std::string>());
+	this->sound_filepath = music["soundfile"].get<std::string>();
+	this->sound_short_loop.loadFromFile(music["shortsoundfile"].get<std::string>());
+	this->thumbnail.loadFromFile(music["thumbnail"].get<std::string>());
+	this->bpm_string = music["bpm_string"].get<std::string>();
+	for (int i = 0; i < 3; i++) this->level[i] = static_cast<unsigned char>(levels[i].get<double>());
+
+
 }
 
 
@@ -154,10 +177,11 @@ std::string jubeon::game::Music::getNotesFilePath(const Difficulty level) const
 	return this->notes_filepath.at(level);	//範囲外時に例外
 }
 
-const sf::Texture & jubeon::game::Music::getBpmTexture(void) const
+std::string jubeon::game::Music::getBpm(void) const
 {
-	return this->bpm_texture;
+	return this->bpm_string;
 }
+
 
 const sf::Texture & jubeon::game::Music::getMusicNameAndArtistTexture(void) const
 {
@@ -201,11 +225,21 @@ std::string jubeon::game::Music::getLatestPlayRecordFilePath(const Difficulty di
 
 void jubeon::game::Music::setForPlay(void)
 {
-	
+	//楽曲のロード
+	this->up_sound_buffer.reset(new sf::SoundBuffer());
+	if (!this->up_sound_buffer->loadFromFile(this->sound_filepath)) {
+		//ロードに失敗
+		systems::Logger::warning("楽曲のロードに失敗しました。");
+		return;
+	}
+
+	this->sound.setBuffer(*this->up_sound_buffer);
+	return;
 }
 
 void jubeon::game::Music::playSound(void)
 {
+	this->sound.play();
 }
 
 unsigned int jubeon::game::Music::getPlayingCurrentTime(void) const
@@ -215,4 +249,11 @@ unsigned int jubeon::game::Music::getPlayingCurrentTime(void) const
 
 void jubeon::game::Music::deleteSound(void)
 {
+	this->sound.resetBuffer();
+
+}
+
+bool jubeon::game::Music::isInit(void) const
+{
+	return this->is_init_success;
 }

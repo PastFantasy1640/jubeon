@@ -42,7 +42,7 @@ namespace jubeon {
 			std::string getNotesFilePath(const Difficulty level) const;
 
 			//bpmのテクスチャを取得
-			const sf::Texture & getBpmTexture(void) const;
+			std::string getBpm(void) const;
 
 			//曲名、アーティスト名の画像ファイル
 			const sf::Texture & getMusicNameAndArtistTexture(void) const;
@@ -82,6 +82,9 @@ namespace jubeon {
 			//曲をメモリから破棄する（スレッドアンセry
 			void deleteSound(void);
 
+			//初期化に成功したか
+			bool isInit(void) const;
+
 		private:
 
 			//メンバー変数(*がついているものは、loadした後はアクセサがあり、かつスレッドセーフ）
@@ -92,7 +95,7 @@ namespace jubeon {
 
 			//*** ノーツ関連 ***
 			std::array<std::string, 3>			notes_filepath;				//*ノーツの譜面ファイルパス
-			sf::Texture							bpm_texture;				//*曲のbpmが記された画像
+			std::string							bpm_string;					//*曲のbpm
 			std::string							decode_type;				//ノーツファイルの形式	TO DO : 継承クラスを実装
 
 			//*** 曲関係 ***
