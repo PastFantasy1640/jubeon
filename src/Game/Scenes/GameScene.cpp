@@ -7,10 +7,6 @@
 #include "Game/Layers/SequencePlayer.hpp"
 #include "Game/Layers/ShutterLayer.hpp"
 
-//for test
-#include "Game/Sequence.hpp"
-#include "Game/Music.hpp"
-#include "Game/PlayRecord.hpp"
 
 //for sort
 #include <algorithm>
@@ -21,7 +17,7 @@ using namespace jubeon::systems;
 using namespace std;
 using namespace jubeon::input;
 
-int jubeon::game::scenes::GameScene::process(void)
+void jubeon::game::scenes::GameScene::init(void)
 {
 	//TEMP
 	shared_ptr<layers::BackgroundLayer> bg(new layers::BackgroundLayer);
@@ -29,45 +25,43 @@ int jubeon::game::scenes::GameScene::process(void)
 	shared_ptr<layers::MusicInfoLayer> musicinfo(new layers::MusicInfoLayer);
 	shared_ptr<layers::ShutterLayer> shutterlayer(new layers::ShutterLayer);
 
-
-	vector<Note> hoge;
-
-	std::shared_ptr<Music> music = Music::load("musics/testmuisic/testmusic.json");
-
-
-
-	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
-	std::unique_ptr<jubeon::game::PlayRecord> playrecord(new jubeon::game::PlayRecord);
-
-	PanelInput p;
-
-	for (int i = 0; i < 15; i++) {
-		playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(5, PUSH, i * 4000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(7, PUSH, i * 4000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(8, PUSH, i * 4000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(9, PUSH, i * 4000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(12, PUSH, i * 4000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(13, PUSH, i * 4000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(2, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(5, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(7, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(8, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(9, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(12, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-		playrecord->addJudged(PanelInput(13, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-	}
-
-
-
 	this->getMainWindow()->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
 	this->getMainWindow()->addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
 	this->getMainWindow()->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
 	this->getMainWindow()->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 
-	music->setForPlay();
 
-	music->playSound();
+	vector<Note> hoge;
+
+	this->music = Music::load("musics/testmuisic/testmusic.json");
+
+
+
+	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
+	this->playrecord.reset(new jubeon::game::PlayRecord);
+
+	PanelInput p;
+
+	for (int i = 0; i < 15; i++) {
+		this->playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(5, PUSH, i * 4000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(7, PUSH, i * 4000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(8, PUSH, i * 4000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(9, PUSH, i * 4000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(12, PUSH, i * 4000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(13, PUSH, i * 4000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(2, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(5, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(7, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(8, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(9, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(12, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		this->playrecord->addJudged(PanelInput(13, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+	}
+
+
+
+
 
 
 	//シーケンステスト
@@ -89,18 +83,17 @@ int jubeon::game::scenes::GameScene::process(void)
 	//*********シーケンステストここまで
 
 	//ファイルを読み込んでセット
-	Sequence sequence(notes);
+	this->sequence.reset(new Sequence(notes));
 
-	sf::Event e;
-	while (this->getMainWindow()->getWindowEvent(e)) {
-		if (e.type == sf::Event::Closed) this->getMainWindow()->closeWindow();
-		else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) this->getMainWindow()->closeWindow();
-	}
+
+
+	//楽曲の再生
+	music->setForPlay();
+
+	music->playSound();
 
 	this->isinited = true;
-
-	bg->setExitCode(1);
-
+	
 }
 
 int jubeon::game::scenes::GameScene::process(void)
@@ -118,7 +111,6 @@ int jubeon::game::scenes::GameScene::process(void)
 		}
 	}
 
-	std::this_thread::sleep_for(std::chrono::microseconds(1));
 
-	return 0;	//ソフト終了
+	return 0;
 }
