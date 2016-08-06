@@ -22,7 +22,7 @@ using namespace jubeon::input;
 
 int jubeon::game::scenes::GameScene::process(void)
 {
-	
+	//TEMP
 	shared_ptr<layers::BackgroundLayer> bg			(new layers::BackgroundLayer);
 	shared_ptr<layers::FrameLayer> frame			(new layers::FrameLayer);
 	shared_ptr<layers::MusicInfoLayer> musicinfo	(new layers::MusicInfoLayer);
@@ -31,12 +31,9 @@ int jubeon::game::scenes::GameScene::process(void)
 	
 	vector<Note> hoge;
 
-	Music mus;
+	std::shared_ptr<Music> music = Music::load("musics/testmusic/testmusic.json");
 
-	//まずmusicに何か指定
-	//ここはアクセサを介した実装へ
-	mus.soundbuffer.loadFromFile("media/demo.flac");
-	mus.soundplayer.setBuffer(mus.soundbuffer);
+
 
 	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
 	std::unique_ptr<jubeon::game::PlayRecord> playrecord(new jubeon::game::PlayRecord);
@@ -66,7 +63,9 @@ int jubeon::game::scenes::GameScene::process(void)
 	this->getMainWindow()->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
 	this->getMainWindow()->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 
-	mus.startToPlay();
+	music->setForPlay();
+
+	music->playSound();
 
 
 	//シーケンステスト
