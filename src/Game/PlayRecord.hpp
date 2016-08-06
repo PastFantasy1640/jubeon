@@ -6,7 +6,6 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include <mutex>
 
 #include <SFML/Graphics.hpp>
 
@@ -19,9 +18,17 @@ namespace jubeon {
 		typedef struct JudgedPanelInput : jubeon::input::PanelInput {
 		public:
 			Judge judge;	//ジャッジ情報が追加
+
+			//デフォルトコンストラクタ
 			JudgedPanelInput() {}
-			JudgedPanelInput(unsigned char panel_no, jubeon::input::Type t, unsigned int ms, Judge judge)
+
+			//全指定コンストラクタ
+			JudgedPanelInput(unsigned char panel_no, jubeon::input::Type t, unsigned int ms, const Judge & judge)
 				: judge(judge), PanelInput(panel_no,t,ms) {}
+			
+			//PanelInputと組み合わせたコンストラクタ
+			JudgedPanelInput(const PanelInput & panel_input, const Judge & judge)
+				: PanelInput(panel_input), judge(judge) {}
 		}JudgedPanelInput;
 
 		class PlayRecord {
@@ -48,6 +55,8 @@ namespace jubeon {
 
 		private:
 			
+			std::string name;
+			std::string date;
 			
 			//判定済みのリスト
 			std::shared_ptr<std::vector<JudgedPanelInput>> judged_list;
