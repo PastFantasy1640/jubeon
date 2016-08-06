@@ -50,11 +50,15 @@ namespace jubeon{
 				BACKGROUND = 3
 			}LayerType;
 
+			//レイヤーを追加
 			void addLayer(std::shared_ptr<LayerBase> layer, const LayerType type, const unsigned char layernumber);
 
 			//スレッドを立てて起動
 			//必ずメインスレッドで呼ぶこと。
-			void run(void);
+			//int run(std::unique_ptr<jubeon::systems::Scene> & first_start_scene);
+
+			//ウィンドウを生成し描画の準備をする
+			void createWindow(void);
 
 			//ウィンドウが開いているか
 			bool isWindowOpening(void) const;
@@ -65,12 +69,13 @@ namespace jubeon{
 			//ウィンドウのイベントを取得する
 			bool getWindowEvent(sf::Event & e);
 
-		private:
-
+			//1ループ分描写する
 			void process(void);
 
+		private:
 
-			std::mutex layer_list_mtx;							//layer_listに対するロック
+			//int process(void);
+
 			std::map<std::shared_ptr<LayerBase>, LayerType> layer_map;	//レイヤーマップ
 			std::vector<std::shared_ptr<LayerBase>> layer_list;	//レイヤーリスト
 
@@ -86,10 +91,10 @@ namespace jubeon{
 
 
 			std::shared_ptr<sf::RenderWindow>	window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
-			//std::unique_ptr<sf::RenderTexture>	window_buffer;	//画面調整のためのラストバッファ
+			sf::RenderTexture					window_buffer;
 
-			std::shared_ptr<bool>				is_thread_running;
-			std::shared_ptr<bool>				is_open_window;
+			
+			bool								is_open_window;
 
 			const static sf::Vector2u			RENDER_TEXTURE_SIZE;
 

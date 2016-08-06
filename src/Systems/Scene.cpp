@@ -2,6 +2,7 @@
 
 bool jubeon::systems::Scene::is_running = false;
 std::unique_ptr<jubeon::systems::Scene> jubeon::systems::Scene::next_scene;
+std::unique_ptr<jubeon::systems::Scene> jubeon::systems::Scene::current_scene;
 jubeon::graphics::LayerManager * jubeon::systems::Scene::main_window;
 
 //所有権の移動
@@ -21,15 +22,25 @@ int jubeon::systems::Scene::process(jubeon::graphics::LayerManager * main_window
 		Scene::is_running = true;	//インクルードガード的な
 
 									//初回のシーン代入
-		Scene::setNextScene(std::move(first_scene));
+		Scene::current_scene = std::move(first_scene);
 
 		//ウィンドウのインスタンス設定
 		Scene::main_window = main_window;
 
+
 		int ret = 0;
 
-		ret = main_window->run(std::move(first_scene));
-		
+		while (ret == 0 && Scene::current_scene) {
+			if (Scene::next_scene) {
+				Scene::current_scene = std::move(Scene::next_scene);	//シーンを移す
+			}
+
+			ret = Scene::current_scene->process();
+
+			Scene::getMainWindow()->process();
+
+		}
+
 		//返す
 		Scene::is_running = false;
 		return ret;
