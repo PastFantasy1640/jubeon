@@ -51,6 +51,9 @@ namespace jubeon {
 			//次のシーン
 			static std::unique_ptr<Scene> next_scene;
 
+			//現在のシーン
+			static std::unique_ptr<Scene> current_scene;
+
 			//すでにstatic processメソッドは動いて居るか
 			//スレッドアンセーフ
 			static bool is_running;

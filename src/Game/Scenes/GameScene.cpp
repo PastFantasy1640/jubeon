@@ -24,12 +24,12 @@ using namespace jubeon::input;
 int jubeon::game::scenes::GameScene::process(void)
 {
 	//TEMP
-	shared_ptr<layers::BackgroundLayer> bg			(new layers::BackgroundLayer);
-	shared_ptr<layers::FrameLayer> frame			(new layers::FrameLayer);
-	shared_ptr<layers::MusicInfoLayer> musicinfo	(new layers::MusicInfoLayer);
-	shared_ptr<layers::ShutterLayer> shutterlayer	(new layers::ShutterLayer);
-	
-	
+	shared_ptr<layers::BackgroundLayer> bg(new layers::BackgroundLayer);
+	shared_ptr<layers::FrameLayer> frame(new layers::FrameLayer);
+	shared_ptr<layers::MusicInfoLayer> musicinfo(new layers::MusicInfoLayer);
+	shared_ptr<layers::ShutterLayer> shutterlayer(new layers::ShutterLayer);
+
+
 	vector<Note> hoge;
 
 	std::shared_ptr<Music> music = Music::load("musics/testmuisic/testmusic.json");
@@ -42,21 +42,22 @@ int jubeon::game::scenes::GameScene::process(void)
 	PanelInput p;
 
 	for (int i = 0; i < 15; i++) {
-	playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(5, PUSH, i * 4000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(7, PUSH, i * 4000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(8, PUSH, i * 4000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(9, PUSH, i * 4000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(12, PUSH, i * 4000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(13, PUSH, i * 4000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(2, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(5, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(7, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(8, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(9, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(12, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-	playrecord->addJudged(PanelInput(13, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(5, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(7, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(8, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(9, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(12, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(13, PUSH, i * 4000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(2, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(5, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(7, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(8, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(9, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(12, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
+		playrecord->addJudged(PanelInput(13, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
 	}
+
 
 
 	this->getMainWindow()->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
@@ -89,18 +90,35 @@ int jubeon::game::scenes::GameScene::process(void)
 
 	//ファイルを読み込んでセット
 	Sequence sequence(notes);
-	
-	while (this->getMainWindow()->isWindowOpening()) {
-		sf::Event e;
-		while (this->getMainWindow()->getWindowEvent(e)) {
-			if (e.type == sf::Event::Closed) this->getMainWindow()->closeWindow();
-			else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) this->getMainWindow()->closeWindow();
-		}
 
-		std::this_thread::sleep_for(std::chrono::microseconds(1));
+	sf::Event e;
+	while (this->getMainWindow()->getWindowEvent(e)) {
+		if (e.type == sf::Event::Closed) this->getMainWindow()->closeWindow();
+		else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) this->getMainWindow()->closeWindow();
 	}
 
+	this->isinited = true;
 
+	bg->setExitCode(1);
 
-	return 1;	//ソフト終了
+}
+
+int jubeon::game::scenes::GameScene::process(void)
+{
+
+	if (!this->isinited) this->init();
+
+	sf::Event e;
+	while (this->getMainWindow()->getWindowEvent(e)) {
+		if (e.type == sf::Event::Closed) {
+			return 1;
+		}
+		else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
+			return 1;
+		}
+	}
+
+	std::this_thread::sleep_for(std::chrono::microseconds(1));
+
+	return 0;	//ソフト終了
 }
