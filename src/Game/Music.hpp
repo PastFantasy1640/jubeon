@@ -18,7 +18,7 @@ namespace jubeon {
 			BASIC = 0,
 			ADVANCED = 1,
 			EXTREME = 2
-		}Level;
+		}Difficulty;
 
 		//レベルのtypedef。1～10
 		typedef unsigned char Level;
@@ -26,8 +26,9 @@ namespace jubeon {
 		class Music : protected jubeon::models::ModelBase {
 				
 		public:
-			
 
+			Music(std::string meta_file_path);
+			
 			//デストラクタ
 			virtual ~Music();
 
@@ -121,15 +122,12 @@ namespace jubeon {
 
 			//TO DO : MusicBarは未定義
 			//std::array<MusicBar, 3>	musicbar_challenge;	//ミュージックバーチャレンジ
-			
 
-			//例のごとくデフォルトコンストラクタは禁止。
-			Music(void);
+			virtual picojson::value GetJsonValue() override;
 
 			void set(const int music_id, const std::string meta_file_name);
 
 			virtual bool Init(picojson::value val) override;
-			virtual picojson::value GetJsonValue() override;
 
 		};
 	}
