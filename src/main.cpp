@@ -45,9 +45,6 @@ int main(int argc, char * argv[]) {
 	//最初に使用するシーンを生成
 	unique_ptr<scenes::GameScene> upGameSceneInstance(new scenes::GameScene());
 
-	//ウィンドウの生成
-	mainwindow.run();
-
 	//シーン処理開始
 	int ret = Scene::process(&mainwindow, std::move(upGameSceneInstance));
 
