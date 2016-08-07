@@ -14,8 +14,9 @@ jubeon::game::layers::SequencePlayer::SequencePlayer(
 	std::shared_ptr<jubeon::game::Music> music,
 	std::shared_ptr<jubeon::game::PlayRecord> playrecord,
 	std::shared_ptr<std::map<const Note *, const JudgedPanelInput *>> seq_pr_mapping,
-	std::shared_ptr<jubeon::game::PanelPosition> panel_position)
-	: sequence(sequence), music(music), playrecord(playrecord), seq_pr_mapping(seq_pr_mapping), panel_position(panel_position)
+	std::shared_ptr<jubeon::game::PanelPosition> panel_position,
+	int offset_ms)
+	: sequence(sequence), music(music), playrecord(playrecord), seq_pr_mapping(seq_pr_mapping), panel_position(panel_position), offset_ms(offset_ms)
 {
 }
 /*

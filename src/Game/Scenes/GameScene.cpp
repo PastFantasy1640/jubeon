@@ -10,6 +10,8 @@
 //for panel position config
 #include "Game/PanelPosition.hpp"
 
+#include "Jmemo2/Parser.hpp"
+
 //for sort
 #include <algorithm>
 
@@ -43,7 +45,7 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	vector<Note> hoge;
 
-	this->music = Music::load("musics/testmuisic/testmusic.json");
+	this->music = Music::load("musics/SABM/SABM.json");
 
 
 
@@ -75,18 +77,11 @@ void jubeon::game::scenes::GameScene::init(void)
 
 
 	//シーケンステスト
-	std::vector<Note> notes;
-	for (int i = 1; i < 50; i++) {
-		notes.push_back(Note(500 + 4000 * i, 1));
-		notes.push_back(Note(2000 + 4000 * i, 4));
-		notes.push_back(Note(1000 + 4000 * i, 2));
-		notes.push_back(Note(3500 + 4000 * i, 7));
-		notes.push_back(Note(3500 + 4000 * i, 11));
-		notes.push_back(Note(1500 + 4000 * i, 3));
-		notes.push_back(Note(3000 + 4000 * i, 6));
-		notes.push_back(Note(2500 + 4000 * i, 5));
-		notes.push_back(Note(0 + 4000 * i, 0));
-	}
+	//SAMB読んで見る
+	Jmemo2::Parser jmemo2;
+	jmemo2.initWithFileName("musics/SABM/SABM.jmemo2");
+
+	std::vector<Note> notes = jmemo2.getNotes();
 
 	std::sort(notes.begin(), notes.end(), [](Note x, Note y) -> int { return (x.getJustTime() < y.getJustTime()); });
 

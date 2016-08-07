@@ -47,7 +47,8 @@ int main(int argc, char * argv[]) {
 	
 	//メインウィンドウのインスタンスを生成
 	//TO DO : 設定ファイルからの読み出し
-	LayerManager mainwindow("jubeon v0.1", sf::VideoMode(1080, 1920), true, 80, sf::Vector2i(1920, -840), sf::Style::None);
+	//LayerManager mainwindow("jubeon v0.1", sf::VideoMode(1080, 1920), true, 80, sf::Vector2i(1920, -840), sf::Style::None);
+	LayerManager mainwindow("jubeon v0.1", sf::VideoMode(800, 1080), true, 80, sf::Vector2i(0,0), sf::Style::None);
 
 	//メインウィンドウの生成
 	mainwindow.createWindow();

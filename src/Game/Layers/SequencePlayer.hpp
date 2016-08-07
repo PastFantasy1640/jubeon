@@ -29,7 +29,8 @@ namespace jubeon {
 					std::shared_ptr<jubeon::game::Music> music,
 					std::shared_ptr<jubeon::game::PlayRecord> playrecord,
 					std::shared_ptr<std::map<const Note *, const JudgedPanelInput *>> seq_pr_mapping,
-					std::shared_ptr<jubeon::game::PanelPosition> panel_position
+					std::shared_ptr<jubeon::game::PanelPosition> panel_position,
+					int offset_ms
 					);
 				
 				virtual void Init() override;
@@ -51,6 +52,9 @@ namespace jubeon {
 
 				//前回調査した時間
 				unsigned int before_check_ms;
+
+				//描写するオフセットms
+				int offset_ms;
 
 				sf::Texture panel_frame;
 
