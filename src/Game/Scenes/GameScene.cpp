@@ -30,6 +30,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	this->getMainWindow()->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
 	this->getMainWindow()->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 
+
 	//マッピングの用意
 	this->seq_pr_mapping.reset(new std::map<const Note *, const JudgedPanelInput *>);
 

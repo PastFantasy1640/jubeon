@@ -18,6 +18,13 @@
 //Logger
 #include "Systems/Logger.hpp"
 
+//for config loading
+#include "Storages/JsonFileStorage.hpp"
+#include "Models/PanelConfig.hpp"
+
+//for panel input
+#include "Input/ListenPanel.hpp"
+
 
 #ifdef _DEBUG
 #include <crtdbg.h>	//メモリリークログ用
@@ -44,6 +51,16 @@ int main(int argc, char * argv[]) {
 
 	//メインウィンドウの生成
 	mainwindow.createWindow();
+
+
+	//パネルコンフィグ
+	jubeon::storages::JsonFileStorage keyconfig_storage("media/config/keyconfig.json");
+	shared_ptr<jubeon::models::PanelConfig> pconfig = keyconfig_storage.getModel<jubeon::models::PanelConfig>();
+
+	pconfig->setInstance(pconfig);	//シングルトン？
+
+	//パネル起動
+	jubeon::input::ListenPanel::Listen();
 
 	//最初に使用するシーンを生成
 	unique_ptr<scenes::GameScene> upGameSceneInstance(new scenes::GameScene());
