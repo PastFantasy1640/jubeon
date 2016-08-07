@@ -26,18 +26,18 @@ bool jubeon::models::PanelConfig::Init(picojson::value val)
 {
 	try {
 		//TO DO : throwï∂
-		if (!val.is<picojson::object>()) throw "hoge";
+		if (!val.is<picojson::object>()) std::exception();
 
 		auto root = val.get<picojson::object>();
 
-		if (!picojson_util::has_field<picojson::array>(val, "keyconfig")) throw "hoge";
+		if (!picojson_util::has_field<picojson::array>(val, "keyconfig")) throw std::exception();
 
 		auto keyconfigs = root["keyconfig"].get<picojson::array>();
 		
-		if (keyconfigs.size() != 16) throw "hoge";
+		if (keyconfigs.size() != 16) throw std::exception();
 		for (auto p : keyconfigs) {
 			//ÇªÇÍÇºÇÍÇ≈2Ç¬ÇÃílÇ™Ç†ÇÈÇ©
-			if (p.get<picojson::array>().size() != 2) throw "hoge";
+			if (p.get<picojson::array>().size() != 2) throw std::exception();
 		}
 		
 
@@ -55,7 +55,7 @@ bool jubeon::models::PanelConfig::Init(picojson::value val)
 			}
 		}
 	}
-	catch (std::string e) {
+	catch (std::exception e) {
 		systems::Logger::error("keyconfigÇÃjsonÇ…åÎÇËÇ™Ç†ÇËÇ‹Ç∑ÅB");
 		return false;
 	}

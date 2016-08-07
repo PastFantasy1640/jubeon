@@ -7,6 +7,8 @@
 #include "Game/Layers/SequencePlayer.hpp"
 #include "Game/Layers/ShutterLayer.hpp"
 
+//for panel position config
+#include "Game/PanelPosition.hpp"
 
 //for sort
 #include <algorithm>
@@ -30,6 +32,11 @@ void jubeon::game::scenes::GameScene::init(void)
 	this->getMainWindow()->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
 	this->getMainWindow()->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 
+	//パネルの設定を読み出す
+	shared_ptr<PanelPosition> main_panel_position(new PanelPosition);
+	main_panel_position->loadJson("media/config/mainpanel.json");
+	shared_ptr<PanelPosition> sub_panel1_position(new PanelPosition);
+	sub_panel1_position->loadJson("media/config/subpanel1.json");
 
 	//マッピングの用意
 	this->seq_pr_mapping.reset(new std::map<const Note *, const JudgedPanelInput *>);
@@ -42,9 +49,7 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
 	this->playrecord.reset(new jubeon::game::PlayRecord);
-
-	PanelInput p;
-
+	
 	for (int i = 0; i < 15; i++) {
 		this->playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(1, PUSH, i * 4000), Judge::NOJUDGE);
@@ -90,8 +95,10 @@ void jubeon::game::scenes::GameScene::init(void)
 	//ファイルを読み込んでセット
 	this->sequence.reset(new Sequence(notes));
 
-	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, this->playrecord,this->seq_pr_mapping));
+	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, main_panel_position));
+	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, sub_panel1_position));
 	this->getMainWindow()->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
+	this->getMainWindow()->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
 
 
 	//楽曲の再生

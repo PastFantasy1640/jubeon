@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include "Lexer.hpp"
 
+#include "Game/Sequence.hpp"
+
 // Example:
 // Jmemo2Parser parser;
 // parser.initWithFileName(filename);
@@ -50,15 +52,6 @@ typedef struct Music {
         offset(0) {};
 } Music;
 
-typedef struct Note {
-    int justTime;
-    int panelIndex;
-    int duration;
-    Note() 
-        : justTime(0),
-        panelIndex(0),
-        duration(0) {};
-} Note;
 
 class Parser {
 public:
@@ -66,7 +59,7 @@ public:
     void initWithString(string source);
     void initWithFileName(string fileName);
     Music getMusic() { return _music; };
-    vector<Note> getNotes() { return _notes; };
+    vector<jubeon::game::Note> getNotes() { return _notes; };
     bool parseLabel();
     bool parseCommand();
     bool parseAssign();
@@ -74,7 +67,7 @@ public:
 
     void flushBuffer();
 private:
-    vector<Note> _notes;
+    vector<jubeon::game::Note> _notes;
     Music _music;
     Lexer _lexer;
     ParserState _state;

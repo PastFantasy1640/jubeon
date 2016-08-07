@@ -145,11 +145,7 @@ void Parser::flushBuffer() {
    });
    for(auto placement : placementBuff) {
        auto rhythm = rhythmBuff[placement.first];
-       Note note;
-       note.duration = 0;
-       note.justTime = rhythm.second;
-       note.panelIndex = placement.second;
-       _notes.push_back(note);
+       _notes.push_back(jubeon::game::Note(rhythm.second, placement.second, 0, 0));
    }
    // バッファをクリア
    _state.rhythmBuffer.clear();

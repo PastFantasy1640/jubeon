@@ -9,8 +9,13 @@
 #include "Systems/Logger.hpp"
 
 
-jubeon::game::layers::SequencePlayer::SequencePlayer(std::shared_ptr<jubeon::game::Sequence> sequence, std::shared_ptr<jubeon::game::Music> music, std::shared_ptr<jubeon::game::PlayRecord> playrecord, std::shared_ptr<std::map<const Note *, const JudgedPanelInput *>> seq_pr_mapping)
-	: sequence(sequence), music(music), playrecord(playrecord), seq_pr_mapping(seq_pr_mapping)
+jubeon::game::layers::SequencePlayer::SequencePlayer(
+	std::shared_ptr<jubeon::game::Sequence> sequence,
+	std::shared_ptr<jubeon::game::Music> music,
+	std::shared_ptr<jubeon::game::PlayRecord> playrecord,
+	std::shared_ptr<std::map<const Note *, const JudgedPanelInput *>> seq_pr_mapping,
+	std::shared_ptr<jubeon::game::PanelPosition> panel_position)
+	: sequence(sequence), music(music), playrecord(playrecord), seq_pr_mapping(seq_pr_mapping), panel_position(panel_position)
 {
 }
 /*
@@ -105,8 +110,11 @@ void jubeon::game::layers::SequencePlayer::Draw()
 			if (tex != nullptr) {
 
 				sf::Sprite markersp(*tex);
-				markersp.setPosition(1 + (jpi->second->panel_no % 4) * (163 + 38), 593 + (jpi->second->panel_no / 4) * (163 + 38));
-				markersp.setScale(163.0f / tex->getSize().x, 163.0f / tex->getSize().y);
+
+				const sf::IntRect & rect = this->panel_position->get(jpi->second->panel_no);
+
+				markersp.setPosition(rect.left,rect.top);
+				markersp.setScale(PanelPosition::get_ex(tex->getSize().x, rect.width), PanelPosition::get_ex(tex->getSize().y, rect.height));
 				this->draw(markersp);
 
 			}
@@ -119,8 +127,10 @@ void jubeon::game::layers::SequencePlayer::Draw()
 			if (tex != nullptr) {
 
 				sf::Sprite markersp(*tex);
-				markersp.setPosition(1 + (ite_n->getPanelIndex() % 4) * (163 + 38), 593 + (ite_n->getPanelIndex() / 4) * (163 + 38));
-				markersp.setScale(163.0f / tex->getSize().x, 163.0f / tex->getSize().y);
+				const sf::IntRect & rect = this->panel_position->get(ite_n->getPanelIndex());
+
+				markersp.setPosition(rect.left, rect.top);
+				markersp.setScale(PanelPosition::get_ex(tex->getSize().x, rect.width), PanelPosition::get_ex(tex->getSize().y, rect.height));
 				this->draw(markersp);
 
 			}
@@ -201,8 +211,10 @@ void jubeon::game::layers::SequencePlayer::Draw()
 			//˜g‚Ì‘¾‚³‚Í38
 			//0”Ô–Ú‚Ìƒpƒlƒ‹‚Ì¶ãÀ•W‚Í(1,593)
 			sf::Sprite sp(this->panel_frame);
-			sp.setPosition(1 + (i % 4) * (163 + 38), 593 + (i / 4) * (163 + 38));
-			sp.setScale(163.0f / 190.0f, 163.0f / 190.0f);
+			const sf::IntRect & rect = this->panel_position->get(i);
+
+			sp.setPosition(rect.left, rect.top);
+			sp.setScale(PanelPosition::get_ex(this->panel_frame.getSize().x, rect.width), PanelPosition::get_ex(this->panel_frame.getSize().y, rect.height));
 			this->draw(sp);
 		}
 	}
