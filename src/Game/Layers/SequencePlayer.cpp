@@ -1,14 +1,21 @@
+//Interface Header file
 #include "SequencePlayer.hpp"
 
+//for std::shared_ptr
 #include <memory>
 
+//for DEBUG
 #include <iostream>
+#include "Input/ListenPanel.hpp"
 
-#include "../PlayRecord.hpp"
-
+//for logging
 #include "Systems/Logger.hpp"
 
+//for getting resource
+#include "Storages/ResourceManager.hpp"
+#include "Storages/FontManager.hpp"
 
+//Constructor
 jubeon::game::layers::SequencePlayer::SequencePlayer(
 	std::shared_ptr<jubeon::game::Sequence> sequence,
 	std::shared_ptr<jubeon::game::Music> music,
@@ -19,6 +26,8 @@ jubeon::game::layers::SequencePlayer::SequencePlayer(
 	: sequence(sequence), music(music), playrecord(playrecord), seq_pr_mapping(seq_pr_mapping), panel_position(panel_position), offset_ms(offset_ms)
 {
 }
+
+
 /*
 void jubeon::game::layers::SequencePlayer::process(void)
 {
@@ -53,41 +62,43 @@ void jubeon::game::layers::SequencePlayer::process(void)
 	//TO DO : まだ(ry
 }
 */
+
+//Initialize
 void jubeon::game::layers::SequencePlayer::Init()
 {
 	//初期化処理
 
 	//パネル枠の読み込み
-	this->panel_frame.loadFromFile("media/image/panel_shadow.png");
-	//panel_shadow.pngはサイズ190x190
-	//伸縮させる可能性があるので、smooth適用
-	this->panel_frame.setSmooth(true);
+	storage::ResourceManager::getTexture("media/image/panel_shadow.png");
 
+
+
+	//###################TEMPORARY####################
+	//マーカーマネージャ－みたいなのを用意する
 	//マーカー読み込みテスト
 	this->mk.reset(new Marker("media/marker/shutter","shutter.json"));
 	if (!this->mk->load()) {
 		systems::Logger::error("マーカーが読み込めませんでした");
 	}
 
+
+	//画面プッシュは無し
 	this->pushing = 0;
 }
 
 void jubeon::game::layers::SequencePlayer::Draw()
 {
-
+	//画面クリア
 	this->clearBuffer();
 
 	//描写
-
 	//Musicに問い合わせて今の再生時刻を取得
-	const unsigned int ms = this->music->getPlayingCurrentTime();
+	const int mms = this->music->getPlayingCurrentTime();
+	const int ms = this->music->getPlayingCurrentTime() - this->offset_ms;
 
-	//Sequenceからインスタンスを取得
-	//済
 
-	//PlayRecordからインスタンスを取得
-	//済、というか持ってる
 
+	//### 譜面の描写 ###
 	//譜面表示の可能性のあるmsは、CurrentMS - (disappear_time * 2)から、CurrentMS + appear_time
 	//全て最高500msであると仮定して
 	const int start_ms = ms - 1000;
@@ -107,7 +118,7 @@ void jubeon::game::layers::SequencePlayer::Draw()
 			//あった
 			//ということはすでに判定が終わっている場合である。
 			//Markerのテクスチャを取得
-			const sf::Texture * tex = this->mk->getTexturePtr(this->music->getPlayingCurrentTime() - jpi->second->ms, jpi->second->judge);
+			const sf::Texture * tex = this->mk->getTexturePtr(ms - jpi->second->ms, jpi->second->judge);
 			if (tex != nullptr) {
 
 				sf::Sprite markersp(*tex);
@@ -124,7 +135,7 @@ void jubeon::game::layers::SequencePlayer::Draw()
 			//なかった
 			//まだ終わってない
 			//Markerのテクスチャを取得
-			const sf::Texture * tex = this->mk->getTexturePtr(this->music->getPlayingCurrentTime() - ite_n->getJustTime(), NOJUDGE);
+			const sf::Texture * tex = this->mk->getTexturePtr(ms - ite_n->getJustTime(), NOJUDGE);
 			if (tex != nullptr) {
 
 				sf::Sprite markersp(*tex);
@@ -139,33 +150,11 @@ void jubeon::game::layers::SequencePlayer::Draw()
 		}
 	}
 
-	//描写
 
 
-	//*****************とりあえず今はテストとして、
-
-	//Markerのテクスチャ取得はあとだな
-	//perfectタイムを0msとして、それよりも早い場合は負のms、遅い場合は正のms
-	//指定して関数を呼べば、対応するマーカーフレームのテクスチャが返される
-	//それで描写、ok
-	
-	auto to_binString = [](unsigned int val)
-	{
-		if (!val)
-			return std::string("0");
-		std::string str;
-		while (val != 0) {
-			if ((val & 1) == 0)  // val は偶数か？
-				str.insert(str.begin(), '0');  //  偶数の場合
-			else
-				str.insert(str.begin(), '1');  //  奇数の場合
-			val >>= 1;
-		}
-		return str;
-	};
 
 
-	//押されてるときのマーカー反応をやろう
+	//### パネルフレームの表示 ###
 	//どのパネルが押されていたか、前回調査したmsを記録しておく ->before_check_ms
 
 	//もしも、bcm以前にPanelInputを追加する場合は、bcmをその時間まで引き戻して記録する。
@@ -184,44 +173,45 @@ void jubeon::game::layers::SequencePlayer::Draw()
 			if ((*p).t) {
 				//押下
 				this->setPushing((*p).panel_no);
-				//std::cout << "調査" << ms << "ms:前回" << this->before_check_ms << "ms:" << to_binString(this->pushing) << "\n";
 			}
 			else {
 				//離した
 				this->setReleasing((*p).panel_no);
-				//std::cout << "調査" << ms << "ms:" << to_binString(this->pushing) << "\n";
 			}
 
 			//もしも、曲を巻き戻したりして、描写を一新しなければならない場合、bcmに0msを指定し、全更新しなくてはならない。
 
 		}
 
-		this->before_check_ms = ms;
+		this->before_check_ms = ms - 100;
 
 	}
 
-	//最終的にpushされてる場所に描写
-	//TO DO : パネル情報と照らし合わせながら
+	sf::Text text("ms:" + std::to_string(ms), storage::FontManager::getFont("media/fonts/Frutiger.TTF"));
+	text.setColor(sf::Color::Black);
+	this->draw(text);
+	text.setString("mms:" + std::to_string(mms));
+	text.setPosition(0, 100);
+	this->draw(text);
+	text.setString("panelms:" + std::to_string(input::ListenPanel::panel_clock_->getElapsedTime().asMilliseconds() - input::ListenPanel::offset));
+	text.setPosition(0, 130);
+	this->draw(text);
+	text.setString("diff ms:" + std::to_string(input::ListenPanel::panel_clock_->getElapsedTime().asMilliseconds() - input::ListenPanel::offset - mms));
+	text.setPosition(0, 160);
+	this->draw(text);
 
+	//最終的にpushされてる場所に描写
 	for (int i = 0; i < 16; i++) {
 		if (this->isPushing(i)) {
-			//sf::RectangleShape test(sf::Vector2f(163.0f, 163.0f));
-			//test.setFillColor(sf::Color::Red);
-			//test.setPosition(200 + (i % 4) * 170, 200 + (i / 4) * 170);
-			//枠の大きさは163
-			//枠の太さは38
-			//0番目のパネルの左上座標は(1,593)
-			sf::Sprite sp(this->panel_frame);
+			const sf::Texture & pframe = storage::ResourceManager::getTexture("media/image/panel_shadow.png");
+			sf::Sprite sp(pframe);
 			const sf::IntRect & rect = this->panel_position->get(i);
 
 			sp.setPosition(rect.left, rect.top);
-			sp.setScale(PanelPosition::get_ex(this->panel_frame.getSize().x, rect.width), PanelPosition::get_ex(this->panel_frame.getSize().y, rect.height));
+			sp.setScale(PanelPosition::get_ex(pframe.getSize().x, rect.width), PanelPosition::get_ex(pframe.getSize().y, rect.height));
 			this->draw(sp);
 		}
 	}
-
-
-
 }
 
 void jubeon::game::layers::SequencePlayer::Exit()

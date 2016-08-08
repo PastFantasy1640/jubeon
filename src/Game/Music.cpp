@@ -249,12 +249,20 @@ void jubeon::game::Music::setForPlay(void)
 	}
 
 	this->sound.setBuffer(*this->up_sound_buffer);
+	this->sound.play();
+	this->sound.pause();
 	return;
 }
 
-void jubeon::game::Music::playSound(void)
+void jubeon::game::Music::playSound(unsigned int wait_offset)
 {
-	this->sound.play();
+	this->wait_offset = wait_offset;
+	this->wait_offset_ck.restart();
+	auto th1 = std::thread([this, wait_offset] {
+		while(this->wait_offset_ck.getElapsedTime().asMilliseconds() < wait_offset) std::this_thread::sleep_for(std::chrono::microseconds(100));
+		this->sound.play();
+	});
+	th1.detach();
 }
 
 unsigned int jubeon::game::Music::getPlayingCurrentTime(void) const
@@ -262,6 +270,7 @@ unsigned int jubeon::game::Music::getPlayingCurrentTime(void) const
 	if (this->isInit()) {
 		if (this->sound.getStatus() == sf::SoundSource::Status::Playing)
 			return this->sound.getPlayingOffset().asMilliseconds();
+		else return -(wait_offset - wait_offset_ck.getElapsedTime().asMilliseconds());
 	}
 	return 0;
 }

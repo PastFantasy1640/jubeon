@@ -108,7 +108,11 @@ namespace jubeon {
 			/// <summary>オーバーフローフラグをリセットする</summary>
 			static void ResetOverflowFlag(void);
 
+			static void setTime(const int offset);
 
+			static sf::Clock * panel_clock_;
+
+			static std::atomic<int> offset;
 		private:
 			static std::list<PanelInput> que_;
 
@@ -117,9 +121,9 @@ namespace jubeon {
 
 			static std::atomic<bool> is_thread_exit_;
 
+
 			static std::mutex mtx_;
 			static void GetPanelThread(void);
-			static sf::Clock * panel_clock_;
 
 			static bool pushing_[16];
 

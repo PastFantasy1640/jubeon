@@ -15,6 +15,9 @@
 //for sort
 #include <algorithm>
 
+//for panel input
+#include "Input/ListenPanel.hpp"
+
 using namespace jubeon::game;
 using namespace jubeon::graphics;
 using namespace jubeon::systems;
@@ -51,7 +54,7 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
 	this->playrecord.reset(new jubeon::game::PlayRecord);
-	
+	/*
 	for (int i = 0; i < 15; i++) {
 		this->playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(1, PUSH, i * 4000), Judge::NOJUDGE);
@@ -69,7 +72,7 @@ void jubeon::game::scenes::GameScene::init(void)
 		this->playrecord->addJudged(PanelInput(9, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(12, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
 		this->playrecord->addJudged(PanelInput(13, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-	}
+	}*/
 
 
 
@@ -90,16 +93,22 @@ void jubeon::game::scenes::GameScene::init(void)
 	//ファイルを読み込んでセット
 	this->sequence.reset(new Sequence(notes));
 
-	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, main_panel_position));
-	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, sub_panel1_position));
+	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, main_panel_position,-430));
+	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, sub_panel1_position,0));
 	this->getMainWindow()->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
-	this->getMainWindow()->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
+	//this->getMainWindow()->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
 
 
 	//楽曲の再生
+	//パネルのキューを全リセット
+	ListenPanel::getEvent();
+
+	//タイムマーカーを打つ
+	ListenPanel::setTime(-2300);
+
 	music->setForPlay();
 
-	music->playSound();
+	music->playSound(2000);
 
 	this->isinited = true;
 	
@@ -118,6 +127,16 @@ int jubeon::game::scenes::GameScene::process(void)
 		else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
 			return 1;
 		}
+
+
+		//パネルから入力を取ってくる
+		std::vector<PanelInput> pinput = ListenPanel::getEvent();
+
+		for (auto ite : pinput) {
+			playrecord->addJudged(ite, NOJUDGE);
+			
+		}
+
 	}
 
 

@@ -51,12 +51,10 @@ namespace jubeon {
 				void setReleasing(unsigned char panel_no) { pushing &= (~(0x00000001 << panel_no)); }
 
 				//前回調査した時間
-				unsigned int before_check_ms;
+				int before_check_ms;
 
 				//描写するオフセットms
 				int offset_ms;
-
-				sf::Texture panel_frame;
 
 				//TEMPORARY
 				std::shared_ptr<Marker> mk;

@@ -23,6 +23,7 @@ std::mutex jubeon::input::ListenPanel::mtx_;
 bool jubeon::input::ListenPanel::pushing_[16] = { false };
 sf::Clock * jubeon::input::ListenPanel::panel_clock_ = NULL;
 std::atomic<bool> jubeon::input::ListenPanel::is_thread_exit_ = false;
+std::atomic<int> jubeon::input::ListenPanel::offset = 0;
 bool jubeon::input::ListenPanel::is_queue_ = true;
 bool jubeon::input::ListenPanel::is_overflow_ = false;
 
@@ -65,7 +66,7 @@ void jubeon::input::ListenPanel::SetQue(const int n) {
 	pushing_[n] ^= true;
 	sf::Time t = panel_clock_->getElapsedTime();
 	PanelInput tmp;
-	tmp.ms = t.asMilliseconds();
+	tmp.ms = t.asMilliseconds() - offset;
 	tmp.panel_no = n;
 	tmp.t = (pushing_[n] ? Type::PUSH : Type::RELEASE);
 
@@ -93,6 +94,7 @@ void jubeon::input::ListenPanel::GetPanelThread(void) {
 				if (sf::Keyboard::isKeyPressed(jubeon::models::PanelConfig::getInstance()->getKeyCode(n)) ^ pushing_[n]) SetQue(n);
 			}
 		}
+		std::this_thread::sleep_for(std::chrono::microseconds(1));
 		if (is_thread_exit_) return;
 	}
 
@@ -125,4 +127,9 @@ bool jubeon::input::ListenPanel::IsOverflow(void) {
 
 void jubeon::input::ListenPanel::ResetOverflowFlag(void) {
 	is_overflow_ = false;
+}
+
+void jubeon::input::ListenPanel::setTime(const int offset)
+{
+	ListenPanel::offset = panel_clock_->getElapsedTime().asMilliseconds() - offset;
 }

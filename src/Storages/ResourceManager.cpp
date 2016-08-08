@@ -1,5 +1,8 @@
 #include "ResourceManager.hpp"
 
+std::map<std::string, sf::Texture> jubeon::storage::ResourceManager::textures;
+std::map<std::string, sf::SoundBuffer> jubeon::storage::ResourceManager::sounds;
+
 const sf::Texture & jubeon::storage::ResourceManager::getTexture(const std::string fpath)
 {
 	//ストレージにあるかどうか
