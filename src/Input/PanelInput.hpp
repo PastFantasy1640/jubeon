@@ -17,7 +17,7 @@ namespace jubeon {
 		typedef struct PanelInput {
 			unsigned char panel_no;
 			jubeon::input::Type t;
-			unsigned int ms;				//‚±‚ê‚Í‹È‚Æ“¯Šú‚·‚é‚ªAoffset‚ğ‰ÁZŒã‚Ì‚à‚Ì
+			int ms;				//‚±‚ê‚Í‹È‚Æ“¯Šú‚·‚é‚ªAoffset‚ğ‰ÁZŒã‚Ì‚à‚Ì
 			PanelInput() : panel_no(0), t(RELEASE), ms(0) {}
 			PanelInput(unsigned char panel_no, jubeon::input::Type t, unsigned int ms)
 				: panel_no(panel_no), t(t), ms(ms) {}

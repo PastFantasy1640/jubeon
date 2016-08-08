@@ -15,6 +15,7 @@ namespace jubeon{ namespace storages {
 		inline std::shared_ptr<T> getModel() {
 			static_assert(std::is_base_of<jubeon::models::ModelBase, T>::value, "");
 			std::ifstream ifs(filename);
+			if (!ifs.is_open()) std::cerr << "failed to open json" << std::endl;
 			std::istreambuf_iterator<char> it(ifs), itEnd;
 			std::shared_ptr<T> model(new T());
 			model->jubeon::models::ModelBase::Init(std::string(it, itEnd));

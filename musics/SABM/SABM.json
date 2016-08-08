@@ -1,0 +1,19 @@
+{
+	"notes" : {
+		"filename" : ["testnote_b.isf","","testnote_p.isf"],
+		"type" : "jmemo2"
+	},
+	
+	"music" : {
+		"name_artist" : "name_artist.png",
+		"name_small" : "name_small.png",
+		"soundfile" : "music.ogg",
+		"shortsoundfile" : "testmusic_s.flac",
+		"thumbnail" : "thumbnail",
+		"bpm_string" : "60 - 120"
+	},
+	
+	"game" : {
+		"level" : [3,5,8]
+	}
+}

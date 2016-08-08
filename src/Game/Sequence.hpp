@@ -7,13 +7,11 @@
 #include <string>
 #include <memory>
 #include "JudgeDefinition.hpp"
-#include "../Input/PanelInput.hpp"
 
 namespace jubeon {
 	namespace game {
-
-		//extern class PanelInput;
-
+		
+		//Noteはconst付きメソッドのみでRead Onlyなためスレッドセーフ
 		class Note{
 
 		private:
@@ -29,15 +27,12 @@ namespace jubeon {
 			//パネル番号(0-15)
 			int panelIndex;
 
-			//ホールドの時間
+			//ホールドの時間(0の場合はタッチ譜面）
 			int duration;
 
 			//ホールドマーカーの出現位置パネル
 			int holdMarkerIndex;
 
-			//このノートに対する判定
-			//delete禁止
-			//const PanelInput * judged;
 			
 		public:
 			
@@ -53,23 +48,24 @@ namespace jubeon {
 			int getPanelIndex(void) const;
 			int getHoldDuration(void) const;
 			int getHoldMarkerIndex(void) const;
-
-			//ジャッジ
-			void getJudge(int * ms_diff, jubeon::game::Judge * judge) const;
+			bool isHold(void) const;
+			/*
+			bool operator == (Note n) { 
+				return (n.duration == this->duration
+					&& n.holdMarkerIndex == this->holdMarkerIndex
+					&& n.justTime == this->justTime
+					&& n.panelIndex == this->panelIndex);
+			}*/
 			
 		};
-
-		typedef std::vector<Note> Notes;
-		typedef std::shared_ptr<Notes> SPNotes;
-
-		class Sequence {
+		
+		//Noteはconst付きメソッドのみでRead Onlyなためスレッドセーフ
+		class Sequence : protected std::vector<Note>{
 
 		private:
-			//譜面本体
-			SPNotes notes;
 			
 			//デフォルトコンストラクタは禁止
-			Sequence();
+			Sequence(void);
 
 			//コピーコンストラクタも禁止。
 			Sequence(const Sequence & cp);
@@ -77,12 +73,18 @@ namespace jubeon {
 		public:
 
 			//初期化
-			//ロードまではしない
 			Sequence(const std::vector<Note> notes);
 			
-			//ノートを取得
-			SPNotes getNotes(void);
-			
+			const Note & operator[] (size_t idx) const;
+
+			const Note & at(size_t idx) const;
+
+			std::vector<Note>::const_iterator begin() const;
+
+			std::vector<Note>::const_iterator end() const;
+
+			std::vector<Note>::const_iterator search(const int ms) const;
+
 		};
 	}
 }

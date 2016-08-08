@@ -39,7 +39,7 @@ int jubeon::game::Note::getHoldMarkerIndex(void) const
 	return this->holdMarkerIndex;
 }
 
-void jubeon::game::Note::getJudge(int * ms_diff, jubeon::game::Judge * judge) const
+bool jubeon::game::Note::isHold(void) const
 {
-	
+	return this->getHoldDuration() != 0;
 }

@@ -14,6 +14,7 @@
 #include "../PlayRecord.hpp"
 
 #include "../Marker.hpp"
+#include "../PanelPosition.hpp"
 
 namespace jubeon {
 	namespace game {
@@ -23,18 +24,25 @@ namespace jubeon {
 			class SequencePlayer : public jubeon::graphics::LayerBase {
 			public:
 
-				SequencePlayer(std::shared_ptr<jubeon::game::Sequence> sequence, const Music * music, std::unique_ptr<PlayRecord> playrecord);
-
-				void process(void);
-
+				SequencePlayer(
+					std::shared_ptr<jubeon::game::Sequence> sequence,
+					std::shared_ptr<jubeon::game::Music> music,
+					std::shared_ptr<jubeon::game::PlayRecord> playrecord,
+					std::shared_ptr<std::map<const Note *, const JudgedPanelInput *>> seq_pr_mapping,
+					std::shared_ptr<jubeon::game::PanelPosition> panel_position,
+					int offset_ms
+					);
+				
 				virtual void Init() override;
 				virtual void Draw() override;
 				virtual void Exit() override;
 
 			private:
-				std::shared_ptr<jubeon::game::Sequence> sequence;
-				const Music * music;
-				std::unique_ptr<PlayRecord> playrecord;
+				const std::shared_ptr<jubeon::game::Sequence> sequence;
+				const std::shared_ptr<jubeon::game::Music> music;
+				const std::shared_ptr<jubeon::game::PlayRecord> playrecord;
+				const std::shared_ptr<std::map<const Note *, const JudgedPanelInput *>> seq_pr_mapping;
+				const std::shared_ptr<PanelPosition> panel_position;
 
 				//どのマーカーが押されたままか
 				unsigned int pushing;
@@ -43,12 +51,14 @@ namespace jubeon {
 				void setReleasing(unsigned char panel_no) { pushing &= (~(0x00000001 << panel_no)); }
 
 				//前回調査した時間
-				unsigned int before_check_ms;
+				int before_check_ms;
 
-				sf::Texture panel_frame;
+				//描写するオフセットms
+				int offset_ms;
 
 				//TEMPORARY
-				Marker mk;
+				std::shared_ptr<Marker> mk;
+
 
 			};
 		}

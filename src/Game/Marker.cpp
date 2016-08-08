@@ -183,7 +183,8 @@ int jubeon::game::Marker::MarkerTextures::getID() const
 
 const sf::Texture * jubeon::game::Marker::MarkerTextures::getTexture(int diff_ms) const
 {
-	if (diff_ms < 0) diff_ms = this->duration + diff_ms;
+	if (diff_ms < 0) 
+		diff_ms = this->duration + diff_ms;
 	if (diff_ms >= this->duration || diff_ms < 0) return nullptr;	//�͈͊O
 	
 	double pd = static_cast<double>(diff_ms) * this->size() / this->duration;

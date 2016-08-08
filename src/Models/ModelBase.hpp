@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Systems/picojson.hpp"
+#include <iostream>
 
 namespace jubeon { namespace models {
 	class ModelBase {
@@ -10,6 +11,7 @@ namespace jubeon { namespace models {
 			picojson::value v;
 			std::string err = picojson::parse(v, jsonStr);
 			if (!err.empty()) {
+				std::cerr << err << std::endl;
 				return false;
 			}
 			return this->Init(v);
