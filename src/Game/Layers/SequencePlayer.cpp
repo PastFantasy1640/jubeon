@@ -163,12 +163,12 @@ void jubeon::game::layers::SequencePlayer::Draw()
 	
 	//前回調査と今回調査のmsが同じ場合はスキップしていい。
 	//違う場合のみ更新
-	if (this->before_check_ms != ms) {
+	if (this->before_check_ms != mms) {
 
 		//それ以降から、現在のmsまでを線形解析し、パネルの押下状態を更新する
 		for (; p != this->playrecord->getJudgedList()->end(); p++) {
 			//その情報をもとに、押下による枠縁のグラデーション描写、もしくは、ホールド譜面の描写に使う。
-			if ((*p).ms > ms) break;	//今より新しいところへ行った場合、解析は終了
+			if ((*p).ms > mms) break;	//今より新しいところへ行った場合、解析は終了
 
 			if ((*p).t) {
 				//押下
@@ -183,7 +183,7 @@ void jubeon::game::layers::SequencePlayer::Draw()
 
 		}
 
-		this->before_check_ms = ms - 100;
+		this->before_check_ms = mms - 1000;
 
 	}
 

@@ -259,7 +259,7 @@ void jubeon::game::Music::playSound(unsigned int wait_offset)
 	this->wait_offset = wait_offset;
 	this->wait_offset_ck.restart();
 	auto th1 = std::thread([this, wait_offset] {
-		while(this->wait_offset_ck.getElapsedTime().asMilliseconds() < wait_offset) std::this_thread::sleep_for(std::chrono::microseconds(100));
+		while(this->wait_offset_ck.getElapsedTime().asMilliseconds() < wait_offset) std::this_thread::sleep_for(std::chrono::microseconds(10));
 		this->sound.play();
 	});
 	th1.detach();

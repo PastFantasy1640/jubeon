@@ -74,6 +74,7 @@ void jubeon::game::scenes::GameScene::init(void)
 		this->playrecord->addJudged(PanelInput(13, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
 	}*/
 
+	this->playrecord->readFromFile("hogehogehoge.txt");
 
 
 
@@ -125,6 +126,7 @@ int jubeon::game::scenes::GameScene::process(void)
 			return 1;
 		}
 		else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
+			//this->playrecord->writeToFile("hogehogehoge.txt");
 			return 1;
 		}
 
