@@ -1,37 +1,75 @@
+//////////////////////////////////////////////////////
+// (c) 2016 white ResourceManager.cpp
+//////////////////////////////////////////////////////
 #include "ResourceManager.hpp"
 
-std::map<std::string, sf::Texture> jubeon::storage::ResourceManager::textures;
-std::map<std::string, sf::SoundBuffer> jubeon::storage::ResourceManager::sounds;
+#include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 
-const sf::Texture & jubeon::storage::ResourceManager::getTexture(const std::string fpath)
+
+//////////////////////////////////////////////////////
+// TEXTURE
+//////////////////////////////////////////////////////
+template<> std::map<std::string, sf::Texture> jubeon::storage::ResourceManager<sf::Texture>::data;
+
+template<> const sf::Texture & jubeon::storage::ResourceManager<sf::Texture>::get(const std::string fpath)
 {
 	//ストレージにあるかどうか
-	if (textures.count(fpath) == 0) {
+	if (data.count(fpath) == 0) {
 		//無いならロードする
-		textures[fpath].loadFromFile(fpath);
-		textures[fpath].setSmooth(true);
+		data[fpath].loadFromFile(fpath);
+		data[fpath].setSmooth(true);
 	}
 
-	return textures[fpath];
+	return data[fpath];
 }
 
-void jubeon::storage::ResourceManager::deleteTexture(const std::string fpath)
+template<> void jubeon::storage::ResourceManager<sf::Texture>::erase(const std::string fpath)
 {
-	textures.erase(fpath);
+	data.erase(fpath);
 }
 
-const sf::SoundBuffer & jubeon::storage::ResourceManager::getSoundBuffer(const std::string fpath)
+
+//////////////////////////////////////////////////////
+// SOUND
+//////////////////////////////////////////////////////
+template<> std::map<std::string, sf::SoundBuffer> jubeon::storage::ResourceManager<sf::SoundBuffer>::data;
+
+template<> const sf::SoundBuffer & jubeon::storage::ResourceManager<sf::SoundBuffer>::get(const std::string fpath)
 {
 	//ストレージにあるかどうか
-	if (sounds.count(fpath) == 0) {
+	if (data.count(fpath) == 0) {
 		//無いならロードする
-		sounds[fpath].loadFromFile(fpath);
+		data[fpath].loadFromFile(fpath);
 	}
 
-	return sounds[fpath];
+	return data[fpath];
 }
 
-void jubeon::storage::ResourceManager::deleteSound(const std::string fpath)
+template<> void jubeon::storage::ResourceManager<sf::SoundBuffer>::erase(const std::string fpath)
 {
-	sounds.erase(fpath);
+	data.erase(fpath);
 }
+
+
+//////////////////////////////////////////////////////
+// FONT
+//////////////////////////////////////////////////////
+template<> std::map<std::string, sf::Font> jubeon::storage::ResourceManager<sf::Font>::data;
+
+template<> const sf::Font & jubeon::storage::ResourceManager<sf::Font>::get(const std::string fpath)
+{
+	//ストレージにあるかどうか
+	if (data.count(fpath) == 0) {
+		//無いならロードする
+		data[fpath].loadFromFile(fpath);
+	}
+
+	return data[fpath];
+}
+
+template<> void jubeon::storage::ResourceManager<sf::Font>::erase(const std::string fpath)
+{
+	data.erase(fpath);
+}
+
