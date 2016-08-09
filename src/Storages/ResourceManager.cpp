@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////
 // TEXTURE
 //////////////////////////////////////////////////////
-template<> std::map<std::string, sf::Texture> jubeon::storage::ResourceManager<sf::Texture>::data;
+template<> std::unordered_map<std::string, sf::Texture> jubeon::storage::ResourceManager<sf::Texture>::data;
 
 template<> const sf::Texture & jubeon::storage::ResourceManager<sf::Texture>::get(const std::string fpath)
 {
@@ -33,7 +33,7 @@ template<> void jubeon::storage::ResourceManager<sf::Texture>::erase(const std::
 //////////////////////////////////////////////////////
 // SOUND
 //////////////////////////////////////////////////////
-template<> std::map<std::string, sf::SoundBuffer> jubeon::storage::ResourceManager<sf::SoundBuffer>::data;
+template<> std::unordered_map<std::string, sf::SoundBuffer> jubeon::storage::ResourceManager<sf::SoundBuffer>::data;
 
 template<> const sf::SoundBuffer & jubeon::storage::ResourceManager<sf::SoundBuffer>::get(const std::string fpath)
 {
@@ -55,7 +55,7 @@ template<> void jubeon::storage::ResourceManager<sf::SoundBuffer>::erase(const s
 //////////////////////////////////////////////////////
 // FONT
 //////////////////////////////////////////////////////
-template<> std::map<std::string, sf::Font> jubeon::storage::ResourceManager<sf::Font>::data;
+template<> std::unordered_map<std::string, sf::Font> jubeon::storage::ResourceManager<sf::Font>::data;
 
 template<> const sf::Font & jubeon::storage::ResourceManager<sf::Font>::get(const std::string fpath)
 {

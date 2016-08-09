@@ -10,15 +10,11 @@
 #include <SFML/Graphics.hpp>
 #include "Models/ModelBase.hpp"
 
+#include "DifficultyDefinition.hpp"
+
 namespace jubeon {
 	namespace game {
 
-		//難易度を表す列挙型
-		typedef enum Difficulty : size_t {
-			BASIC = 0,
-			ADVANCED = 1,
-			EXTREME = 2
-		}Difficulty;
 
 		//レベルのtypedef。1～10
 		typedef unsigned char Level;

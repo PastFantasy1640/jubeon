@@ -6,7 +6,7 @@
 #ifndef JUBEON_STORAGE_RESOURCEMANAGER_HPP
 #define JUBEON_STORAGE_RESOURCEMANAGER_HPP
 
-#include <map>
+#include <unordered_map>
 
 namespace jubeon {
 	namespace storage {
@@ -16,7 +16,7 @@ namespace jubeon {
 			static const T & get(const std::string fpath);
 			static void erase(const std::string fpath);
 		private:
-			static std::map<std::string, T> data;
+			static std::unordered_map<std::string, T> data;
 		};
 	}
 }

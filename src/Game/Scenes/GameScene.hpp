@@ -11,6 +11,9 @@
 #include "Game/Music.hpp"
 #include "Game/PlayRecord.hpp"
 
+//for Layer
+#include "Game/Layers/PushframeLayer.hpp"
+
 #include <map>
 
 namespace jubeon {
@@ -21,13 +24,21 @@ namespace jubeon {
 				bool isinited = false;
 				void init();
 				
-				std::shared_ptr<std::map<const Note *, const JudgedPanelInput *>> seq_pr_mapping;
+				std::shared_ptr<std::map<const size_t, size_t>> seq_pr_mapping;
 				std::shared_ptr<Sequence> sequence;
 				std::shared_ptr<PlayRecord> playrecord;
 				std::shared_ptr<Music> music;
 
+				//レイヤー
+				std::shared_ptr<layers::PushframeLayer> push_frame_layer;
+
 
 				virtual int process(void) override;
+
+			private:
+
+				//オフセット
+				jMillisec offset;
 			};
 		};
 	};

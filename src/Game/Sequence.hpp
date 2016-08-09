@@ -85,6 +85,7 @@ namespace jubeon {
 
 			std::vector<Note>::const_iterator search(const int ms) const;
 
+			std::size_t size() const;
 		};
 	}
 }

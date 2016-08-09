@@ -60,3 +60,8 @@ std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::search(c
 	
 }
 
+std::size_t jubeon::game::Sequence::size() const
+{
+	return std::vector<Note>::size();
+}
+

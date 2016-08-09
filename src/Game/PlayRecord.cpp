@@ -49,7 +49,7 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 	//ƒwƒbƒ_‚Ì’Ç‰Á
 	ofst << "date:" << this->date << std::endl;
 	ofst << "name:" << this->name << std::endl;
-
+	
 	//î•ñ‚Ì‘‚«o‚µ
 	std::string type_str;
 	std::string judge_str;
@@ -60,13 +60,13 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 		}
 
 		switch (p->judge) {
-		case PERFECT:	judge_str = "PERFECT";
-		case GREAT:		judge_str = "GREAT";
-		case GOOD:		judge_str = "GOOD";
-		case EARLY:		judge_str = "EARLY";
-		case LATE:		judge_str = "LATE";
-		case MISS:		judge_str = "MISS";
-		case NOJUDGE:	judge_str = "NOJUDGE";
+		case PERFECT:	judge_str = "PERFECT"; break;
+		case GREAT:		judge_str = "GREAT";   break;
+		case GOOD:		judge_str = "GOOD";	   break;
+		case EARLY:		judge_str = "EARLY";   break;
+		case LATE:		judge_str = "LATE";	   break;
+		case MISS:		judge_str = "MISS";	   break;
+		case NOJUDGE:	judge_str = "NOJUDGE"; break;
 		}
 		ofst << std::to_string(p->ms) << "," << std::to_string(p->panel_no) << "," << type_str << "," << judge_str << std::endl;
 	}
