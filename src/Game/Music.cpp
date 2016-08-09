@@ -169,11 +169,18 @@ bool jubeon::game::Music::Init(picojson::value val)
 	for (int i = 0; i < 3;i++) this->notes_filepath[i] = directory + filenames[i].get<std::string>();
 	this->decode_type = notes["type"].get<std::string>();
 
-	this->music_name_artist.loadFromFile(music["name_artist"].get<std::string>());
+	this->music_name_artist.loadFromFile(directory + music["name_artist"].get<std::string>());
+	this->music_name_artist.setSmooth(true);
+
 	this->music_name_mini.loadFromFile(directory + music["name_small"].get<std::string>());
+	this->music_name_mini.setSmooth(true);
+	
 	this->sound_filepath = directory + music["soundfile"].get<std::string>();
 	this->sound_short_loop.loadFromFile(directory + music["shortsoundfile"].get<std::string>());
+	
 	this->thumbnail.loadFromFile(directory + music["thumbnail"].get<std::string>());
+	this->thumbnail.setSmooth(true);
+	
 	this->bpm_string = music["bpm_string"].get<std::string>();
 	for (int i = 0; i < 3; i++) this->level[i] = static_cast<unsigned char>(levels[i].get<double>());
 

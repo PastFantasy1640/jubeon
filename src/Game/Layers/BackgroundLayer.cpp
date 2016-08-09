@@ -24,8 +24,8 @@ void jubeon::game::layers::BackgroundLayer::Init()
 
 	//クロックをリスタート
 	this->times = 0;
-	for (int i = 0; i < 1500; i++) this->update();
-
+	for (int i = 0; i < 500; i++) this->update();
+	
 }
 
 

@@ -29,7 +29,7 @@ namespace jubeon {
 				this->clear(sf::Color(0, 0, 0, 0));
 			}
 			
-			sf::Sprite sp;
+			sf::Sprite buffer_sprite;
 
 		public:
 
@@ -39,7 +39,7 @@ namespace jubeon {
 
 			virtual ~LayerBase();
 
-			void prepareBuffer(const sf::Vector2u size);
+			void createBuffer(const sf::Vector2u size);
 
 			/** 終了コードを取得します。ただし取得できるのはインスタンスが存在する間のみです。
 			 * @returns 終了コード

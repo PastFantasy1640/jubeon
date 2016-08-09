@@ -26,10 +26,13 @@ using namespace jubeon::input;
 
 void jubeon::game::scenes::GameScene::init(void)
 {
+
+	this->music = Music::load("musics/SABM/SABM.json");
+
 	//TEMP
 	shared_ptr<layers::BackgroundLayer> bg(new layers::BackgroundLayer);
 	shared_ptr<layers::FrameLayer> frame(new layers::FrameLayer);
-	shared_ptr<layers::MusicInfoLayer> musicinfo(new layers::MusicInfoLayer);
+	shared_ptr<layers::MusicInfoLayer> musicinfo(new layers::MusicInfoLayer(music));
 	shared_ptr<layers::ShutterLayer> shutterlayer(new layers::ShutterLayer);
 
 	this->getMainWindow()->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
@@ -48,7 +51,6 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	vector<Note> hoge;
 
-	this->music = Music::load("musics/SABM/SABM.json");
 
 
 
@@ -74,7 +76,7 @@ void jubeon::game::scenes::GameScene::init(void)
 		this->playrecord->addJudged(PanelInput(13, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
 	}*/
 
-	this->playrecord->readFromFile("hogehogehoge.txt");
+	//this->playrecord->readFromFile("hogehogehoge.txt");
 
 
 
@@ -97,7 +99,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, main_panel_position,-430));
 	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, sub_panel1_position,0));
 	this->getMainWindow()->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
-	//this->getMainWindow()->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
+	this->getMainWindow()->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
 
 
 	//Šy‹È‚ÌÄ¶
@@ -136,7 +138,6 @@ int jubeon::game::scenes::GameScene::process(void)
 
 		for (auto ite : pinput) {
 			playrecord->addJudged(ite, NOJUDGE);
-			
 		}
 
 	}

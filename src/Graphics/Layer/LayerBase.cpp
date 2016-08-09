@@ -20,7 +20,7 @@ jubeon::graphics::LayerBase::~LayerBase()
 {
 }
 
-void jubeon::graphics::LayerBase::prepareBuffer(const sf::Vector2u size)
+void jubeon::graphics::LayerBase::createBuffer(const sf::Vector2u size)
 {
 	if (!this->is_create_buffer) {
 		this->create(size.x, size.y);
@@ -42,8 +42,8 @@ void jubeon::graphics::LayerBase::setExitCode(const int code)
 const sf::Sprite & jubeon::graphics::LayerBase::getSprite(void)
 {
 	this->display();
-	this->sp.setTexture(this->getTexture());
-	return this->sp;
+	this->buffer_sprite.setTexture(this->getTexture());
+	return this->buffer_sprite;
 }
 
 unsigned int jubeon::graphics::LayerBase::getExitCode() const {

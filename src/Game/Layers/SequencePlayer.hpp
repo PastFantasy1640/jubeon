@@ -37,6 +37,9 @@ namespace jubeon {
 				virtual void Draw() override;
 				virtual void Exit() override;
 
+				void setPushing(unsigned char panel_no) { pushing |= (0x00000001 << panel_no); }
+				void setReleasing(unsigned char panel_no) { pushing &= (~(0x00000001 << panel_no)); }
+
 			private:
 				const std::shared_ptr<jubeon::game::Sequence> sequence;
 				const std::shared_ptr<jubeon::game::Music> music;
@@ -47,8 +50,6 @@ namespace jubeon {
 				//どのマーカーが押されたままか
 				unsigned int pushing;
 				bool isPushing(unsigned char panel_no) { return (pushing & (0x00000001 << panel_no)) > 0; }
-				void setPushing(unsigned char panel_no) { pushing |= (0x00000001 << panel_no); }
-				void setReleasing(unsigned char panel_no) { pushing &= (~(0x00000001 << panel_no)); }
 
 				//前回調査した時間
 				int before_check_ms;

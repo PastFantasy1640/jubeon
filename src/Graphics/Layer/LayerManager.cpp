@@ -124,7 +124,7 @@ void jubeon::graphics::LayerManager::process(void) {
 
 	if (this->layer_list.size() > 0) {
 		for (auto p = --this->layer_list.end(); ; p--) {
-			(*p)->prepareBuffer(this->RENDER_TEXTURE_SIZE);
+			(*p)->createBuffer(this->RENDER_TEXTURE_SIZE);
 
 			//•`ŽÊ
 			(*p)->Draw();
