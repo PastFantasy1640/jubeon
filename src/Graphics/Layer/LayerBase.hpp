@@ -29,6 +29,7 @@ namespace jubeon {
 				this->clear(sf::Color(0, 0, 0, 0));
 			}
 			
+			sf::Sprite sp;
 
 		public:
 
@@ -49,6 +50,10 @@ namespace jubeon {
 			* @param code 終了コード
 			*/
 			void setExitCode(const int code);
+
+			/** スプライトを取得
+			 */
+			const sf::Sprite & getSprite(void);
 
 
 		};	//end of LayerBase

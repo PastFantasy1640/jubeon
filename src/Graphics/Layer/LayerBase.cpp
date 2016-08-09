@@ -39,6 +39,13 @@ void jubeon::graphics::LayerBase::setExitCode(const int code)
 	}
 }
 
+const sf::Sprite & jubeon::graphics::LayerBase::getSprite(void)
+{
+	this->display();
+	this->sp.setTexture(this->getTexture());
+	return this->sp;
+}
+
 unsigned int jubeon::graphics::LayerBase::getExitCode() const {
 	return this->exit_code;
 }

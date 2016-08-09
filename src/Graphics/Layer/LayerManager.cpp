@@ -138,15 +138,8 @@ void jubeon::graphics::LayerManager::process(void) {
 				//デクリメントだから全ループにおいてp--が可能
 				p = this->layer_list.erase(p);
 			}
-			else {
-
-				//画面更新
-				(*p)->display();
-
-				//sf::Sprite sp((*p)->getTexture());
-				//this->window->draw(sp);
-				//ウィンドウバッファに描写
-				this->window_buffer.draw(sf::Sprite((*p)->getTexture()));
+			else {				
+				this->window_buffer.draw((*p)->getSprite());
 			}
 
 			if (p == this->layer_list.begin()) break;	//全てのレイヤーを描写済み
