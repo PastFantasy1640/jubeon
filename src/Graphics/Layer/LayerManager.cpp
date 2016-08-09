@@ -1,25 +1,26 @@
-/************************************************************
- *															*
- *	LayerManager.cpp										*
- *		Programmed by white									*
- *															*
- ************************************************************/
+//////////////////////////////////////////////////
+// (c) 2016 white LayerManager.cpp
+//////////////////////////////////////////////////
 
 
+//////////////////////////////////////////////////
+// Header file is LayerManager.hpp
+// namespace is jubeon::graphics
+//////////////////////////////////////////////////
+
+//for header file
 #include "LayerManager.hpp"
-#include "LayerBase.hpp"
 
-#include <thread>
+//for logger
+#include "Systems/Logger.hpp"
 
-#include "../../Systems/Exceptions.hpp"
-
-
-
+//using namespace
 using namespace jubeon::graphics;
 
+//static defition
 const sf::Vector2u jubeon::graphics::LayerManager::RENDER_TEXTURE_SIZE = sf::Vector2u(768, 1360);
 
-//コンストラクタ
+//Constructor with arguments
 jubeon::graphics::LayerManager::LayerManager(
 	const std::string & window_title,
 	const sf::VideoMode & vmode,
@@ -37,7 +38,7 @@ jubeon::graphics::LayerManager::LayerManager(
 {
 }
 
-//デストラクタ
+//Destructor
 jubeon::graphics::LayerManager::~LayerManager()
 {
 	//あえてリリースする必要は無い？
@@ -48,7 +49,6 @@ void jubeon::graphics::LayerManager::addLayer(std::shared_ptr<LayerBase> layer, 
 {
 	//まずレイヤーの初期化を行う。
 	layer->Init();
-
 
 	//同じタイプでレイヤーナンバーの場所に入れる
 	unsigned char i = 0;
@@ -79,10 +79,9 @@ void jubeon::graphics::LayerManager::createWindow(void)
 	this->window->setVerticalSyncEnabled(this->isVSync);
 	this->window->setFramerateLimit(this->fpsLimit);
 	this->window->setPosition(this->window_position);
-	this->window->setActive(false);
+//	this->window->setActive(false);
 	
 	//ウィンドウバッファの生成
-
 	if (!this->window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y)) {
 		jubeon::systems::Logger::error("ウィンドウバッファの生成に失敗しました");
 		return;

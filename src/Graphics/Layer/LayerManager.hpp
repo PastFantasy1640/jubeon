@@ -58,7 +58,8 @@ namespace jubeon{
 				const sf::Uint32 style = sf::Style::Default
 				);
 
-			/** Destructor. When you release this instance, this function called and gets the window to close.
+			/** Destructor. When you release this instance, this function called and gets the window to close but Exit functions of layers are not called.
+			 * You must
 			 */
 			virtual ~LayerManager();
 
