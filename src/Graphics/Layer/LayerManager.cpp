@@ -79,7 +79,6 @@ void jubeon::graphics::LayerManager::createWindow(void)
 	this->window->setVerticalSyncEnabled(this->isVSync);
 	this->window->setFramerateLimit(this->fpsLimit);
 	this->window->setPosition(this->window_position);
-//	this->window->setActive(false);
 	
 	//ウィンドウバッファの生成
 	if (!this->window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y)) {
