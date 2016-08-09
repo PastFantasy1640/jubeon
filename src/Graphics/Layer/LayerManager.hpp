@@ -1,34 +1,53 @@
+//////////////////////////////////////////////////
+// (c) 2016 white LayerManager.hpp
+//////////////////////////////////////////////////
+
 #pragma once
 
 #ifndef JUBEON_GRAPHICS_LAYERMANAGER_HPP
 #define JUBEON_GRAPHICS_LAYERMANAGER_HPP
 
+//////////////////////////////////////////////////
+// LayerManager Class
+//////////////////////////////////////////////////
+
+//for string
 #include <string>
-#include <list>
+
+//for LayerBase list.(vector)
+#include <vector>
+
+//for shared_ptr
 #include <memory>
+
+//for mapping layer to layer type
 #include <map>
-#include <mutex>
+
+//for window modules
 #include <SFML/Graphics.hpp>
 
+//LayerManager manages the instances of LayerBase class.
 #include "LayerBase.hpp"
 
-//windowを生成するのは絶対にメインスレッド
-//eventループは持たない
-//eventループはメインスレッド
 
+//namespace is jubeon::graphics
 namespace jubeon{
 	namespace graphics {
 
-		/** レイヤーの管理クラス。ひとつのウィンドウにつきひとつのインスタンスが生成される。
+		/** This class manages the instances of LayerBase class. Create a instance of LayerManager for each a window.
+		 * @version 1.1
 		 */
 		class LayerManager {
 		public:
 
 
-			/** 引数付きコンストラクタ。
-			 * @param window_title ウィンドウのタイトル
-			 * @param width ウィンドウの幅(px)
-			 * @param height ウィンドウの高さ(px)
+			/** Constructor having arguments. Even if you call this function, the window do not create.
+			 * @param window_title The title of the window. 
+			 * @param vmode The window's settings. You can designate the window size and color bits.
+			 * @param isVSync TRUE and the window waits for vertical synchronizing of the display.
+			 * @param fpsLimit Limit the frame per second by sleeping thread. Default value is 0, and it means no limit.
+			 * @param startWindowPosition The position of the window when starting up.
+			 * @param style The window style. See at RenderWindow Reference of SFML.
 			 */
 			LayerManager(
 				const std::string & window_title,
@@ -39,58 +58,66 @@ namespace jubeon{
 				const sf::Uint32 style = sf::Style::Default
 				);
 
-			/** デストラクタ
+			/** Destructor. When you release this instance, this function called and gets the window to close.
 			 */
 			virtual ~LayerManager();
 
-			typedef enum : unsigned char {
-				SYSTEM = 0,
-				FOREGROUND = 1,
-				MAIN = 2,
-				BACKGROUND = 3
+			/** Definition of LayerType.
+			 */
+			typedef enum LayerType : unsigned char {
+				SYSTEM = 0, //SYSTEM is only used in LayerManager. You cannot addLayer with this mode.
+				FOREGROUND = 1, //FOREGROUND is top of the layers.
+				MAIN = 2,	//MAIN is main layers, below top layers.
+				BACKGROUND = 3	//BACKGROUND is bottom of the layers.
 			}LayerType;
 
-			//レイヤーを追加
+			/** Adds(Insert) layer.
+			 * @param layer Shared pointer of the layer.
+			 * @param type LayerType value. See at LayerType description.
+			 * @param layernumber The Number to which Layer insert.
+			 */
 			void addLayer(std::shared_ptr<LayerBase> layer, const LayerType type, const unsigned char layernumber);
 
-			//スレッドを立てて起動
-			//必ずメインスレッドで呼ぶこと。
-			//int run(std::unique_ptr<jubeon::systems::Scene> & first_start_scene);
-
-			//ウィンドウを生成し描画の準備をする
+			/** Creating window.
+			 */
 			void createWindow(void);
 
-			//ウィンドウが開いているか
+			/** Get that is the window opening.
+			 * @returns TRUE means yes.
+			 */
 			bool isWindowOpening(void) const;
 
-			//ウィンドウを終了させる
+			/** Close the window.
+			 */
 			void closeWindow(void);
 
-			//ウィンドウのイベントを取得する
+			/** Get the window event.
+			 * @param The reference of event valiable.
+			 * @returns TRUE and there is an event.
+			 */
 			bool getWindowEvent(sf::Event & e);
 
-			//1ループ分描写する
+			/** Drawing function. This is called by Scene::process function.
+			 */
 			void process(void);
 
 		private:
 
-			//int process(void);
-
 			std::map<std::shared_ptr<LayerBase>, LayerType> layer_map;	//レイヤーマップ
-			std::vector<std::shared_ptr<LayerBase>> layer_list;	//レイヤーリスト
+			std::vector<std::shared_ptr<LayerBase>> layer_list;			//レイヤーリスト
 
-			LayerManager(const LayerManager & cp);				//コピーコンストラクタの禁止
-			LayerManager();										//デフォルトコンストラクタも禁止
+			LayerManager(const LayerManager & cp);						//コピーコンストラクタの禁止
+			LayerManager();												//デフォルトコンストラクタも禁止
 
-			const sf::VideoMode					vmode;			//生成するウィンドウのサイズなど
-			const std::string					window_title;	//生成するウィンドウのタイトル
-			const sf::Uint32					window_style;	//生成するウィンドウのスタイル
-			const bool							isVSync;		//垂直同期をとるか
-			const unsigned int					fpsLimit;		//0で制限なし
-			const sf::Vector2i					window_position;//ウィンドウを生成するポジション
+			const sf::VideoMode					vmode;					//生成するウィンドウのサイズなど
+			const std::string					window_title;			//生成するウィンドウのタイトル
+			const sf::Uint32					window_style;			//生成するウィンドウのスタイル
+			const bool							isVSync;				//垂直同期をとるか
+			const unsigned int					fpsLimit;				//0で制限なし
+			const sf::Vector2i					window_position;		//ウィンドウを生成するポジション
 
 
-			std::shared_ptr<sf::RenderWindow>	window;			//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
+			std::shared_ptr<sf::RenderWindow>	window;					//生成するウィンドウの実体（継承はしない。外部から触ってほしくないpublicがある）
 			sf::RenderTexture					window_buffer;
 
 			
