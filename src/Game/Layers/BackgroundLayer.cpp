@@ -137,7 +137,7 @@ std::array<sf::Vector2f, S> jubeon::game::layers::BackgroundLayer::genRandomPoin
 	for (int i = 0; i < points.size(); i++) {
 
 		float degree = i * 360 / static_cast<float>(S);
-		float scale = 1.0f - (static_cast<double>(rnd()) / 0xffffffff) / 3.0f;
+		float scale = 1.0f - (static_cast<float>(rnd()) / 0xffffffff) / 3.0f;
 		float tx = cos(degree * PI / 180.0f) * r;
 		float ty = sin(degree * PI / 180.0f) * r;
 		points[i] = (sf::Vector2f(scale * tx, scale * ty));

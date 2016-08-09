@@ -254,7 +254,7 @@ void jubeon::game::Music::setForPlay(void)
 	return;
 }
 
-void jubeon::game::Music::playSound(unsigned int wait_offset)
+void jubeon::game::Music::playSound(int wait_offset)
 {
 	this->wait_offset = wait_offset;
 	this->wait_offset_ck.restart();
@@ -265,12 +265,12 @@ void jubeon::game::Music::playSound(unsigned int wait_offset)
 	th1.detach();
 }
 
-unsigned int jubeon::game::Music::getPlayingCurrentTime(void) const
+int jubeon::game::Music::getPlayingCurrentTime(void) const
 {
 	if (this->isInit()) {
 		if (this->sound.getStatus() == sf::SoundSource::Status::Playing)
-			return this->sound.getPlayingOffset().asMilliseconds();
-		else return -(wait_offset - wait_offset_ck.getElapsedTime().asMilliseconds());
+			return static_cast<int>(this->sound.getPlayingOffset().asMilliseconds());
+		else return -(static_cast<int>(wait_offset) - static_cast<int>(wait_offset_ck.getElapsedTime().asMilliseconds()));
 	}
 	return 0;
 }

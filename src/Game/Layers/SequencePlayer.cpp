@@ -125,7 +125,7 @@ void jubeon::game::layers::SequencePlayer::Draw()
 
 				const sf::IntRect & rect = this->panel_position->get(jpi->second->panel_no);
 
-				markersp.setPosition(rect.left,rect.top);
+				markersp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
 				markersp.setScale(PanelPosition::get_ex(tex->getSize().x, rect.width), PanelPosition::get_ex(tex->getSize().y, rect.height));
 				this->draw(markersp);
 
@@ -141,7 +141,7 @@ void jubeon::game::layers::SequencePlayer::Draw()
 				sf::Sprite markersp(*tex);
 				const sf::IntRect & rect = this->panel_position->get(ite_n->getPanelIndex());
 
-				markersp.setPosition(rect.left, rect.top);
+				markersp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
 				markersp.setScale(PanelPosition::get_ex(tex->getSize().x, rect.width), PanelPosition::get_ex(tex->getSize().y, rect.height));
 				this->draw(markersp);
 
@@ -207,7 +207,7 @@ void jubeon::game::layers::SequencePlayer::Draw()
 			sf::Sprite sp(pframe);
 			const sf::IntRect & rect = this->panel_position->get(i);
 
-			sp.setPosition(rect.left, rect.top);
+			sp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
 			sp.setScale(PanelPosition::get_ex(pframe.getSize().x, rect.width), PanelPosition::get_ex(pframe.getSize().y, rect.height));
 			this->draw(sp);
 		}

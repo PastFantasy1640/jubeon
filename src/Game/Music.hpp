@@ -75,10 +75,10 @@ namespace jubeon {
 			void setForPlay(void);
 
 			//曲を再生する（スレッドアンセーフだがry
-			void playSound(unsigned int wait_offset);
+			void playSound(int wait_offset);
 
 			//再生中の時間を取得する関数（スレッドセーフ）
-			unsigned int getPlayingCurrentTime(void) const;
+			int getPlayingCurrentTime(void) const;
 
 			//曲をメモリから破棄する（スレッドアンセry
 			void deleteSound(void);
@@ -121,7 +121,7 @@ namespace jubeon {
 
 			bool								is_init_success;
 
-			unsigned int						wait_offset;
+			int									wait_offset;
 
 			//TO DO : MusicBarは未定義
 			//std::array<MusicBar, 3>	musicbar_challenge;	//ミュージックバーチャレンジ

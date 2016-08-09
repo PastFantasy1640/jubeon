@@ -1,26 +1,35 @@
+////////////////////////////////////////////////////////////
+// (c) 2016 white PanelInput.hpp
+////////////////////////////////////////////////////////////
+
 #pragma once
 
 #ifndef JUBEON_GAME_PANELINPUT_HPP
 #define JUBEON_GAME_PANELINPUT_HPP
 
+//for jubeon::Type
+#include "Game/TypeDefinition.hpp"
 
+//for type definition of note member
+#include "Game/NoteDefinition.hpp"
 
+//namespace is jubeon::input
 namespace jubeon {
-
 	namespace input {
 
-		enum Type : bool {
-			PUSH = true,
-			RELEASE = false
-		};
-
+		//structure
 		typedef struct PanelInput {
-			unsigned char panel_no;
-			jubeon::input::Type t;
-			int ms;				//Ç±ÇÍÇÕã»Ç∆ìØä˙Ç∑ÇÈÇ™ÅAoffsetÇâ¡éZå„ÇÃÇ‡ÇÃ
+			jPanel			panel_no;		//PanelNo
+			jubeon::Type	t;				//Type(PUSH or RELEASE)
+			jMillisec		ms;				//millisecond
+
+			//Default Constructor
 			PanelInput() : panel_no(0), t(RELEASE), ms(0) {}
-			PanelInput(unsigned char panel_no, jubeon::input::Type t, unsigned int ms)
+			
+			//Args Constructor
+			PanelInput(unsigned char panel_no, jubeon::Type t, unsigned int ms)
 				: panel_no(panel_no), t(t), ms(ms) {}
+		
 		}PanelInput;
 	
 	};

@@ -57,12 +57,12 @@ namespace jubeon { namespace models {
 		}
 
 		this->size = sf::Vector2f(
-			size["width"].get<double>(),
-			size["height"].get<double>());
+			static_cast<float>(size["width"].get<double>()),
+			static_cast<float>(size["height"].get<double>()));
 
 		this->position = sf::Vector2f(
-			position["x"].get<double>(),
-			position["y"].get<double>());
+			static_cast<float>(position["x"].get<double>()),
+			static_cast<float>(position["y"].get<double>()));
 
 		this->vsyncEnabled = root["vsync_enabled"].get<bool>();
 		return true;

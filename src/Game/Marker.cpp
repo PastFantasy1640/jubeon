@@ -157,7 +157,7 @@ bool jubeon::game::Marker::load(void)
 	return true;
 }
 
-const sf::Texture * jubeon::game::Marker::getTexturePtr(const int diff_ms, const jubeon::game::Judge judge) const
+const sf::Texture * jubeon::game::Marker::getTexturePtr(const int diff_ms, const jubeon::Judge judge) const
 {
 	if (diff_ms < 0) {
 		return this->appear->getTexture(diff_ms);

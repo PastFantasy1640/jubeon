@@ -11,6 +11,7 @@
 
 #include "../Input/PanelInput.hpp"
 #include "JudgeDefinition.hpp"
+#include "Game/TypeDefinition.hpp"
 
 namespace jubeon {
 	namespace game {
@@ -23,7 +24,7 @@ namespace jubeon {
 			JudgedPanelInput() {}
 
 			//全指定コンストラクタ
-			JudgedPanelInput(unsigned char panel_no, jubeon::input::Type t, unsigned int ms, const Judge & judge)
+			JudgedPanelInput(unsigned char panel_no, jubeon::Type t, unsigned int ms, const Judge & judge)
 				: judge(judge), PanelInput(panel_no,t,ms) {}
 			
 			//PanelInputと組み合わせたコンストラクタ

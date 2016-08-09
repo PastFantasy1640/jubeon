@@ -55,8 +55,8 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 	std::string judge_str;
 	for (auto p = this->judged_list->begin(); p != this->judged_list->end(); p++) {
 		switch (p->t) {
-		case input::Type::PUSH: type_str = "PUSH"; break;
-		case input::Type::RELEASE: type_str = "RELEASE"; break;
+		case Type::PUSH: type_str = "PUSH"; break;
+		case Type::RELEASE: type_str = "RELEASE"; break;
 		}
 
 		switch (p->judge) {
@@ -148,8 +148,8 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 		}
 
 		//タイプ
-		if (tmp_vector[2].compare("PUSH") == 0) tmp.t = input::PUSH;
-		else if (tmp_vector[2].compare("RELEASE") == 0) tmp.t = input::RELEASE;
+		if (tmp_vector[2].compare("PUSH") == 0) tmp.t = PUSH;
+		else if (tmp_vector[2].compare("RELEASE") == 0) tmp.t = RELEASE;
 		else {
 			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: PUSH、RELEASE以外の値が指定されています");
 			return false;
@@ -184,7 +184,7 @@ const std::shared_ptr<std::vector<jubeon::game::JudgedPanelInput>> jubeon::game:
 std::vector<jubeon::game::JudgedPanelInput>::const_iterator jubeon::game::PlayRecord::getIteratorFromTime(const std::vector<JudgedPanelInput>& list, const int ms)
 {
 	//ラムダ式使ってみる？
-	std::function<size_t(size_t, size_t, unsigned int)> search = [&](size_t left, size_t right, unsigned int ms)
+	std::function<size_t(size_t, size_t, int)> search = [&](size_t left, size_t right, int ms)
 	{
 		//探索の左右を指定して、最後に挿入するインデックスの位置を返す
 		//終了条件
