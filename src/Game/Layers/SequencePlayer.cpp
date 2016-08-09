@@ -13,7 +13,6 @@
 
 //for getting resource
 #include "Storages/ResourceManager.hpp"
-#include "Storages/FontManager.hpp"
 
 //Constructor
 jubeon::game::layers::SequencePlayer::SequencePlayer(
@@ -69,7 +68,7 @@ void jubeon::game::layers::SequencePlayer::Init()
 	//初期化処理
 
 	//パネル枠の読み込み
-	storage::ResourceManager::getTexture("media/image/panel_shadow.png");
+	storage::ResourceManager<sf::Texture>::get("media/image/panel_shadow.png");
 
 
 
@@ -187,7 +186,7 @@ void jubeon::game::layers::SequencePlayer::Draw()
 
 	}
 
-	sf::Text text("ms:" + std::to_string(ms), storage::FontManager::getFont("media/fonts/Frutiger.TTF"));
+	sf::Text text("ms:" + std::to_string(ms), storage::ResourceManager<sf::Font>::get("media/fonts/Frutiger.TTF"));
 	text.setColor(sf::Color::Black);
 	this->draw(text);
 	text.setString("mms:" + std::to_string(mms));
@@ -203,7 +202,7 @@ void jubeon::game::layers::SequencePlayer::Draw()
 	//最終的にpushされてる場所に描写
 	for (int i = 0; i < 16; i++) {
 		if (this->isPushing(i)) {
-			const sf::Texture & pframe = storage::ResourceManager::getTexture("media/image/panel_shadow.png");
+			const sf::Texture & pframe = storage::ResourceManager<sf::Texture>::get("media/image/panel_shadow.png");
 			sf::Sprite sp(pframe);
 			const sf::IntRect & rect = this->panel_position->get(i);
 
