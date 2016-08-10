@@ -45,6 +45,7 @@ foreach(dll ${sfml_dlls})
 endforeach()
 
 file(COPY ${CMAKE_SOURCE_DIR}/media/ DESTINATION ${CMAKE_BINARY_DIR}/media/)
+file(COPY ${CMAKE_SOURCE_DIR}/musics/ DESTINATION ${CMAKE_BINARY_DIR}/musics/)
 
 # add thor
 find_package(Thor 2 REQUIRED)
