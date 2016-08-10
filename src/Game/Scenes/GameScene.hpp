@@ -21,10 +21,8 @@ namespace jubeon {
 		namespace scenes {
 			class GameScene : public jubeon::systems::Scene{
 			public:
-				bool isinited = false;
-				void init();
+				virtual void init() override;
 				
-				std::shared_ptr<std::map<const size_t, size_t>> seq_pr_mapping;
 				std::shared_ptr<Sequence> sequence;
 				std::shared_ptr<PlayRecord> playrecord;
 				std::shared_ptr<Music> music;
@@ -36,6 +34,8 @@ namespace jubeon {
 				virtual int process(void) override;
 
 			private:
+
+				void processPanel(const std::vector<jubeon::input::PanelInput> & pinput);
 
 				//オフセット
 				jMillisec offset;

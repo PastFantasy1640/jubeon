@@ -7,7 +7,7 @@
 
 
 jubeon::game::PlayRecord::PlayRecord()
-	: judged_list(new std::vector<JudgedPanelInput>())
+	: judged_list(new std::vector<JudgedPanelInput>()), seq_pr_mapping(new std::map<const size_t, size_t>())
 {
 }
 
@@ -53,7 +53,8 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 	//情報の書き出し
 	std::string type_str;
 	std::string judge_str;
-	for (auto p = this->judged_list->begin(); p != this->judged_list->end(); p++) {
+	size_t idx = 0;
+	for (auto p = this->judged_list->begin(); p != this->judged_list->end(); p++, idx++) {
 		switch (p->t) {
 		case Type::PUSH: type_str = "PUSH"; break;
 		case Type::RELEASE: type_str = "RELEASE"; break;
@@ -68,7 +69,18 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 		case MISS:		judge_str = "MISS";	   break;
 		case NOJUDGE:	judge_str = "NOJUDGE"; break;
 		}
-		ofst << std::to_string(p->ms) << "," << std::to_string(p->panel_no) << "," << type_str << "," << judge_str << std::endl;
+
+		bool find = false;
+		size_t seq_idx = 0;
+		for (auto p : *this->seq_pr_mapping) {
+			if (p.second == idx) {
+				find = true;
+				seq_idx = p.first;
+				break;
+			}
+		}
+		if(find) ofst << std::to_string(p->ms) << "," << std::to_string(p->panel_no) << "," << type_str << "," << judge_str << "," << std::to_string(seq_idx) << std::endl;
+		else  ofst << std::to_string(p->ms) << "," << std::to_string(p->panel_no) << "," << type_str << "," << judge_str << std::endl;
 	}
 
 	systems::Logger::information("プレイ記録ファイルの保存を完了しました");
@@ -132,7 +144,7 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 		}
 
 		//おかしい
-		if (tmp_vector.size() != 4) {
+		if (tmp_vector.size() != 4 && tmp_vector.size() != 5) {
 			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: 要素数が異常です。");
 			return false;
 		}
@@ -166,6 +178,11 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 		else {
 			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: 判定の値が異常です");
 			return false;
+		}
+
+		if (tmp_vector.size() == 5) {
+			size_t seq_idx = std::stoi(tmp_vector[4]);
+			(*this->seq_pr_mapping)[seq_idx] = this->judged_list->size();
 		}
 
 		this->judged_list->push_back(tmp);

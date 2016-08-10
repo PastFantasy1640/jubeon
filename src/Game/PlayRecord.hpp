@@ -54,6 +54,9 @@ namespace jubeon {
 			//検索関数
 			static std::vector<JudgedPanelInput>::const_iterator getIteratorFromTime(const std::vector<JudgedPanelInput> & list ,const int ms);
 
+			//マッピング
+			std::shared_ptr<std::map<const size_t, size_t>> seq_pr_mapping;
+
 		private:
 			
 			std::string name;

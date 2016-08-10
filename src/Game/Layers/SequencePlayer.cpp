@@ -19,10 +19,9 @@ jubeon::game::layers::SequencePlayer::SequencePlayer(
 	std::shared_ptr<jubeon::game::Sequence> sequence,
 	std::shared_ptr<jubeon::game::Music> music,
 	std::shared_ptr<jubeon::game::PlayRecord> playrecord,
-	std::shared_ptr<std::map<const size_t, size_t>> seq_pr_mapping,
 	std::shared_ptr<jubeon::game::PanelPosition> panel_position,
 	int offset_ms)
-	: sequence(sequence), music(music), playrecord(playrecord), seq_pr_mapping(seq_pr_mapping), panel_position(panel_position), offset_ms(offset_ms)
+	: sequence(sequence), music(music), playrecord(playrecord), panel_position(panel_position), offset_ms(offset_ms)
 {
 }
 
@@ -76,8 +75,8 @@ void jubeon::game::layers::SequencePlayer::Draw()
 
 		//マッピングがあるか
 		
-		const std::map<const size_t, size_t>::const_iterator jpi = this->seq_pr_mapping->find(sequence_idx);
-		if (jpi != this->seq_pr_mapping->end()) {
+		const std::map<const size_t, size_t>::const_iterator jpi = this->playrecord->seq_pr_mapping->find(sequence_idx);
+		if (jpi != this->playrecord->seq_pr_mapping->end()) {
 			//あった
 			//ということはすでに判定が終わっている場合である。
 			//Markerのテクスチャを取得

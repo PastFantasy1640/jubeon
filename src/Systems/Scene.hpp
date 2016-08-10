@@ -82,6 +82,9 @@ namespace jubeon {
 			//戻り値が0以外だとプログラムを終了する。
 			virtual int process(void) = 0;
 
+			//init仮想関数
+			virtual void init(void) = 0;
+
 			//メインスレッドで実行されるprocess関数。
 			//再帰してはならないし、できない設計にしてある
 			//メインスレッドで実行する。戻り値は終了ステータス

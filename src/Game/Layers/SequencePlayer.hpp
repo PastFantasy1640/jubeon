@@ -30,7 +30,6 @@ namespace jubeon {
 					std::shared_ptr<jubeon::game::Sequence> sequence,
 					std::shared_ptr<jubeon::game::Music> music,
 					std::shared_ptr<jubeon::game::PlayRecord> playrecord,
-					std::shared_ptr<std::map<const size_t, size_t>> seq_pr_mapping,
 					std::shared_ptr<jubeon::game::PanelPosition> panel_position,
 					int offset_ms
 					);
@@ -44,7 +43,6 @@ namespace jubeon {
 				const std::shared_ptr<jubeon::game::Sequence> sequence;
 				const std::shared_ptr<jubeon::game::Music> music;
 				const std::shared_ptr<jubeon::game::PlayRecord> playrecord;
-				const std::shared_ptr<std::map<const size_t, size_t>> seq_pr_mapping;
 				const std::shared_ptr<PanelPosition> panel_position;
 
 
