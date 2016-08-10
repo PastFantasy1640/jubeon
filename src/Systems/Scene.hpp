@@ -52,11 +52,13 @@ namespace jubeon {
 			static std::shared_ptr<Scene> next_scene;
 
 			//現在のシーン
-			static std::unique_ptr<Scene> current_scene;
+			static std::shared_ptr<Scene> current_scene;
 
 			//すでにstatic processメソッドは動いて居るか
 			//スレッドアンセーフ
 			static bool is_running;
+
+			static bool is_scene_change;
 
 			//メインウィンドウ
 			static jubeon::graphics::LayerManager * main_window;
