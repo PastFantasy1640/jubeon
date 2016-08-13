@@ -23,11 +23,14 @@ int jubeon::systems::Scene::process(jubeon::graphics::LayerManager * main_window
 	if (!Scene::is_running) {
 		Scene::is_running = true;	//インクルードガード的な
 
-									//初回のシーン代入
-		Scene::current_scene = first_scene;
 
 		//ウィンドウのインスタンス設定
 		Scene::main_window = main_window;
+
+		//初回のシーン代入
+		Scene::current_scene = first_scene;
+
+		Scene::current_scene->init();
 
 
 		int ret = 0;
@@ -38,6 +41,7 @@ int jubeon::systems::Scene::process(jubeon::graphics::LayerManager * main_window
 
 			if (Scene::is_scene_change) {
 				Scene::current_scene = Scene::next_scene;	//シーンを移す
+				Scene::current_scene->init();
 				Scene::is_scene_change = false;
 			}
 

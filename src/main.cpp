@@ -9,7 +9,7 @@
 #include "Systems/Scene.hpp"
 
 //Starting Scene
-#include "Game/Scenes/GameScene.hpp"
+#include "Game/Scenes/DemoLoadingScene.hpp"
 
 #include "Storages/JsonFileStorage.hpp"
 #include "Models/WindowConfig.hpp"
@@ -64,9 +64,9 @@ int main(int argc, char * argv[]) {
 	jubeon::input::ListenPanel::Listen();
 
 	//最初に使用するシーンを生成
-	unique_ptr<scenes::GameScene> upGameSceneInstance(new scenes::GameScene());
+	shared_ptr<scenes::DemoLoadingScene> upSceneInstance(new scenes::DemoLoadingScene());
 	
-	int ret = Scene::process(&mainwindow, std::move(upGameSceneInstance));
+	int ret = Scene::process(&mainwindow, upSceneInstance);
 
 	//パネルの終了
 	jubeon::input::ListenPanel::Close();

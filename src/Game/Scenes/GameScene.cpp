@@ -130,15 +130,11 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	music->playSound(2000);
 
-	this->isinited = true;
 	
 }
 
 int jubeon::game::scenes::GameScene::process(void)
 {
-
-	if (!this->isinited) this->init();
-
 	sf::Event e;
 	while (this->getMainWindow()->getWindowEvent(e)) {
 		if (e.type == sf::Event::Closed) {

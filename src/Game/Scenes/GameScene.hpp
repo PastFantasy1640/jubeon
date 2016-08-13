@@ -21,8 +21,7 @@ namespace jubeon {
 		namespace scenes {
 			class GameScene : public jubeon::systems::Scene{
 			public:
-				bool isinited = false;
-				void init();
+				virtual void init() override;
 				
 				std::shared_ptr<std::map<const size_t, size_t>> seq_pr_mapping;
 				std::shared_ptr<Sequence> sequence;
