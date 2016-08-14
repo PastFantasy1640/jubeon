@@ -7,7 +7,6 @@
 
 #include <thread>
 #include <string>
-#include <stdexcept>
 #include <iostream>
 
 #include "ListenPanel.hpp"
@@ -22,8 +21,8 @@ std::list<jubeon::input::PanelInput> jubeon::input::ListenPanel::que_;
 std::mutex jubeon::input::ListenPanel::mtx_;
 bool jubeon::input::ListenPanel::pushing_[16] = { false };
 sf::Clock * jubeon::input::ListenPanel::panel_clock_ = NULL;
-std::atomic<bool> jubeon::input::ListenPanel::is_thread_exit_ = false;
-std::atomic<int> jubeon::input::ListenPanel::offset = 0;
+std::atomic<bool> jubeon::input::ListenPanel::is_thread_exit_(false);
+std::atomic<int> jubeon::input::ListenPanel::offset(0);
 bool jubeon::input::ListenPanel::is_queue_ = true;
 bool jubeon::input::ListenPanel::is_overflow_ = false;
 
@@ -32,10 +31,6 @@ int jubeon::input::ListenPanel::Listen(void) {
 	//‰Šú‰»
 	que_.clear();
 
-	//QUEUE_MAXSIZE‚Ì‘Ã“–«
-	if (QUEUE_MAXSIZE < 1) {
-		throw std::exception("Unexpected value : QUEUE_MAXSIZE must be more than 1.");
-	}
 
 	panel_clock_ = new sf::Clock;
 	panel_clock_->restart();

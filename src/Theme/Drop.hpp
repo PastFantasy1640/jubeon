@@ -59,7 +59,7 @@ namespace Theme {
 
 
 
-		virtual std::size_t getPointCount() const {
+		virtual unsigned int getPointCount() const override{
 
 			return S * bezier_resolution_;
 
@@ -67,7 +67,7 @@ namespace Theme {
 
 		// TODO: ベジェを利用して、曲線を描くようにする。
 		// getPointCountでは S * ベジェの頂点数 を返せばおｋ
-		virtual sf::Vector2f getPoint(std::size_t idx) const {
+		virtual sf::Vector2f getPoint(unsigned int idx) const override{
 			size_t pidx = idx / bezier_resolution_;	//アクセスするpoint_[i]の点
 
 			size_t pidxn = pidx + 1;					//アクセスするpoint_[i+1]の点

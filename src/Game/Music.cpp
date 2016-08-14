@@ -2,7 +2,7 @@
 #include "Systems/Logger.hpp"
 #include "Storages/JsonFileStorage.hpp"
 #include "Systems/picojson_util.hpp"
-
+#include <thread>
 
 jubeon::game::Music::Music(std::string meta_file_path)
 	: metafile_path(meta_file_path)

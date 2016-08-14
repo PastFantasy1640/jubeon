@@ -14,6 +14,10 @@
 //for logger
 #include "Systems/Logger.hpp"
 
+//for thread sleep
+#include <thread>
+#include <chrono>
+
 //using namespace
 using namespace jubeon::graphics;
 

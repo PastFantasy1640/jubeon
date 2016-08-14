@@ -1,5 +1,5 @@
 
-#include "Panelconfig.hpp"
+#include "PanelConfig.hpp"
 #include "Systems/Exceptions.hpp"
 #include "Systems/picojson_util.hpp"
 
