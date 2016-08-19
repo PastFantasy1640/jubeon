@@ -22,7 +22,7 @@ bool jubeon::game::Marker::load(void)
 	//マーカーのロード開始
 	const std::string logstr = "[" + this->meta_filepath + "]";
 
-	systems::Logger::information(logstr + "マーカーのロードを開始します");
+	systems::Logger::information(logstr + "start to load a marker.");
 
 
 	//ファイルの読み込み
@@ -35,14 +35,14 @@ bool jubeon::game::Marker::load(void)
 	std::string json((std::istreambuf_iterator<char>(ifs)),std::istreambuf_iterator<char>());
 
 
-	systems::Logger::information(logstr + "json文字列を取得しました");
+	systems::Logger::information(logstr + "get the json strings");
 
 	picojson::value v;
 	std::string err;
 
 	//パース
 	picojson::parse(v, json.c_str(), json.c_str() + json.size(), &err);
-	systems::Logger::information(logstr + "jsonのパースを完了しました");
+	systems::Logger::information(logstr + "complete to perse the json string");
 	
 	if (err.empty())
 	{
@@ -50,7 +50,7 @@ bool jubeon::game::Marker::load(void)
 
 		//マーカーの名前を取得
 		this->marker_name = o["name"].get<std::string>();
-		systems::Logger::information(logstr + "マーカー名:" + this->marker_name);
+		systems::Logger::information(logstr + "marker name:" + this->marker_name);
 
 		//テクスチャと実際の効果の対応付け
 		std::array<int, 7> assign;
@@ -66,7 +66,7 @@ bool jubeon::game::Marker::load(void)
 		assign[MISS] = static_cast<int>(e["miss"].get<double>());
 
 
-		systems::Logger::information(logstr + "リソースの取得を開始します");
+		systems::Logger::information(logstr + "start to get resources.");
 
 		//リソースの一覧を取得
 		picojson::array& resources = o["resources"].get<picojson::array>();
@@ -78,8 +78,8 @@ bool jubeon::game::Marker::load(void)
 			int duration = static_cast<int>(o2["duration"].get<double>());
 
 
-			systems::Logger::information(logstr + "リソースid[" + std::to_string(id)
-				+ "]: D[" + std::to_string(duration) + "] の読み込みを開始します");
+			systems::Logger::information(logstr + "Resource id[" + std::to_string(id)
+				+ "]: D[" + std::to_string(duration) + "] loading...");
 
 			//画像の本体
 			picojson::array& images = o2["rectangle"].get<picojson::array>();
@@ -141,16 +141,16 @@ bool jubeon::game::Marker::load(void)
 			//appearだけは別で
 			if (assign[6] == mktexes->getID()) this->appear = mktexes;
 
-			systems::Logger::information(logstr + "リソースid[" + std::to_string(id)
-				+ "] の読み込み、割り当てが完了しました");
+			systems::Logger::information(logstr + "Resource id[" + std::to_string(id)
+				+ "] Complete loading and assign the resources.");
 		}
 
-		systems::Logger::information(logstr + "読み込みが完了しました");
+		systems::Logger::information(logstr + "Finished loading the marker.");
 		
 	}
 	else {
 		std::cerr << "Illegal json format." << std::endl << "error msg : " << err << std::endl << "marker name : " << this->marker_name << std::endl << "filename : " << this->meta_filepath << std::endl;
-		systems::Logger::warning(logstr + "FAILED : jsonフォーマットが不正です -> " + err);
+		systems::Logger::warning(logstr + "FAILED : Illegal json format -> " + err);
 		return false;
 	}
 
