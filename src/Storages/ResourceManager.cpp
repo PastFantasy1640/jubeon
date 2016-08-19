@@ -8,68 +8,53 @@
 
 
 //////////////////////////////////////////////////////
-// TEXTURE
+// Singleton Structure
 //////////////////////////////////////////////////////
-template<> std::unordered_map<std::string, sf::Texture> jubeon::storage::ResourceManager<sf::Texture>::data;
+template<> std::unique_ptr<jubeon::storage::ResourceManager<sf::Texture>> jubeon::storage::ResourceManager<sf::Texture>::instance;
 
-template<> const sf::Texture & jubeon::storage::ResourceManager<sf::Texture>::get(const std::string fpath)
+template<> std::unique_ptr<jubeon::storage::ResourceManager<sf::SoundBuffer>> jubeon::storage::ResourceManager<sf::SoundBuffer>::instance;
+
+template<> std::unique_ptr<jubeon::storage::ResourceManager<sf::Font>> jubeon::storage::ResourceManager<sf::Font>::instance;
+
+
+template<typename T>
+jubeon::storage::ResourceManager<T> * 
+jubeon::storage::ResourceManager<T>::getInstance(void)
 {
-	//ストレージにあるかどうか
-	if (data.count(fpath) == 0) {
-		//無いならロードする
-		data[fpath].loadFromFile(fpath);
-		data[fpath].setSmooth(true);
+    if(ResourceManager<T>::instance) ResourceManager<T>::instance.reset(new ResourceManager<T>);
+    return ResourceManager<T>::instance.get();
+}
+
+
+//////////////////////////////////////////////////////
+// MEMBERS
+//////////////////////////////////////////////////////
+template<typename T> 
+const T & jubeon::storage::ResourceManager<T>::get
+(const std::string fpath)
+{
+	//Check the data exists.
+	if (this->data.count(fpath) == 0) {
+		//There is no data matched fpath.
+		this->data[fpath].loadFromFile(fpath);
 	}
 
-	return data[fpath];
+    //Return the reference of the data.
+	return this->data[fpath];
 }
 
-template<> void jubeon::storage::ResourceManager<sf::Texture>::erase(const std::string fpath)
+template<typename T>
+void jubeon::storage::ResourceManager<T>::erase
+(const std::string fpath)
 {
-	data.erase(fpath);
+    //Erase the data.
+    this->data.erase(fpath);
 }
 
-
-//////////////////////////////////////////////////////
-// SOUND
-//////////////////////////////////////////////////////
-template<> std::unordered_map<std::string, sf::SoundBuffer> jubeon::storage::ResourceManager<sf::SoundBuffer>::data;
-
-template<> const sf::SoundBuffer & jubeon::storage::ResourceManager<sf::SoundBuffer>::get(const std::string fpath)
+template<typename T>
+void jubeon::storage::ResourceManager<T>::clear()
 {
-	//ストレージにあるかどうか
-	if (data.count(fpath) == 0) {
-		//無いならロードする
-		data[fpath].loadFromFile(fpath);
-	}
-
-	return data[fpath];
-}
-
-template<> void jubeon::storage::ResourceManager<sf::SoundBuffer>::erase(const std::string fpath)
-{
-	data.erase(fpath);
-}
-
-
-//////////////////////////////////////////////////////
-// FONT
-//////////////////////////////////////////////////////
-template<> std::unordered_map<std::string, sf::Font> jubeon::storage::ResourceManager<sf::Font>::data;
-
-template<> const sf::Font & jubeon::storage::ResourceManager<sf::Font>::get(const std::string fpath)
-{
-	//ストレージにあるかどうか
-	if (data.count(fpath) == 0) {
-		//無いならロードする
-		data[fpath].loadFromFile(fpath);
-	}
-
-	return data[fpath];
-}
-
-template<> void jubeon::storage::ResourceManager<sf::Font>::erase(const std::string fpath)
-{
-	data.erase(fpath);
+    //Clear all data.
+    this->data.clear();
 }
 
