@@ -7,17 +7,29 @@
 #include "SFML/Audio.hpp"
 
 
+
+//////////////////////////////////////////////////////
+// explicit instantiation
+//////////////////////////////////////////////////////
+template class jubeon::storage::ResourceManager<sf::Texture>;
+template class jubeon::storage::ResourceManager<sf::SoundBuffer>;
+template class jubeon::storage::ResourceManager<sf::Font>;
+
 //////////////////////////////////////////////////////
 // Singleton Structure
 //////////////////////////////////////////////////////
+/*
 template<> std::unique_ptr<jubeon::storage::ResourceManager<sf::Texture>> jubeon::storage::ResourceManager<sf::Texture>::instance;
 
 template<> std::unique_ptr<jubeon::storage::ResourceManager<sf::SoundBuffer>> jubeon::storage::ResourceManager<sf::SoundBuffer>::instance;
 
 template<> std::unique_ptr<jubeon::storage::ResourceManager<sf::Font>> jubeon::storage::ResourceManager<sf::Font>::instance;
+*/
+
+template< class T> std::unique_ptr<jubeon::storage::ResourceManager<T>> jubeon::storage::ResourceManager<T>::instance;
 
 
-template<typename T>
+template<class T>
 jubeon::storage::ResourceManager<T> * 
 jubeon::storage::ResourceManager<T>::getInstance(void)
 {
@@ -29,7 +41,7 @@ jubeon::storage::ResourceManager<T>::getInstance(void)
 //////////////////////////////////////////////////////
 // MEMBERS
 //////////////////////////////////////////////////////
-template<typename T> 
+template<class T> 
 const T & jubeon::storage::ResourceManager<T>::get
 (const std::string fpath)
 {
@@ -43,7 +55,7 @@ const T & jubeon::storage::ResourceManager<T>::get
 	return this->data[fpath];
 }
 
-template<typename T>
+template<class T>
 void jubeon::storage::ResourceManager<T>::erase
 (const std::string fpath)
 {
@@ -51,7 +63,7 @@ void jubeon::storage::ResourceManager<T>::erase
     this->data.erase(fpath);
 }
 
-template<typename T>
+template<class T>
 void jubeon::storage::ResourceManager<T>::clear()
 {
     //Clear all data.

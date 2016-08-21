@@ -6,13 +6,18 @@
 #ifndef JUBEON_STORAGE_RESOURCEMANAGER_HPP
 #define JUBEON_STORAGE_RESOURCEMANAGER_HPP
 
+#include "ResourceManager.hpp"
+
+#include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
+
 #include <unordered_map>
 #include <memory>
 //Singleton
 
 namespace jubeon {
 	namespace storage {
-		template<typename T>
+		template<class T>
 		class ResourceManager {
 		public:
 		    /** SINGLETON. get the instance.
@@ -36,11 +41,10 @@ namespace jubeon {
 			 */
 			void clear(void);
 		private:
-		    static std::unique_ptr<ResourceManager> instance; 
+		    static std::unique_ptr<ResourceManager<T>> instance; 
 		
 			std::unordered_map<std::string, T> data;
 		};
-	}
-}
-
+	};
+};
 #endif

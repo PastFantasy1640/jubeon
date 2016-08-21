@@ -11,8 +11,6 @@
 //for logging
 #include "Systems/Logger.hpp"
 
-//for getting resource
-#include "Storages/ResourceManager.hpp"
 
 //Constructor
 jubeon::game::layers::SequencePlayer::SequencePlayer(
