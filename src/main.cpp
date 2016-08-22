@@ -97,10 +97,10 @@ int main(int argc, char * argv[]){
 /////////////////////////////////////////
 
 	//パネルコンフィグ
-	//jubeon::storages::JsonFileStorage keyconfig_storage("media/config/keyconfig.json");
-	//shared_ptr<jubeon::models::PanelConfig> pconfig = keyconfig_storage.getModel<jubeon::models::PanelConfig>();
+	jubeon::storages::JsonFileStorage keyconfig_storage("media/config/keyconfig.json");
+	shared_ptr<jubeon::models::PanelConfig> pconfig = keyconfig_storage.getModel<jubeon::models::PanelConfig>();
 
-	//pconfig->setInstance(pconfig);	//シングルトン？
+	pconfig->setInstance(pconfig);	//シングルトン？
 
 	//パネル起動
 	//jubeon::input::ListenPanel::Listen();
