@@ -3,7 +3,7 @@
 ## 環境構築
 
 ### 1.ライブラリを配置する
-依存ライブラリはこんな感じだから、いい感じにlib以下に配置してね
+依存ライブラリはこんな感じだから、いい感じにlib以下に配置してね。SFMLは2.3.2で動作確認しています。
 * [SFML](http://www.sfml-dev.org/files/SFML-2.3.2-windows-vc14-32-bit.zip)
 * [Thor](http://www.bromeon.ch/libraries/thor/download/v2.0/thor-v2.0-msvc2015.7z)
 
