@@ -110,7 +110,7 @@ namespace jubeon {
 
 			static void setTime(const int offset);
 
-			static sf::Clock * panel_clock_;
+			static sf::Clock panel_clock_;
 
 			static std::atomic<int> offset;
 		private:

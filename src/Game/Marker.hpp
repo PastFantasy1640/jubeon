@@ -8,7 +8,7 @@
 #include <string>
 #include <memory>
 #include <fstream>
-#include <map>
+#include <unordered_map>
 
 #include "JudgeDefinition.hpp"
 
@@ -43,7 +43,7 @@ namespace jubeon {
 
 			
 			//関連付け
-			std::map<std::string, sf::Image> images;
+			std::unordered_map<std::string, std::unique_ptr<sf::Image>> images_;
 
 			//マーカーに関してのメタデータが入ってるファイルのパス
 			std::string meta_filepath;

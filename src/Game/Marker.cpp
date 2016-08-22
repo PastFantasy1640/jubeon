@@ -109,17 +109,18 @@ bool jubeon::game::Marker::load(void)
 				ckt.restart();
 
 				//まず画像がmapにあるかどうか探す
-				if (this->images.find(image_str) == this->images.end()) {
+				if (!this->images_.count(image_str)) {
 					//無い
 					//ロードしよう
-					this->images[image_str].loadFromFile(this->directory + "/" + image_str);
+					this->images_[image_str].reset(new sf::Image());
+					this->images_[image_str]->loadFromFile(this->directory + "/" + image_str);
 				}
 				
 				//新しいテクスチャを作る
 				std::unique_ptr<sf::Texture> tex(new sf::Texture());
 
 				//イメージから読み込む
-				tex->loadFromImage(this->images[image_str], rectangle);
+				tex->loadFromImage(*(this->images_[image_str]), rectangle);
 				tex->setSmooth(true);
 
 

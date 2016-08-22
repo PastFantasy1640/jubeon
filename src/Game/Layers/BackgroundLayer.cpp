@@ -6,8 +6,8 @@
 //static member
 //define constant values.
 const sf::Int32 jubeon::game::layers::BackgroundLayer::REBORN_TIME = 580;
-const unsigned int jubeon::game::layers::BackgroundLayer::BEZIER_RESOLUTION = 10;
-const unsigned int jubeon::game::layers::BackgroundLayer::BORN_R_SIZE = 80;
+const std::size_t jubeon::game::layers::BackgroundLayer::BEZIER_RESOLUTION = 10;
+const std::size_t jubeon::game::layers::BackgroundLayer::BORN_R_SIZE = 80;
 const sf::Color jubeon::game::layers::BackgroundLayer::COLOR_NORMAL_BLUE(0x45,0xD5,0xFE,0xff);
 const sf::Color jubeon::game::layers::BackgroundLayer::COLOR_NORMAL_PINK(0xff,0x3a,0x7d,0xff);
 const sf::Vector2f jubeon::game::layers::BackgroundLayer::BORN_POSITION_LEFT(-100, 0);

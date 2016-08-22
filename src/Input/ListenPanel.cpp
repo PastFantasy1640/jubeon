@@ -20,7 +20,7 @@
 std::list<jubeon::input::PanelInput> jubeon::input::ListenPanel::que_;
 std::mutex jubeon::input::ListenPanel::mtx_;
 bool jubeon::input::ListenPanel::pushing_[16] = { false };
-sf::Clock * jubeon::input::ListenPanel::panel_clock_ = NULL;
+sf::Clock jubeon::input::ListenPanel::panel_clock_;
 std::atomic<bool> jubeon::input::ListenPanel::is_thread_exit_(false);
 std::atomic<int> jubeon::input::ListenPanel::offset(0);
 bool jubeon::input::ListenPanel::is_queue_ = true;
@@ -32,8 +32,7 @@ int jubeon::input::ListenPanel::Listen(void) {
 	que_.clear();
 
 
-	panel_clock_ = new sf::Clock;
-	panel_clock_->restart();
+	panel_clock_.restart();
 
 	//•ÊƒXƒŒƒbƒh—§‚¿ã‚°
 	std::thread check_th(GetPanelThread);
@@ -59,7 +58,7 @@ void jubeon::input::ListenPanel::SetQue(const int n) {
 	if (!is_queue_) return;
 
 	pushing_[n] ^= true;
-	sf::Time t = panel_clock_->getElapsedTime();
+	sf::Time t = panel_clock_.getElapsedTime();
 	PanelInput tmp;
 	tmp.ms = t.asMilliseconds() - offset;
 	tmp.panel_no = n;
@@ -126,5 +125,5 @@ void jubeon::input::ListenPanel::ResetOverflowFlag(void) {
 
 void jubeon::input::ListenPanel::setTime(const int offset)
 {
-	ListenPanel::offset = panel_clock_->getElapsedTime().asMilliseconds() - offset;
+	ListenPanel::offset = panel_clock_.getElapsedTime().asMilliseconds() - offset;
 }

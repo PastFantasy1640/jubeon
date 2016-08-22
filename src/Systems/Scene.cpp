@@ -1,5 +1,8 @@
 #include "Scene.hpp"
 
+//for Logger
+#include "Logger.hpp"
+
 bool jubeon::systems::Scene::is_running = false;
 bool jubeon::systems::Scene::is_scene_change = false;
 std::shared_ptr<jubeon::systems::Scene> jubeon::systems::Scene::next_scene;
@@ -23,6 +26,7 @@ int jubeon::systems::Scene::process(jubeon::graphics::LayerManager * main_window
 	if (!Scene::is_running) {
 		Scene::is_running = true;	//インクルードガード的な
 
+        Logger::information("Start to scene process.");
 
 		//ウィンドウのインスタンス設定
 		Scene::main_window = main_window;
@@ -30,8 +34,9 @@ int jubeon::systems::Scene::process(jubeon::graphics::LayerManager * main_window
 		//初回のシーン代入
 		Scene::current_scene = first_scene;
 
+        Logger::information("Initializing the first scene.");
 		Scene::current_scene->init();
-
+        Logger::information("Finished initializing the first scene.");
 
 		int ret = 0;
 
@@ -41,6 +46,7 @@ int jubeon::systems::Scene::process(jubeon::graphics::LayerManager * main_window
 
 			if (Scene::is_scene_change) {
 				Scene::current_scene = Scene::next_scene;	//シーンを移す
+                Logger::information("Initializing the next scene.");
 				Scene::current_scene->init();
 				Scene::is_scene_change = false;
 			}
@@ -49,6 +55,8 @@ int jubeon::systems::Scene::process(jubeon::graphics::LayerManager * main_window
 
 		}
 
+        Logger::information("Closing the scene process.");
+        
 		//返す
 		Scene::is_running = false;
 		return ret;

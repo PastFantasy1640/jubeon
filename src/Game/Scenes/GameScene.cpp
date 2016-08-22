@@ -106,7 +106,7 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	this->push_frame_layer.reset(new layers::PushframeLayer(main_panel_position, music));
 
-//	this->getMainWindow()->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
+	this->getMainWindow()->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
 //	this->getMainWindow()->addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
 //	this->getMainWindow()->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
 //	this->getMainWindow()->addLayer(rival1, jubeon::graphics::LayerManager::MAIN, 0);

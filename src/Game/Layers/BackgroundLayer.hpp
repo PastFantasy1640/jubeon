@@ -44,8 +44,8 @@ namespace jubeon {
 
 				//íËêîåQ
 				const static sf::Int32 REBORN_TIME;
-				const static unsigned int BEZIER_RESOLUTION;
-				const static unsigned int BORN_R_SIZE;
+				const static std::size_t BEZIER_RESOLUTION;
+				const static std::size_t BORN_R_SIZE;
 				const static sf::Color COLOR_NORMAL_BLUE;
 				const static sf::Color COLOR_NORMAL_PINK;
 				const static sf::Vector2f BORN_POSITION_LEFT;
@@ -60,7 +60,7 @@ namespace jubeon {
 				virtual void Exit() override;
 
 				template<std::size_t S>
-				static std::array<sf::Vector2f, S> genRandomPoints(unsigned int r);
+				std::array<sf::Vector2f, S> genRandomPoints(unsigned int r);
 			};
 		}
 	}

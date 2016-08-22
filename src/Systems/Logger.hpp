@@ -2,7 +2,7 @@
 
 #ifndef jubeon_SYSTEMS_LOGGER_HPP
 #define jubeon_SYSTEMS_LOGGER_HPP
-
+#define _DEBUG
 #include <fstream>
 #include <chrono>
 #include <mutex>
