@@ -109,11 +109,11 @@ void jubeon::game::scenes::GameScene::init(void)
 	this->getMainWindow()->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
 	this->getMainWindow()->addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
 	this->getMainWindow()->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
-//	this->getMainWindow()->addLayer(rival1, jubeon::graphics::LayerManager::MAIN, 0);
-//	this->getMainWindow()->addLayer(rival2, jubeon::graphics::LayerManager::MAIN, 0);
-//	this->getMainWindow()->addLayer(rival3, jubeon::graphics::LayerManager::MAIN, 0);
+	//this->getMainWindow()->addLayer(rival1, jubeon::graphics::LayerManager::MAIN, 0);
+	//this->getMainWindow()->addLayer(rival2, jubeon::graphics::LayerManager::MAIN, 0);
+	//this->getMainWindow()->addLayer(rival3, jubeon::graphics::LayerManager::MAIN, 0);
 	this->getMainWindow()->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
-//	this->getMainWindow()->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
+	this->getMainWindow()->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
 //	this->getMainWindow()->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
 //	this->getMainWindow()->addLayer(this->push_frame_layer, LayerManager::MAIN, 0);
 
