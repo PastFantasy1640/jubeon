@@ -35,7 +35,7 @@ namespace jubeon {
 
             /** Create the thread listening to panel input and process.
              */
-			void startListenThread(void);
+			void startThread(void);
 
 			/** Closing the thread. This function is available while the thread is running.
 			 */
@@ -49,7 +49,7 @@ namespace jubeon {
             /** Get the quing num.
              * @return Current que size.
              */
-			std::size_t getQueNum(void);
+			std::size_t getQueNum(void) const;
 
             /** Set flag whether panel status que or not.
              * @param flag true, and que is available.
@@ -59,34 +59,39 @@ namespace jubeon {
             /** Get flag whether panel status que or not.
              * @returns true, and que is available.
              */
-			bool getListenFlag(void);
+			bool getListenFlag(void) const;
 
             /** Get flag whether the que has overflowed or not.
              * max que size depends MAXQUE_SIZE.
+             * When this function is called, the flag is clear.
              * @return true, and the que has overflowed.
              */
-			bool isOverflow(void);
+			bool isOverflow(void) const;
 
-			static void setTime(const int offset);
-
-			static sf::Clock panel_clock_;
-
-			static std::atomic<int> offset;
-		private:
-			static std::list<PanelInput> que_;
-
-			static bool is_queue_;
-			static bool is_overflow_;
-
-			static std::atomic<bool> is_thread_exit_;
+            /** Restart the timer. 
+            
+             */
+			void restartTimer(const int offset);
 
 
-			static std::mutex mtx_;
-			static void GetPanelThread(void);
+			std::atomic<int> offset;
 
-			static bool pushing_[16];
+        private:
+			sf::Clock panel_clock_;
+			std::list<PanelInput> que_;
 
-			static void SetQue(const int n);
+			bool is_queue_;
+			bool is_overflow_;
+
+			std::atomic<bool> is_thread_exit_;
+
+
+			std::mutex mtx_;
+			void GetPanelThread(void);
+
+			bool pushing_[16];
+
+			void SetQue(const int n);
 
 
 		};
