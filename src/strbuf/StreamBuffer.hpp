@@ -7,9 +7,9 @@
 /*
 
 [NODE] This StreamBuffer class's data flow is like below.
-InputStreamBuffer--->                           --->OutputStreamBuffer
-InputStreamBuffer--->StreamBuffer(Data Instance)--->OutputStreamBuffer
-InputStreamBuffer--->                           --->OutputStreamBuffer
+InputStream--->                           --->OutputStream
+InputStream--->StreamBuffer(Data Instance)--->OutputStream
+InputStream--->                           --->OutputStream
 
 All Buffer is Thread Safe!!
 */
@@ -19,23 +19,20 @@ All Buffer is Thread Safe!!
 #ifndef STRBUF_STREAMBUFFER_HPP
 #define STRBUF_STREAMBUFFER_HPP
 
-#include <list>
-#include <memory>
+#include "StreamConnector.hpp"
 
 namespace strbuf{
 
-    template<typename T> class InputStreamBuffer;
-    template<typename T> class OutputStreamBuffer;
-
     template<typename T>
-    class StreamBuffer<T>{       
+    class StreamBuffer : public StreamConnector<T>{       
     public:
+    
+    StreamBuffer(){ }
+    
+    virtual ~StreamBuffer(){ }
+    
     private:
-        //Connecting Buffers
-        std::list<std::shared_ptr<InputStreamBuffer<T>>> inputs_;
-        std::list<std::shared_ptr<OutputStreamBuffer<T>>> outputs_;
-        
-        
+    
     };
 };
 

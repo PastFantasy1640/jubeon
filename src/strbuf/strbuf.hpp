@@ -7,8 +7,10 @@
 #ifndef STRBUF_STRBUF_HPP
 #define STRBUF_STRBUF_HPP
 
+#include "IOStream.hpp"
+#include "InputStream.hpp"
+#include "OutputStream.hpp"
+#include "StreamConnector.hpp"
 #include "StreamBuffer.hpp"
-#include "InputStreamBuffer.hpp"
-#include "OutputStreamBuffer.hpp"
 
 #endif
