@@ -31,6 +31,8 @@ namespace strbuf{
     
     virtual ~StreamBuffer(){ }
     
+    
+    
     private:
     
     };
