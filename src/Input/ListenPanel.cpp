@@ -1,129 +1,120 @@
-
+////////////////////////////////////////////////////
+// (c) 2015  white
 //author white
 //2015/10/23 made
+////////////////////////////////////////////////////
 
-//class_panel_event.cpp
-//panel_event.hppの内部
-
+//for multi threading
 #include <thread>
+
+//for string
 #include <string>
+
+//for debugging
 #include <iostream>
 
+//my implements
 #include "ListenPanel.hpp"
 
+//configuration
 #include "Models/PanelConfig.hpp"
 
+//for logging
 #include "Systems/Logger.hpp"
 
+/////////////////////////////////////////////////////
+// Singleton Instance
+/////////////////////////////////////////////////////
+std::unique_ptr<jubeon::input::ListenPanel> jubeon::input::ListenPanel::instance(new jubeon::input::ListenPanel);
+
+jubeon::input::ListenPanel * jubeon::input::ListenPanel::getInstance(){
+    return ListenPanel::instance.get();
+}
 
 
-std::list<jubeon::input::PanelInput> jubeon::input::ListenPanel::que_;
-std::mutex jubeon::input::ListenPanel::mtx_;
-bool jubeon::input::ListenPanel::pushing_[16] = { false };
-sf::Clock jubeon::input::ListenPanel::panel_clock_;
-std::atomic<bool> jubeon::input::ListenPanel::is_thread_exit_(false);
-std::atomic<int> jubeon::input::ListenPanel::offset(0);
-bool jubeon::input::ListenPanel::is_queue_ = true;
-bool jubeon::input::ListenPanel::is_overflow_ = false;
+/////////////////////////////////////////////////////
+// Constructor
+/////////////////////////////////////////////////////
+jubeon::input::ListenPanel::ListenPanel()
+    : is_queue_(false),
+    is_thread_exit_(false),
+    is_thread_closed_(true),
+    offset(0)
+{
+    for(auto i : this->push_flags) i = false;
+    this->quebuf.addInputStream(&this->input);
+}
 
+jubeon::input::ListenPanel::~ListenPanel(){
+}
 
-int jubeon::input::ListenPanel::Listen(void) {
-	//初期化
-	que_.clear();
+//////////////////////////////////////////////////////
+// Member Functions
+//////////////////////////////////////////////////////
+void jubeon::input::ListenPanel::startThread(void){
 
-
+    //restart clock
 	panel_clock_.restart();
 
-	//別スレッド立ち上げ
-	std::thread check_th(GetPanelThread);
+    //flags
+    this->is_thread_exit_ = false;
+    this->is_thread_closed_ = false;
 
+	//start thread
+	std::thread check_th(&ListenPanel::ThreadFunc, this);
 	check_th.detach();
-
-	return 0;
 }
 
 void jubeon::input::ListenPanel::Close(void){
-
 	is_thread_exit_ = true;
-
+    while(!this->is_thread_closed_) std::this_thread::sleep_for(std::chrono::milliseconds(1));
 }
 
 
 void jubeon::input::ListenPanel::SetQue(const int n) {
 
-	//押されていた
-	std::lock_guard<std::mutex> lock(mtx_);
+    // is queue stopping
+	if (!this->is_queue_) return;
 
-	//もしキュー停止ならスキップ
-	if (!is_queue_) return;
-
-	pushing_[n] ^= true;
+	this->push_flags[n] ^= true;
 	sf::Time t = panel_clock_.getElapsedTime();
 	PanelInput tmp;
 	tmp.ms = t.asMilliseconds() - offset;
 	tmp.panel_no = n;
-	tmp.t = (pushing_[n] ? Type::PUSH : Type::RELEASE);
+	tmp.t = (this->push_flags[n] ? Type::PUSH : Type::RELEASE);
 
-
-	//総合件数がQUEUE_MAXSIZEを超えていないか
-	if (que_.size() >= QUEUE_MAXSIZE) {
-		//先頭を1件潰す
-		//まさかとは思うけど、QUEUE_MAXSIZEが0以下とかはだめだよ
-		ListenPanel::que_.pop_front();
-	}
-	ListenPanel::que_.push_back(tmp);
-	
+	this->input << tmp;
+	this->quebuf.flush();
 }
 
-void jubeon::input::ListenPanel::GetPanelThread(void) {
-	//これが呼ばれるときは必ず初期化が済んでいるとき
-
-	while (1) {
+void jubeon::input::ListenPanel::ThreadFunc(void) {
+	while (!this->is_thread_exit_) {
 		for (int n = 0; n < 16; n++) {
 			if (jubeon::models::PanelConfig::getInstance()->getHidID(n) != -1) {
-				if (sf::Joystick::isButtonPressed(jubeon::models::PanelConfig::getInstance()->getHidID(n), jubeon::models::PanelConfig::getInstance()->getJoystickCode(n)) ^ pushing_[n]) SetQue(n);
+				if (sf::Joystick::isButtonPressed(jubeon::models::PanelConfig::getInstance()->getHidID(n), jubeon::models::PanelConfig::getInstance()->getJoystickCode(n)) ^ this->push_flags[n]) SetQue(n);
 			}
 			else {
 				//-1がkeyboard
-				if (sf::Keyboard::isKeyPressed(jubeon::models::PanelConfig::getInstance()->getKeyCode(n)) ^ pushing_[n]) SetQue(n);
+				if (sf::Keyboard::isKeyPressed(jubeon::models::PanelConfig::getInstance()->getKeyCode(n)) ^ this->push_flags[n]) SetQue(n);
 			}
 		}
 		std::this_thread::sleep_for(std::chrono::microseconds(1));
-		if (is_thread_exit_) return;
 	}
 
-}
-
-
-
-std::vector<jubeon::input::PanelInput> jubeon::input::ListenPanel::getEvent(void){
-	
-	std::vector<PanelInput> retvec(ListenPanel::que_.begin(), ListenPanel::que_.end());
-	ListenPanel::que_.clear();
-	return retvec;
-}
-
-size_t jubeon::input::ListenPanel::getQueNum(void) {
-	return que_.size();
+    this->is_thread_closed_ = true;
 }
 
 void jubeon::input::ListenPanel::setListenFlag(const bool flag) {
-	is_queue_ = flag;
+	this->is_queue_ = flag;
 }
 
-bool jubeon::input::ListenPanel::IsListening() {
-	return is_queue_;
+bool jubeon::input::ListenPanel::isListening() const{
+	return this->is_queue_;
 }
 
-bool jubeon::input::ListenPanel::IsOverflow(void) {
-	return is_overflow_;
-}
-
-void jubeon::input::ListenPanel::ResetOverflowFlag(void) {
-	is_overflow_ = false;
-}
-
-void jubeon::input::ListenPanel::setTime(const int offset)
+void jubeon::input::ListenPanel::restartTimer(const int offset)
 {
-	ListenPanel::offset = panel_clock_.getElapsedTime().asMilliseconds() - offset;
+	this->offset = panel_clock_.getElapsedTime().asMilliseconds() - offset;
 }
+
+

@@ -10,15 +10,23 @@
 #ifndef JUBEAT_ONLINE_PANEL_LISTEN_H_
 #define JUBEAT_ONLINE_PANEL_LISTEN_H_
 
-
-#include <mutex>
-#include <atomic>
-#include <vector>
-#include <list>
+//Clock
 #include <SFML/Graphics.hpp>
 
+//PanelInput
 #include "PanelInput.hpp"
 
+//Que Stream
+#include "strbuf/strbuf.hpp"
+
+//memory
+#include <memory>
+
+//thread safe
+#include <atomic>
+
+//array
+#include <array>
 
 namespace jubeon {
 	namespace input {
@@ -41,15 +49,6 @@ namespace jubeon {
 			 */
 			void Close(void);
 
-			/** Get the list logged panel pushed or released (type is std::vector).
-			 * @returns The panel log list.
-			 */
-			std::vector<PanelInput> getEvent(void);
-
-            /** Get the quing num.
-             * @return Current que size.
-             */
-			std::size_t getQueNum(void) const;
 
             /** Set flag whether panel status que or not.
              * @param flag true, and que is available.
@@ -59,40 +58,59 @@ namespace jubeon {
             /** Get flag whether panel status que or not.
              * @returns true, and que is available.
              */
-			bool getListenFlag(void) const;
+			bool isListening(void) const;
 
-            /** Get flag whether the que has overflowed or not.
-             * max que size depends MAXQUE_SIZE.
-             * When this function is called, the flag is clear.
-             * @return true, and the que has overflowed.
-             */
-			bool isOverflow(void) const;
 
             /** Restart the timer. 
             
              */
 			void restartTimer(const int offset);
+			
+			
+			/** get Instance
+			 */
+			static ListenPanel * getInstance();
 
+			// Destructor
+			~ListenPanel();
+        private:
+			
+			// Constructor
+			ListenPanel();
+			
+			
+			// Clocking
+			sf::Clock panel_clock_;
+			
+			// Que Stream Buffer
+			strbuf::StreamBuffer<PanelInput> quebuf;
+			
+			// Input Stream
+			strbuf::InputStream<PanelInput> input;
 
+            // is Queue flag
+			std::atomic<bool> is_queue_;
+
+            // thread will close
+			std::atomic<bool> is_thread_exit_;
+			
+			// thread has closed
+			std::atomic<bool> is_thread_closed_;
+
+            // time offset
 			std::atomic<int> offset;
 
-        private:
-			sf::Clock panel_clock_;
-			std::list<PanelInput> que_;
-
-			bool is_queue_;
-			bool is_overflow_;
-
-			std::atomic<bool> is_thread_exit_;
-
-
-			std::mutex mtx_;
-			void GetPanelThread(void);
-
-			bool pushing_[16];
-
+            // Thread Function
+			void ThreadFunc(void);
+			
+			// Set Queue
 			void SetQue(const int n);
 
+            //pushing flag
+			std::array<bool, 16> push_flags;
+
+			//sigleton instance
+			static std::unique_ptr<ListenPanel> instance;
 
 		};
 	}
