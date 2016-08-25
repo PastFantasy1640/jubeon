@@ -79,9 +79,10 @@ void jubeon::graphics::LayerManager::createWindow(void)
 	//まずウィンドウを生成
 	this->window.reset(new sf::RenderWindow(this->vmode, this->window_title, this->window_style));
 	this->window->clear();
+	this->window->setActive(false);
 
 	this->window->setVerticalSyncEnabled(this->isVSync);
-	this->window->setFramerateLimit(this->fpsLimit);
+	if(!this->isVSync) this->window->setFramerateLimit(this->fpsLimit);
 	this->window->setPosition(this->window_position);
 	
 	//ウィンドウバッファの生成

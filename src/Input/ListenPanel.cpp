@@ -4,9 +4,6 @@
 //2015/10/23 made
 ////////////////////////////////////////////////////
 
-//for multi threading
-#include <thread>
-
 //for string
 #include <string>
 
@@ -38,7 +35,6 @@ jubeon::input::ListenPanel * jubeon::input::ListenPanel::getInstance(){
 jubeon::input::ListenPanel::ListenPanel()
     : is_queue_(false),
     is_thread_exit_(false),
-    is_thread_closed_(true),
     offset(0)
 {
     for(auto i : this->push_flags) i = false;
@@ -58,16 +54,14 @@ void jubeon::input::ListenPanel::startThread(void){
 
     //flags
     this->is_thread_exit_ = false;
-    this->is_thread_closed_ = false;
 
 	//start thread
-	std::thread check_th(&ListenPanel::ThreadFunc, this);
-	check_th.detach();
+	this->check_th_.reset(new std::thread(&ListenPanel::ThreadFunc, this));
 }
 
 void jubeon::input::ListenPanel::Close(void){
 	is_thread_exit_ = true;
-    while(!this->is_thread_closed_) std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    this->check_th_->join();
 }
 
 
@@ -95,13 +89,12 @@ void jubeon::input::ListenPanel::ThreadFunc(void) {
 			}
 			else {
 				//-1‚ªkeyboard
-				if (sf::Keyboard::isKeyPressed(jubeon::models::PanelConfig::getInstance()->getKeyCode(n)) ^ this->push_flags[n]) SetQue(n);
+//				if (sf::Keyboard::isKeyPressed(jubeon::models::PanelConfig::getInstance()->getKeyCode(n)) ^ this->push_flags[n]) SetQue(n);
+                //if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ;
 			}
 		}
 		std::this_thread::sleep_for(std::chrono::microseconds(1));
 	}
-
-    this->is_thread_closed_ = true;
 }
 
 void jubeon::input::ListenPanel::setListenFlag(const bool flag) {

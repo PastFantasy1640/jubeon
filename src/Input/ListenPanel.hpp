@@ -7,8 +7,8 @@
 
 #pragma once
 
-#ifndef JUBEAT_ONLINE_PANEL_LISTEN_H_
-#define JUBEAT_ONLINE_PANEL_LISTEN_H_
+#ifndef JUBEON_INPUT_LISTENPANEL_HPP
+#define JUBEON_INPUT_LISTENPANEL_HPP
 
 //Clock
 #include <SFML/Graphics.hpp>
@@ -27,6 +27,9 @@
 
 //array
 #include <array>
+
+//thread
+#include <thread>
 
 namespace jubeon {
 	namespace input {
@@ -62,7 +65,6 @@ namespace jubeon {
 
 
             /** Restart the timer. 
-            
              */
 			void restartTimer(const int offset);
 			
@@ -78,6 +80,8 @@ namespace jubeon {
 			// Constructor
 			ListenPanel();
 			
+			//thread
+			std::unique_ptr<std::thread> check_th_;
 			
 			// Clocking
 			sf::Clock panel_clock_;
@@ -93,9 +97,6 @@ namespace jubeon {
 
             // thread will close
 			std::atomic<bool> is_thread_exit_;
-			
-			// thread has closed
-			std::atomic<bool> is_thread_closed_;
 
             // time offset
 			std::atomic<int> offset;

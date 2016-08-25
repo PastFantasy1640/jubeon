@@ -103,7 +103,7 @@ int main(int argc, char * argv[]){
 	pconfig->setInstance(pconfig);	//シングルトン？
 
 	//パネル起動
-	//jubeon::input::ListenPanel::Listen();
+	jubeon::input::ListenPanel::getInstance()->startThread();
 
 	//最初に使用するシーンを生成
 	shared_ptr<scenes::GameScene> upSceneInstance(new scenes::GameScene());
