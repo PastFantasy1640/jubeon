@@ -120,11 +120,9 @@ void jubeon::game::scenes::GameScene::init(void)
 
 
 	//楽曲の再生
-	//パネルのキューを全リセット
-	ListenPanel::getEvent();
 
 	//タイムマーカーを打つ
-	ListenPanel::setTime(-2300);
+	ListenPanel::getInstance()->restartTimer(-2300);
 
 	music->setForPlay();
 
@@ -147,7 +145,7 @@ int jubeon::game::scenes::GameScene::process(void)
 	}
 
 	//パネルから入力を取ってくる
-	std::vector<PanelInput> pinput = ListenPanel::getEvent();
+	std::vector<PanelInput> pinput;// = ListenPanel::getEvent();
 
 	if (pinput.size() > 0) {
 		for (auto ite : pinput) {
