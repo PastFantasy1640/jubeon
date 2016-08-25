@@ -44,9 +44,9 @@ namespace jubeon {
 
             static const std::size_t QUEUE_MAXSIZE = 1024;
 
-            /** Create the thread listening to panel input and process.
+            /** Listening to panel input and process.
              */
-			void startThread(void);
+			void process(void);
 
 			/** Closing the thread. This function is available while the thread is running.
 			 */
@@ -90,7 +90,7 @@ namespace jubeon {
 			strbuf::StreamBuffer<PanelInput> quebuf;
 			
 			// Input Stream
-			strbuf::InputStream<PanelInput> input;
+			std::shared_ptr<strbuf::InputStream<PanelInput>> input;
 
             // is Queue flag
 			std::atomic<bool> is_queue_;

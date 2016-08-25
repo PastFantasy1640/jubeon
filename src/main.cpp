@@ -66,32 +66,37 @@ int main(int argc, char * argv[]){
 #endif
 #endif
 
-    //////////////////////////
+    ///////////////////////////////////////////////////////////
     // main window create
-    //////////////////////////
+    ///////////////////////////////////////////////////////////
     //Load config
     Logger::information("Loading window layout.");
     shared_ptr<WindowConfig> window_config = JsonFileStorage("media/config/window_layout.json").getModel<WindowConfig>();
     
-    //setting window
-    LayerManager mainwindow(
-        "jubeon v0.1",              //window title
+    //create window
+    LayerManager mainwindow("mainwindow");
+    
+    mainwindow.create(
         sf::VideoMode(
             static_cast<unsigned int>(window_config->getSize().x),
             static_cast<unsigned int>(window_config->getSize().y)),
-        window_config->getVsyncEnabled(),
-        80,
+        "jubeon v0.1",              //window title
+        sf::Style::None);
+        
+    mainwindow.setPosition(
         sf::Vector2i(
             static_cast<int>(window_config->getPosition().x),
-            static_cast<int>(window_config->getPosition().y)),
-        sf::Style::None);
-    
-    //Create Window
-	mainwindow.createWindow();
+            static_cast<int>(window_config->getPosition().y))
+        );
+        
+    mainwindow.setVerticalSyncEnabled(window_config->getVsyncEnabled());
+    if(!window_config->getVsyncEnabled()) mainwindow.setFramerateLimit(80);
     
     //Finished creating the window.
     Logger::information("Finished creating the window.");
 
+
+    //
 
 
 /////////////////////////////////////////
@@ -105,10 +110,8 @@ int main(int argc, char * argv[]){
 	//パネル起動
 	jubeon::input::ListenPanel::getInstance()->startThread();
 
-	//最初に使用するシーンを生成
-	shared_ptr<scenes::GameScene> upSceneInstance(new scenes::GameScene());
-
-	int ret = Scene::process(&mainwindow, upSceneInstance);
+    //Start Process Thread
+	int ret = Scene::process<scenes::GameScene>(&mainwindow);
 
 	//パネルの終了
 	//jubeon::input::ListenPanel::Close();

@@ -38,7 +38,7 @@ jubeon::input::ListenPanel::ListenPanel()
     offset(0)
 {
     for(auto i : this->push_flags) i = false;
-    this->quebuf.addInputStream(&this->input);
+    this->quebuf.addInputStream(this->input);
 }
 
 jubeon::input::ListenPanel::~ListenPanel(){
@@ -77,7 +77,7 @@ void jubeon::input::ListenPanel::SetQue(const int n) {
 	tmp.panel_no = n;
 	tmp.t = (this->push_flags[n] ? Type::PUSH : Type::RELEASE);
 
-	this->input << tmp;
+	*(this->input) << tmp;
 	this->quebuf.flush();
 }
 

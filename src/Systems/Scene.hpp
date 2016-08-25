@@ -60,21 +60,20 @@ namespace jubeon {
 
 			static bool is_scene_change;
 
-			//メインウィンドウ
-			static jubeon::graphics::LayerManager * main_window;
-
+            static jubeon::graphics::LayerManager * main_window;
+            
+			static int process2(const std::shared_ptr<Scene> & first_scene);
+            
 		protected:
 			//次のシーンを設定する
-			//設定した後のnext_sceneには所有権が無いため注意
 			static void setNextScene(const std::shared_ptr<Scene> & next_scene);
-
-			//メインウィンドウのインスタンスを取得する
-			//TO DO : 出来ればconstを付けたいけど、どう？
-			static jubeon::graphics::LayerManager * getMainWindow();
-
+			
+			//event stream
+			std::shared_ptr<strbuf::OutputStream<sf::Event>> event;
+            
 		public:
 			//コンストラクタ
-			Scene() {};
+			Scene();
 
 			//デストラクタ
 			virtual ~Scene() {};
@@ -89,7 +88,12 @@ namespace jubeon {
 			//メインスレッドで実行されるprocess関数。
 			//再帰してはならないし、できない設計にしてある
 			//メインスレッドで実行する。戻り値は終了ステータス
-			static int process(jubeon::graphics::LayerManager * main_window, const std::shared_ptr<Scene> & first_scene);
+			template<class T,class... Args>
+			static int process(jubeon::graphics::LayerManager * main_window, Args... args){
+		        Scene::main_window = main_window;
+			    std::shared_ptr<T> first_scene(new T(args...));
+			    return process2(first_scene);
+			}
 
 		};	
 	};

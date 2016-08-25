@@ -23,29 +23,28 @@ using namespace jubeon::graphics;
 
 //static defition
 const sf::Vector2u jubeon::graphics::LayerManager::RENDER_TEXTURE_SIZE = sf::Vector2u(768, 1360);
+std::unordered_map<std::string, LayerManager *> jubeon::graphics::LayerManager::layermanager_map;
 
 //Constructor with arguments
-jubeon::graphics::LayerManager::LayerManager(
-	const std::string & window_title,
-	const sf::VideoMode & vmode,
-	const bool isVSync,
-	const unsigned int fpsLimit,
-	const sf::Vector2i startWindowPosition,
-	const sf::Uint32 style)
-	: vmode(vmode),
-	window_title(window_title),
-	window_style(style),
-	isVSync(isVSync),
-	fpsLimit(fpsLimit),
-	window_position(startWindowPosition),
-	is_open_window(false)
+jubeon::graphics::LayerManager::LayerManager(const std::string & mapping_name)
 {
+    //create window buffer
+	if (!this->window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y)) {
+		jubeon::systems::Logger::error("Failed to create the window render buffer.");
+		return;
+	}
+	this->window_buffer.clear();
+	this->window_buffer.setSmooth(true);
+	
+	//layer mapping
+	this->layermanager_map[mapping_name] = this;
 }
+
 
 //Destructor
 jubeon::graphics::LayerManager::~LayerManager()
 {
-	//あえてリリースする必要は無い？
+
 }
 
 //レイヤーの追加
@@ -74,31 +73,6 @@ void jubeon::graphics::LayerManager::addLayer(std::shared_ptr<LayerBase> layer, 
 
 }
 
-void jubeon::graphics::LayerManager::createWindow(void)
-{
-	//まずウィンドウを生成
-	this->window.reset(new sf::RenderWindow(this->vmode, this->window_title, this->window_style));
-	this->window->clear();
-	this->window->setActive(false);
-
-	this->window->setVerticalSyncEnabled(this->isVSync);
-	if(!this->isVSync) this->window->setFramerateLimit(this->fpsLimit);
-	this->window->setPosition(this->window_position);
-	
-	//ウィンドウバッファの生成
-	if (!this->window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y)) {
-		jubeon::systems::Logger::error("ウィンドウバッファの生成に失敗しました");
-		return;
-	}
-	this->window_buffer.clear();
-	this->window_buffer.setSmooth(true);
-}
-
-//ウィンドウが開いているか
-bool jubeon::graphics::LayerManager::isWindowOpening(void) const
-{
-	return this->window->isOpen();
-}
 
 //ウィンドウを終了させる
 void jubeon::graphics::LayerManager::closeWindow(void)
@@ -110,21 +84,15 @@ void jubeon::graphics::LayerManager::closeWindow(void)
 		(*p)->Exit();
 	}
 
-	this->window->close();
+	this->close();
 }
 
-bool jubeon::graphics::LayerManager::getWindowEvent(sf::Event & e)
-{
-	return this->window->pollEvent(e);
-}
 
 //レイヤー描写
 void jubeon::graphics::LayerManager::process(void) {
 
 
 	this->window_buffer.clear();
-	this->window->clear(sf::Color::Black);
-
 
 
 	if (this->layer_list.size() > 0) {
@@ -161,26 +129,43 @@ void jubeon::graphics::LayerManager::process(void) {
 
 	//スプライトごにょごにょ
 	sf::Vector2f scale;
-	scale.x = static_cast<float>(this->window->getSize().x) / static_cast<float>(window_buffer.getSize().x);
-	scale.y = static_cast<float>(this->window->getSize().y) / static_cast<float>(window_buffer.getSize().y);
+	scale.x = static_cast<float>(this->getSize().x) / static_cast<float>(window_buffer.getSize().x);
+	scale.y = static_cast<float>(this->getSize().y) / static_cast<float>(window_buffer.getSize().y);
 
 	if (scale.x > scale.y) scale.x = scale.y;
 	else scale.y = scale.x;
 
 	wsp.setOrigin(static_cast<float>(this->RENDER_TEXTURE_SIZE.x) / 2.0f, static_cast<float>(this->RENDER_TEXTURE_SIZE.y) / 2.0f);
-	wsp.setPosition(this->vmode.width / 2.0f, this->vmode.height / 2.0f);
+	wsp.setPosition(this->getSize().x / 2.0f, this->getSize().y / 2.0f);
+	
 	wsp.setScale(scale);
 
-	//画面描写
-	this->window->draw(wsp);
+    { //mutable area
+        std::lock_guard<std::mutex> lock(this->mtx);
+        
+        //Clear Window
+	    this->clear();
 
+	    //Draw Window
+	    this->draw(wsp);
 
-	//画面アップデート
-	this->window->display();
+	    //Update Window
+	    this->display();
+    }
+    
+}
 
-	//もしも垂直同期無しでfps制限もないとき、少し待つ
-	if (this->isVSync == false && this->fpsLimit == 0) std::this_thread::sleep_for(std::chrono::microseconds(1));
+strbuf::StreamBuffer<sf::Event> * jubeon::graphics::LayerManager::getEventBuffer(){
+    return &this->event_buffer;
+}
 
+jubeon::graphics::LayerManager * jubeon::graphics::LayerManager::getInstance(const std::string & name){
+    return layermanager_map.at(name);
+}
 
+void jubeon::graphics::LayerManager::processAll(void){
+    for(auto p : layermanager_map){
+        p.second->process();
+    }
 }
 

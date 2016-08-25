@@ -106,16 +106,17 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	this->push_frame_layer.reset(new layers::PushframeLayer(main_panel_position, music));
 
-	this->getMainWindow()->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
-	this->getMainWindow()->addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
-	this->getMainWindow()->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
-	//this->getMainWindow()->addLayer(rival1, jubeon::graphics::LayerManager::MAIN, 0);
-	//this->getMainWindow()->addLayer(rival2, jubeon::graphics::LayerManager::MAIN, 0);
-	//this->getMainWindow()->addLayer(rival3, jubeon::graphics::LayerManager::MAIN, 0);
-	this->getMainWindow()->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
-	this->getMainWindow()->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
-//	this->getMainWindow()->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
-//	this->getMainWindow()->addLayer(this->push_frame_layer, LayerManager::MAIN, 0);
+    LayerManager * mainwindow = LayerManager::getInstance("mainwindow");
+	mainwindow->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
+	mainwindow->addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
+	mainwindow->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
+	//mainwindow->addLayer(rival1, jubeon::graphics::LayerManager::MAIN, 0);
+	//mainwindow->addLayer(rival2, jubeon::graphics::LayerManager::MAIN, 0);
+	//mainwindow->addLayer(rival3, jubeon::graphics::LayerManager::MAIN, 0);
+	mainwindow->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
+	mainwindow->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
+//	mainwindow->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
+//	mainwindow->addLayer(this->push_frame_layer, LayerManager::MAIN, 0);
 
 
 
@@ -133,7 +134,7 @@ void jubeon::game::scenes::GameScene::init(void)
 
 int jubeon::game::scenes::GameScene::process(void)
 {
-	sf::Event e;
+	/*sf::Event e;
 	while (this->getMainWindow()->getWindowEvent(e)) {
 		if (e.type == sf::Event::Closed) {
 			return 1;
@@ -142,7 +143,7 @@ int jubeon::game::scenes::GameScene::process(void)
 			this->playrecord->writeToFile("hogehogehoge.txt");
 			return 1;
 		}
-	}
+	}*/
 
 	//ƒpƒlƒ‹‚©‚ç“ü—Í‚ðŽæ‚Á‚Ä‚­‚é
 	std::vector<PanelInput> pinput;// = ListenPanel::getEvent();

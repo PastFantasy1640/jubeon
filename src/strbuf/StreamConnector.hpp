@@ -17,13 +17,13 @@ namespace strbuf{
     template <typename T>
     class StreamConnector{
     public:
-        void addInputStream(InputStream<T> * inputstream){
+        void addInputStream(std::shared_ptr<InputStream<T>> & inputstream){
             //MUTABLE
             std::lock_guard<std::mutex> lock(this->mutex_);
             this->inputs_.push_back(inputstream);
         }
         
-        void addOutputStream(OutputStream<T> * outputstream){
+        void addOutputStream(std::shared_ptr<OutputStream<T>> & outputstream){
             //Mutable
             std::lock_guard<std::mutex> lock(this->mutex_);
             this->outputs_.push_back(outputstream);
@@ -32,10 +32,18 @@ namespace strbuf{
         void flush(void){ 
             //Copy
             std::lock_guard<std::mutex> lock(this->mutex_);
-            for(auto i : inputs_){
-                while(i->getQueSize()){
-                    T tmp = i->unque();   //unque
-                    for(auto o : outputs_) o->que(tmp); //que./
+            for(auto i = this->inputs_.begin(); i != this->inputs_.end();){
+                if(i->unique()) i = this->inputs_.erase(i);
+                else{
+                    while((*i)->getQueSize()){
+                        T tmp = (*i)->unque();   //unque
+                        for(auto o = this->outputs_.begin(); o != this->outputs_.end(); ){
+                            (*o)->que(tmp); //que
+                            if(o->unique()) o = this->outputs_.erase(o);
+                            else o++;
+                        }
+                    }
+                    i++;
                 }
             }
         }
@@ -43,8 +51,8 @@ namespace strbuf{
     protected:
     
     private:
-        std::list<InputStream<T> *> inputs_;
-        std::list<OutputStream<T> *> outputs_;
+        std::list<std::shared_ptr<InputStream<T>>> inputs_;
+        std::list<std::shared_ptr<OutputStream<T>>> outputs_;
         
         std::mutex mutex_;
     };
