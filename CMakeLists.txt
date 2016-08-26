@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -g -O0 -L${CMAKE_SOURCE_DIR}/lib/SFML/lib -lsfml-graphics -lsfml-window -lsfml-system")
-
 project(jubeon)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -51,3 +49,9 @@ if(THOR_FOUND)
     include_directories(${THOR_INCLUDE_DIR})
     target_link_libraries(${EXECUTABLE_NAME} ${THOR_LIBRARY})
 endif()
+
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -g -O0 -L${CMAKE_SOURCE_DIR}/lib/x86_64-linux-gnu")
+target_link_libraries(${PROJECT_NAME} X11 pthread)
+
+

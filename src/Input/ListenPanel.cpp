@@ -33,12 +33,10 @@ jubeon::input::ListenPanel * jubeon::input::ListenPanel::getInstance(){
 // Constructor
 /////////////////////////////////////////////////////
 jubeon::input::ListenPanel::ListenPanel()
-    : is_queue_(false),
-    is_thread_exit_(false),
-    offset(0)
+    : offset(0),
+    input(new strbuf::InputStream<sf::Event>)
 {
     for(auto i : this->push_flags) i = false;
-    this->quebuf.addInputStream(this->input);
 }
 
 jubeon::input::ListenPanel::~ListenPanel(){
@@ -47,24 +45,18 @@ jubeon::input::ListenPanel::~ListenPanel(){
 //////////////////////////////////////////////////////
 // Member Functions
 //////////////////////////////////////////////////////
-void jubeon::input::ListenPanel::startThread(void){
+void jubeon::input::ListenPanel::process(jubeon::graphics::LayerManager * main_window){
 
     //restart clock
 	panel_clock_.restart();
 
-    //flags
-    this->is_thread_exit_ = false;
+    main_window->getEventBuffer()->addInputStream(this->input);
 
 	//start thread
-	this->check_th_.reset(new std::thread(&ListenPanel::ThreadFunc, this));
+	this->ThreadFunc(main_window);
 }
 
-void jubeon::input::ListenPanel::Close(void){
-	is_thread_exit_ = true;
-    this->check_th_->join();
-}
-
-
+/*
 void jubeon::input::ListenPanel::SetQue(const int n) {
 
     // is queue stopping
@@ -80,9 +72,22 @@ void jubeon::input::ListenPanel::SetQue(const int n) {
 	*(this->input) << tmp;
 	this->quebuf.flush();
 }
+*/
+void jubeon::input::ListenPanel::ThreadFunc(jubeon::graphics::LayerManager * main_window) {
 
-void jubeon::input::ListenPanel::ThreadFunc(void) {
-	while (!this->is_thread_exit_) {
+    bool is_exit = false;
+
+	while (!is_exit && main_window->isOpen()) {
+	    sf::Event e;
+	    if(!main_window->waitEvent(e)) break;
+
+        //Queue
+        *(this->input) << e;
+        main_window->getEventBuffer()->flush();
+        
+        systems::Logger::information("Queued.");
+        
+        	/*
 		for (int n = 0; n < 16; n++) {
 			if (jubeon::models::PanelConfig::getInstance()->getHidID(n) != -1) {
 				if (sf::Joystick::isButtonPressed(jubeon::models::PanelConfig::getInstance()->getHidID(n), jubeon::models::PanelConfig::getInstance()->getJoystickCode(n)) ^ this->push_flags[n]) SetQue(n);
@@ -93,16 +98,8 @@ void jubeon::input::ListenPanel::ThreadFunc(void) {
                 //if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ;
 			}
 		}
-		std::this_thread::sleep_for(std::chrono::microseconds(1));
+		std::this_thread::sleep_for(std::chrono::microseconds(1));*/
 	}
-}
-
-void jubeon::input::ListenPanel::setListenFlag(const bool flag) {
-	this->is_queue_ = flag;
-}
-
-bool jubeon::input::ListenPanel::isListening() const{
-	return this->is_queue_;
 }
 
 void jubeon::input::ListenPanel::restartTimer(const int offset)

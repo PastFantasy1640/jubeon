@@ -108,6 +108,7 @@ namespace jubeon{
             using sf::RenderWindow::setFramerateLimit;
             using sf::RenderWindow::setActive;
             using sf::RenderWindow::clear;
+            using sf::RenderWindow::waitEvent;
 
 		private:
             //Copy Constructor[forbidden]

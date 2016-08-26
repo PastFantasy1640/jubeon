@@ -39,6 +39,9 @@
 //for panel input
 #include "Input/ListenPanel.hpp"
 
+#include <thread>
+#include <X11/Xlib.h>
+
 
 #if defined(_DEBUG) && defined(_MSVC)
 #include <crtdbg.h>
@@ -50,9 +53,8 @@ using namespace jubeon::storages;
 using namespace jubeon::graphics;
 using namespace jubeon::systems;
 using namespace std;
-
 int main(int argc, char * argv[]){
-
+XInitThreads();
     //Starting Log
     Logger::information("Starting jubeon program.");
 
@@ -81,7 +83,7 @@ int main(int argc, char * argv[]){
             static_cast<unsigned int>(window_config->getSize().x),
             static_cast<unsigned int>(window_config->getSize().y)),
         "jubeon v0.1",              //window title
-        sf::Style::None);
+        /*sf::Style::None*/0);
         
     mainwindow.setPosition(
         sf::Vector2i(
@@ -91,6 +93,7 @@ int main(int argc, char * argv[]){
         
     mainwindow.setVerticalSyncEnabled(window_config->getVsyncEnabled());
     if(!window_config->getVsyncEnabled()) mainwindow.setFramerateLimit(80);
+    mainwindow.setActive(false);
     
     //Finished creating the window.
     Logger::information("Finished creating the window.");
@@ -107,14 +110,16 @@ int main(int argc, char * argv[]){
 
 	pconfig->setInstance(pconfig);	//シングルトン？
 
-	//パネル起動
-	jubeon::input::ListenPanel::getInstance()->startThread();
-
+	Logger::information("hogehoge2");
     //Start Process Thread
 	int ret = Scene::process<scenes::GameScene>(&mainwindow);
+	
+	Logger::information("hogehoge");
+	
+	//入力スレッド
+	jubeon::input::ListenPanel::getInstance()->process(&mainwindow);
 
-	//パネルの終了
-	//jubeon::input::ListenPanel::Close();
+
 
 	//現在起動中のウィンドウを終了し、レイヤーを全部解放
 	mainwindow.closeWindow();

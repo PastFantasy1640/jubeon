@@ -24,7 +24,7 @@ void jubeon::systems::Scene::setNextScene(const std::shared_ptr<Scene> & next_sc
 	Scene::is_scene_change = true;
 }
 
-int jubeon::systems::Scene::process2(const std::shared_ptr<Scene> & first_scene)
+void jubeon::systems::Scene::process2(const std::shared_ptr<Scene> & first_scene)
 {
 	if (!Scene::is_running) {
 		Scene::is_running = true;	//インクルードガード的な
@@ -60,9 +60,9 @@ int jubeon::systems::Scene::process2(const std::shared_ptr<Scene> & first_scene)
         
 		//返す
 		Scene::is_running = false;
-		return ret;
+		//return ret;
 	}
 
 	//再帰的実行
-	return -1;
+	//return -1;
 }

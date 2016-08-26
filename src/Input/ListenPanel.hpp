@@ -31,6 +31,8 @@
 //thread
 #include <thread>
 
+#include "Graphics/Layer/LayerManager.hpp"
+
 namespace jubeon {
 	namespace input {
 		class ListenPanel {
@@ -46,23 +48,7 @@ namespace jubeon {
 
             /** Listening to panel input and process.
              */
-			void process(void);
-
-			/** Closing the thread. This function is available while the thread is running.
-			 */
-			void Close(void);
-
-
-            /** Set flag whether panel status que or not.
-             * @param flag true, and que is available.
-             */
-			void setListenFlag(const bool flag);
-
-            /** Get flag whether panel status que or not.
-             * @returns true, and que is available.
-             */
-			bool isListening(void) const;
-
+			void process(jubeon::graphics::LayerManager * main_window);
 
             /** Restart the timer. 
              */
@@ -80,35 +66,23 @@ namespace jubeon {
 			// Constructor
 			ListenPanel();
 			
-			//thread
-			std::unique_ptr<std::thread> check_th_;
-			
 			// Clocking
 			sf::Clock panel_clock_;
 			
-			// Que Stream Buffer
-			strbuf::StreamBuffer<PanelInput> quebuf;
-			
 			// Input Stream
-			std::shared_ptr<strbuf::InputStream<PanelInput>> input;
-
-            // is Queue flag
-			std::atomic<bool> is_queue_;
-
-            // thread will close
-			std::atomic<bool> is_thread_exit_;
-
-            // time offset
-			std::atomic<int> offset;
+			std::shared_ptr<strbuf::InputStream<sf::Event>> input;
 
             // Thread Function
-			void ThreadFunc(void);
+			void ThreadFunc(jubeon::graphics::LayerManager * main_window);
 			
 			// Set Queue
-			void SetQue(const int n);
+			//void SetQue(const int n);
 
             //pushing flag
 			std::array<bool, 16> push_flags;
+			
+			//offset
+			std::atomic<int> offset;
 
 			//sigleton instance
 			static std::unique_ptr<ListenPanel> instance;

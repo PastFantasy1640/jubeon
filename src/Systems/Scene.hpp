@@ -37,6 +37,8 @@
 
 #include <memory>
 
+#include <thread>
+
 #include "Graphics/Layer/LayerManager.hpp"
 
 namespace jubeon {
@@ -62,7 +64,7 @@ namespace jubeon {
 
             static jubeon::graphics::LayerManager * main_window;
             
-			static int process2(const std::shared_ptr<Scene> & first_scene);
+			static void process2(const std::shared_ptr<Scene> & first_scene);
             
 		protected:
 			//Ÿ‚ÌƒV[ƒ“‚ğİ’è‚·‚é
@@ -92,7 +94,9 @@ namespace jubeon {
 			static int process(jubeon::graphics::LayerManager * main_window, Args... args){
 		        Scene::main_window = main_window;
 			    std::shared_ptr<T> first_scene(new T(args...));
-			    return process2(first_scene);
+			    std::thread th(&Scene::process2,first_scene);
+			    th.detach();
+			    return 0;//process2(first_scene);
 			}
 
 		};	
