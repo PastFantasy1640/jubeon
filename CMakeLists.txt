@@ -51,7 +51,7 @@ if(THOR_FOUND)
 endif()
 
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -g -O0 -L${CMAKE_SOURCE_DIR}/lib/x86_64-linux-gnu")
-target_link_libraries(${PROJECT_NAME} X11 pthread)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -g -O0 -L${CMAKE_SOURCE_DIR}/lib/x86_64-linux-gnu")
+#target_link_libraries(${PROJECT_NAME} X11 pthread)
 
 

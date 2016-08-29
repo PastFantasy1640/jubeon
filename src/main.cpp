@@ -14,7 +14,7 @@
 #include "Systems/Logger.hpp"
 
 //Window Config
-#include "Models/WindowConfig.hpp"
+#include "Models/Configures.hpp"
 #include "Storages/JsonFileStorage.hpp"
 
 //shared_ptr
@@ -28,11 +28,6 @@
 #include "Game/Scenes/GameScene.hpp"
 
 
-//test scene
-#include "Game/Scenes/TemplateScene.hpp"
-
-
-
 //for config loading
 #include "Models/PanelConfig.hpp"
 
@@ -40,10 +35,14 @@
 #include "Input/ListenPanel.hpp"
 
 #include <thread>
+
+//for linux (multi thread)
+#ifndef _MBCS
 #include <X11/Xlib.h>
+#endif
 
-
-#if defined(_DEBUG) && defined(_MSVC)
+//for debugging (memory reak)
+#if defined(_DEBUG) && defined(_MBCS)
 #include <crtdbg.h>
 #endif
 
@@ -53,22 +52,29 @@ using namespace jubeon::storages;
 using namespace jubeon::graphics;
 using namespace jubeon::systems;
 using namespace std;
+
+
 int main(int argc, char * argv[]){
-XInitThreads();
+
+#ifndef _MBCS
+	//in LINUX, call this to be able to use multithread.
+	XInitThreads();
+#endif
+
     //Starting Log
     Logger::information("Starting jubeon program.");
 
 #ifdef _DEBUG
     Logger::information("[DEBUG]Debug mode is available.");
-
-#ifdef _MSVC
+#ifdef _MBCS
 	//in debug mode and vs compiler, output the log leaked memories.
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	Logger::information("[DEBUG]Output the log leaked memories.");
 #endif
 #endif
 
-    ///////////////////////////////////////////////////////////
+
+	///////////////////////////////////////////////////////////
     // main window create
     ///////////////////////////////////////////////////////////
     //Load config
@@ -77,13 +83,15 @@ XInitThreads();
     
     //create window
     LayerManager mainwindow("mainwindow");
+
+	//
     
     mainwindow.create(
         sf::VideoMode(
             static_cast<unsigned int>(window_config->getSize().x),
             static_cast<unsigned int>(window_config->getSize().y)),
         "jubeon v0.1",              //window title
-        /*sf::Style::None*/0);
+        sf::Style::None);
         
     mainwindow.setPosition(
         sf::Vector2i(

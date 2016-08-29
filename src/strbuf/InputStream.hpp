@@ -18,6 +18,7 @@ namespace strbuf{
          */
         bool operator<< (const T & input){
             this->que(input);
+			return true;
         }
     };
 }
