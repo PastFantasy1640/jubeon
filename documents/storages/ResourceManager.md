@@ -20,25 +20,43 @@ ResourceManager::getInstance()::hogehoge
 
 と続けてください。
 
+## インスタンスの取得
+ファイルパスをキーにしてリソースを取得します。と思ったけど、実際使ってみたら毎回毎回ファイルパス使うのは非常にダルいので、operator[]を実装して、連想配列っぽくアクセスできるように変更予定です。もしもリソースが読み込まれていなければ新規で読み込みます。サイズが大きい素材などは読み込みに時間がかかります。例えば、そういう素材を読み込むときは、ローディング中に新たにスレッドを作成し、getメソッドを呼び出してください。すでに読み込まれているときはすぐに終わりますし、新規に読み込む場合は時間が掛かるでしょう。
 
-			
-			/** Get the resource instance.
-			 * @param fpath the file path of the resource.
-			 * @returns constraint reference of the resource instance.
-			 */
-			const T & get(const std::string fpath);
-			
-			/** Erase the resouce.
-			 * @param fpath the file path of the resource which you want to erace.
-			 */
-			void erase(const std::string fpath);
-			
-			/** Clear the all resource.
-			 */
-			void clear(void);
-		
-		private:
+### getメソッド
 
-		    static std::unique_ptr<ResourceManager<T>> instance;
-			std::unordered_map<std::string, T> data;
-		};
+```
+const T & get(const std::string fpath);
+```
+
+※バージョンアップでこうなります多分。
+
+```
+shared_ptr<const T> ResourceManager::get(const std::string fpath);
+shared_ptr<const T> ResourceManager::operator[](const std::string key);
+```
+
+## 解放
+リソースを解放しようとします。ただし、リソースの所持権が他にある場合は解放できません。
+
+### eraseFileメソッド
+ファイル名を指定してリソースの解放をします。
+
+### eraseメソッド
+キーを指定してリソースの解放をします。
+
+```
+bool eraseFile(const std::string fpath);
+bool erase(const std::string key);
+```
+
+## 完全解放
+全てのリソースを解放します。
+
+### clearメソッド
+所有権の無いリソースを全て解放します。
+
+```
+void clear(void);
+```
+
