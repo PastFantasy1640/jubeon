@@ -11,7 +11,7 @@
 #include <iostream>
 
 //my implements
-#include "ListenPanel.hpp"
+#include "Event.hpp"
 
 //configuration
 #include "Models/PanelConfig.hpp"
@@ -22,89 +22,63 @@
 /////////////////////////////////////////////////////
 // Singleton Instance
 /////////////////////////////////////////////////////
-std::unique_ptr<jubeon::input::ListenPanel> jubeon::input::ListenPanel::instance(new jubeon::input::ListenPanel);
+std::unordered_map<const jubeon::graphics::LayerManager *, std::unique_ptr<jubeon::input::Event>> jubeon::input::Event::instance;
 
-jubeon::input::ListenPanel * jubeon::input::ListenPanel::getInstance(){
-    return ListenPanel::instance.get();
+jubeon::input::Event * jubeon::input::Event::getInstance(const jubeon::graphics::LayerManager * window){
+	if (!Event::instance.count(window)) {
+		Event::instance[window].reset(new Event);
+	}
+    return Event::instance[window].get();
 }
 
 
 /////////////////////////////////////////////////////
 // Constructor
 /////////////////////////////////////////////////////
-jubeon::input::ListenPanel::ListenPanel()
+jubeon::input::Event::Event()
     : offset(0),
-    input(new strbuf::InputStream<sf::Event>)
+    input(new strbuf::InputStream<jubeon::input::EventContainer>)
 {
-    for(auto i : this->push_flags) i = false;
+	//connect stream
+	this->addInputStream(this->input);
+
+	//restart clock
+	this->clock.restart();
 }
 
-jubeon::input::ListenPanel::~ListenPanel(){
+jubeon::input::Event::~Event(){
 }
 
 //////////////////////////////////////////////////////
 // Member Functions
 //////////////////////////////////////////////////////
-void jubeon::input::ListenPanel::process(jubeon::graphics::LayerManager * main_window){
-
-    //restart clock
-	panel_clock_.restart();
-
-    main_window->getEventBuffer()->addInputStream(this->input);
-
-	//start thread
-	this->ThreadFunc(main_window);
-}
-
-/*
-void jubeon::input::ListenPanel::SetQue(const int n) {
-
-    // is queue stopping
-	if (!this->is_queue_) return;
-
-	this->push_flags[n] ^= true;
-	sf::Time t = panel_clock_.getElapsedTime();
-	PanelInput tmp;
-	tmp.ms = t.asMilliseconds() - offset;
-	tmp.panel_no = n;
-	tmp.t = (this->push_flags[n] ? Type::PUSH : Type::RELEASE);
-
-	*(this->input) << tmp;
-	this->quebuf.flush();
-}
-*/
-void jubeon::input::ListenPanel::ThreadFunc(jubeon::graphics::LayerManager * main_window) {
-
+void jubeon::input::Event::process(jubeon::graphics::LayerManager * main_window){
     bool is_exit = false;
 
 	while (!is_exit && main_window->isOpen()) {
 	    sf::Event e;
 	    if(!main_window->waitEvent(e)) break;
 
+		if (e.type == sf::Event::KeyPressed && e.key.alt == true && e.key.code == sf::Keyboard::F4) break;
+
         //Queue
-        *(this->input) << e;
-        main_window->getEventBuffer()->flush();
+        //check flag
+		if (this->flags.count(e.type)) {
+			if (!this->flags.at(e.type)) continue;	//Do not queue
+		}
+
+		*(this->input) << EventContainer(e, this->clock.getElapsedTime() + sf::milliseconds(this->offset));
+        this->flush();
         
         systems::Logger::information("Queued.");
-        
-        	/*
-		for (int n = 0; n < 16; n++) {
-			if (jubeon::models::PanelConfig::getInstance()->getHidID(n) != -1) {
-				if (sf::Joystick::isButtonPressed(jubeon::models::PanelConfig::getInstance()->getHidID(n), jubeon::models::PanelConfig::getInstance()->getJoystickCode(n)) ^ this->push_flags[n]) SetQue(n);
-			}
-			else {
-				//-1‚ªkeyboard
-//				if (sf::Keyboard::isKeyPressed(jubeon::models::PanelConfig::getInstance()->getKeyCode(n)) ^ this->push_flags[n]) SetQue(n);
-                //if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) ;
-			}
-		}
-		std::this_thread::sleep_for(std::chrono::microseconds(1));*/
 	}
+
+	systems::Logger::information("Closed event queuing function.");
 }
 
-void jubeon::input::ListenPanel::restartTimer(const int offset)
+void jubeon::input::Event::restartTimer(const int offset)
 {
-	this->offset = panel_clock_.getElapsedTime().asMilliseconds() - offset;
+	this->offset = this->clock.getElapsedTime().asMilliseconds() - offset;
 }
 
 

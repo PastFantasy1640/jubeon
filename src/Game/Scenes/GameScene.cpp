@@ -17,7 +17,7 @@
 #include <algorithm>
 
 //for panel input
-#include "Input/ListenPanel.hpp"
+#include "Input/Event.hpp"
 
 //for debug
 #include <iostream>
@@ -110,7 +110,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	mainwindow->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
 	mainwindow->addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
 	mainwindow->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
-	//mainwindow->addLayer(rival1, jubeon::graphics::LayerManager::MAIN, 0);
+	mainwindow->addLayer(rival1, jubeon::graphics::LayerManager::MAIN, 0);
 	//mainwindow->addLayer(rival2, jubeon::graphics::LayerManager::MAIN, 0);
 	//mainwindow->addLayer(rival3, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
@@ -123,7 +123,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	//楽曲の再生
 
 	//タイムマーカーを打つ
-	ListenPanel::getInstance()->restartTimer(-2300);
+	Event::getInstance(mainwindow)->restartTimer(-2300);
 
 	music->setForPlay();
 

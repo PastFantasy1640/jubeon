@@ -6,6 +6,8 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 
+#include "Systems/Logger.hpp"
+
 
 
 //////////////////////////////////////////////////////
@@ -18,14 +20,6 @@ template class jubeon::storage::ResourceManager<sf::Font>;
 //////////////////////////////////////////////////////
 // Singleton Structure
 //////////////////////////////////////////////////////
-/*
-template<> std::unique_ptr<jubeon::storage::ResourceManager<sf::Texture>> jubeon::storage::ResourceManager<sf::Texture>::instance;
-
-template<> std::unique_ptr<jubeon::storage::ResourceManager<sf::SoundBuffer>> jubeon::storage::ResourceManager<sf::SoundBuffer>::instance;
-
-template<> std::unique_ptr<jubeon::storage::ResourceManager<sf::Font>> jubeon::storage::ResourceManager<sf::Font>::instance;
-*/
-
 template< class T> std::unique_ptr<jubeon::storage::ResourceManager<T>> jubeon::storage::ResourceManager<T>::instance;
 
 
@@ -33,7 +27,7 @@ template<class T>
 jubeon::storage::ResourceManager<T> * 
 jubeon::storage::ResourceManager<T>::getInstance(void)
 {
-    if(ResourceManager<T>::instance) ResourceManager<T>::instance.reset(new ResourceManager<T>);
+    if(!ResourceManager<T>::instance) ResourceManager<T>::instance.reset(new ResourceManager<T>);
     return ResourceManager<T>::instance.get();
 }
 
@@ -48,7 +42,9 @@ const T & jubeon::storage::ResourceManager<T>::get
 	//Check the data exists.
 	if (this->data.count(fpath) == 0) {
 		//There is no data matched fpath.
-		this->data[fpath].loadFromFile(fpath);
+		if (!this->data[fpath].loadFromFile(fpath)) {
+			systems::Logger::warning("Failed to load the file." + fpath);
+		}
 	}
 
     //Return the reference of the data.

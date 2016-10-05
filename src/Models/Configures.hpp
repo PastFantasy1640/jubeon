@@ -26,10 +26,10 @@ namespace jubeon {
 
 			~Configures() {}	//Do not override huh
 
-			Configures * getInstance(void);
+			static Configures * getInstance(void);
 
 		private:
-			Configures();
+			Configures() {}
 
 			static std::unique_ptr<Configures> conf;
 			

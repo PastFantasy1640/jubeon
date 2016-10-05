@@ -5,7 +5,6 @@
 //Concept : Thread Safe
 
 /*
-
 [NODE] This StreamBuffer class's data flow is like below.
 InputStream--->                           --->OutputStream
 InputStream--->StreamBuffer(Data Instance)--->OutputStream

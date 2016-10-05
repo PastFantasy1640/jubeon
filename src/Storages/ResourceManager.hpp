@@ -40,9 +40,10 @@ namespace jubeon {
 			/** Clear the all resource.
 			 */
 			void clear(void);
-		private:
-		    static std::unique_ptr<ResourceManager<T>> instance; 
 		
+		private:
+
+		    static std::unique_ptr<ResourceManager<T>> instance;
 			std::unordered_map<std::string, T> data;
 		};
 	};

@@ -80,9 +80,6 @@ namespace jubeon{
 			 */
 			void process(void);
 			
-			/** get event buffer instance
-			 */
-			strbuf::StreamBuffer<sf::Event> * getEventBuffer();
 			
 			/** get instance from name
 			 */
@@ -129,9 +126,6 @@ namespace jubeon{
             //mutex
             std::mutex mtx;
             
-            //Event Buffer
-            strbuf::StreamBuffer<sf::Event> event_buffer;
-
             //Size of render texture
 			const static sf::Vector2u RENDER_TEXTURE_SIZE;
 			

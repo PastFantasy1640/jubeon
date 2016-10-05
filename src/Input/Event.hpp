@@ -7,14 +7,11 @@
 
 #pragma once
 
-#ifndef JUBEON_INPUT_LISTENPANEL_HPP
-#define JUBEON_INPUT_LISTENPANEL_HPP
+#ifndef JUBEON_INPUT_EVENT_HPP
+#define JUBEON_INPUT_EVENT_HPP
 
-//Clock
+//Clock, Event
 #include <SFML/Graphics.hpp>
-
-//PanelInput
-#include "PanelInput.hpp"
 
 //Que Stream
 #include "strbuf/strbuf.hpp"
@@ -31,18 +28,23 @@
 //thread
 #include <thread>
 
+//to get event
 #include "Graphics/Layer/LayerManager.hpp"
+
+//mapping
+#include <unordered_map>
 
 namespace jubeon {
 	namespace input {
-		class ListenPanel {
+		typedef struct EventContainer{
+			sf::Event e;
+			sf::Time time;
+			EventContainer() {}
+			EventContainer(const sf::Event & e, const sf::Time time) : e(e), time(time) {}
+		}EventContainer;
+
+		class Event : protected strbuf::StreamBuffer<EventContainer>{
 		public:
-            /** @dupricate  */
-			enum Result : int {
-				SUCCESS = 0,
-				INVALID_CONFIG_CONTROLER_ID = -1,
-				INVALID_CONFIG_KEYBOARD_NUM = -2,
-			};
 
             static const std::size_t QUEUE_MAXSIZE = 1024;
 
@@ -54,38 +56,38 @@ namespace jubeon {
              */
 			void restartTimer(const int offset);
 			
-			
+			/** set OutputStream
+			 */
+			using strbuf::StreamBuffer<EventContainer>::addOutputStream;
+
 			/** get Instance
 			 */
-			static ListenPanel * getInstance();
+			static Event * getInstance(const jubeon::graphics::LayerManager * window);
 
 			// Destructor
-			~ListenPanel();
+			~Event();
         private:
 			
 			// Constructor
-			ListenPanel();
+			Event();
 			
 			// Clocking
-			sf::Clock panel_clock_;
+			sf::Clock clock;
 			
 			// Input Stream
-			std::shared_ptr<strbuf::InputStream<sf::Event>> input;
-
-            // Thread Function
-			void ThreadFunc(jubeon::graphics::LayerManager * main_window);
-			
-			// Set Queue
-			//void SetQue(const int n);
-
-            //pushing flag
-			std::array<bool, 16> push_flags;
-			
+			std::shared_ptr<strbuf::InputStream<EventContainer>> input;
+									
 			//offset
 			std::atomic<int> offset;
 
+			//flags
+			std::unordered_map<sf::Event::EventType, bool> flags;
+
+			//Event Buffer
+			strbuf::StreamBuffer<EventContainer> event_buffer;
+
 			//sigleton instance
-			static std::unique_ptr<ListenPanel> instance;
+			static std::unordered_map<const jubeon::graphics::LayerManager *, std::unique_ptr<Event>> instance;
 
 		};
 	}

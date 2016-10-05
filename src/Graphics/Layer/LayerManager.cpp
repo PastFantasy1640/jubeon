@@ -155,10 +155,6 @@ void jubeon::graphics::LayerManager::process(void) {
     
 }
 
-strbuf::StreamBuffer<sf::Event> * jubeon::graphics::LayerManager::getEventBuffer(){
-    return &this->event_buffer;
-}
-
 jubeon::graphics::LayerManager * jubeon::graphics::LayerManager::getInstance(const std::string & name){
     return layermanager_map.at(name);
 }

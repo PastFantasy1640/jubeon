@@ -32,7 +32,7 @@
 #include "Models/PanelConfig.hpp"
 
 //for panel input
-#include "Input/ListenPanel.hpp"
+#include "Input/Event.hpp"
 
 #include <thread>
 
@@ -79,8 +79,8 @@ int main(int argc, char * argv[]){
     ///////////////////////////////////////////////////////////
     //Load config
     Logger::information("Loading window layout.");
-    shared_ptr<WindowConfig> window_config = JsonFileStorage("media/config/window_layout.json").getModel<WindowConfig>();
-    
+    Configures::getInstance()->window_config = JsonFileStorage("media/config/window_layout.json").getModel<WindowConfig>();
+
     //create window
     LayerManager mainwindow("mainwindow");
 
@@ -88,26 +88,24 @@ int main(int argc, char * argv[]){
     
     mainwindow.create(
         sf::VideoMode(
-            static_cast<unsigned int>(window_config->getSize().x),
-            static_cast<unsigned int>(window_config->getSize().y)),
+            static_cast<unsigned int>(Configures::getInstance()->window_config->getSize().x),
+            static_cast<unsigned int>(Configures::getInstance()->window_config->getSize().y)),
         "jubeon v0.1",              //window title
         sf::Style::None);
         
     mainwindow.setPosition(
         sf::Vector2i(
-            static_cast<int>(window_config->getPosition().x),
-            static_cast<int>(window_config->getPosition().y))
+            static_cast<int>(Configures::getInstance()->window_config->getPosition().x),
+            static_cast<int>(Configures::getInstance()->window_config->getPosition().y))
         );
         
-    mainwindow.setVerticalSyncEnabled(window_config->getVsyncEnabled());
-    if(!window_config->getVsyncEnabled()) mainwindow.setFramerateLimit(80);
+    mainwindow.setVerticalSyncEnabled(Configures::getInstance()->window_config->getVsyncEnabled());
+    if(!Configures::getInstance()->window_config->getVsyncEnabled()) mainwindow.setFramerateLimit(80);
     mainwindow.setActive(false);
     
     //Finished creating the window.
     Logger::information("Finished creating the window.");
 
-
-    //
 
 
 /////////////////////////////////////////
@@ -118,16 +116,15 @@ int main(int argc, char * argv[]){
 
 	pconfig->setInstance(pconfig);	//シングルトン？
 
-	Logger::information("hogehoge2");
-    //Start Process Thread
+////////////////////////////////////////
+	
+	
+	//Start Scene
 	int ret = Scene::process<scenes::GameScene>(&mainwindow);
 	
-	Logger::information("hogehoge");
 	
-	//入力スレッド
-	jubeon::input::ListenPanel::getInstance()->process(&mainwindow);
-
-
+	//イベント監視
+	jubeon::input::Event::getInstance(&mainwindow)->process(&mainwindow);
 
 	//現在起動中のウィンドウを終了し、レイヤーを全部解放
 	mainwindow.closeWindow();
