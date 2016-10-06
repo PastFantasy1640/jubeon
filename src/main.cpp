@@ -83,8 +83,7 @@ int main(int argc, char * argv[]){
 
     //create window
     LayerManager mainwindow("mainwindow");
-
-	//
+		
     
     mainwindow.create(
         sf::VideoMode(
