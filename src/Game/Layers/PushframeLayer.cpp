@@ -15,7 +15,7 @@ void jubeon::game::layers::PushframeLayer::Init()
 {
 
 	//パネル枠の読み込み
-	storage::ResourceManager<sf::Texture>::getInstance()->get("media/image/panel_shadow.png");
+	storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/panel_shadow.png");
 	
 	//画面プッシュは無し
 	this->pushing = 0;
@@ -68,7 +68,7 @@ void jubeon::game::layers::PushframeLayer::Draw()
 	//最終的にpushされてる場所に描写
 	for (int i = 0; i < 16; i++) {
 		if (this->isPushing(i)) {
-			const sf::Texture & pframe = storage::ResourceManager<sf::Texture>::getInstance()->get("media/image/panel_shadow.png");
+			const sf::Texture & pframe = storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/panel_shadow.png");
 			sf::Sprite sp(pframe);
 			const sf::IntRect & rect = this->panelposition->get(i);
 
