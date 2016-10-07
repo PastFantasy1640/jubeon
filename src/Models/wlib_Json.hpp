@@ -1,6 +1,24 @@
 ////////////////////////////////////////
-//(c) 2016  white    JsonModelBase.hpp
+//(c) 2016  white    wlib_Json.hpp
 ////////////////////////////////////////
+
+// FINALIZED
+// version 1.0 (@2016_10_07)
+
+/*
+
+### HOW TO USE ###
+
+# The simplest usage
+
+	Json test_json("JSON TEXT.......");
+
+	double value = test_json["hoge"]...["hage"].num();
+	std::string str = test_json["hoge"]...["hage"].str();
+
+Very Very Easy!!!!
+*/
+
 #pragma once
 
 #ifndef WLIB_JSON_HPP
