@@ -26,6 +26,7 @@ Very Very Easy!!!!
 
 #include <string>
 #include "Systems/picojson.hpp"
+#include <memory>
 
 namespace wlib {
 	class Json{
@@ -34,7 +35,7 @@ namespace wlib {
 		 * @param json_str Json text.
 		 * @param err_dump Error text will set this variable. No error, and err_dump is empty. If the err_dump is nullptr, no error dump, but get it from getError function.
 		 */
-		Json(const std::string json_str, std::string * err_dump = nullptr);
+		Json(const std::string json_str);
 
 		/** Destructor.
 		 */
@@ -56,13 +57,13 @@ namespace wlib {
 		 * @param err_dump Error text will set this variable. No error, and err_dump is empty. If the err_dump is nullptr, no error dump, but get it from getError function.
 		 * @returns the value.
 		 */
-		double num(std::string * err_dump = nullptr);
+		double num();
 
 		/** Get the value as string.
 		* @param err_dump Error text will set this variable. No error, and err_dump is empty. If the err_dump is nullptr, no error dump, but get it from getError function.
 		* @returns the string.
 		*/
-		std::string str(std::string * err_dump = nullptr);
+		std::string str();
 
 
 		///////////////////////
@@ -81,17 +82,17 @@ namespace wlib {
 	
 	private:
 		Json();
-		Json(const picojson::value & v, const std::string err_str);
+		Json(const picojson::value & v, const std::shared_ptr<std::string> & shp_err_str, const std::shared_ptr<bool> & shp_first_flag);
 		Json(const Json & copy);
 
-		template<typename T> T get(std::string * err_dump);
+		template<typename T> T get();
 
 
 		////////////////////////
 		// Member Variable
 		////////////////////////
-
-		std::string err_str;
+		std::shared_ptr<std::string> shp_err_str;
+		std::shared_ptr<bool> shp_first_flag;
 
 		picojson::value json_value;
 

@@ -3,7 +3,9 @@
 #include "Systems/picojson.hpp"
 #include "ModelBase.hpp"
 
-namespace jubeon {namespace models {
+namespace jubeon {
+	namespace models {
+
 	class WindowConfig : public ModelBase {
 	public:
 		enum class LayoutType {
