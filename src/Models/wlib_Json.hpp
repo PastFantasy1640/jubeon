@@ -54,16 +54,20 @@ namespace wlib {
 		Json operator[](const std::size_t index);
 
 		/** Get the value as double value.
-		 * @param err_dump Error text will set this variable. No error, and err_dump is empty. If the err_dump is nullptr, no error dump, but get it from getError function.
 		 * @returns the value.
 		 */
 		double num();
 
 		/** Get the value as string.
-		* @param err_dump Error text will set this variable. No error, and err_dump is empty. If the err_dump is nullptr, no error dump, but get it from getError function.
 		* @returns the string.
 		*/
 		std::string str();
+
+
+		/** Get the value as boolean.
+		* @returns the flags.
+		*/
+		bool is();
 
 
 		///////////////////////

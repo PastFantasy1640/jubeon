@@ -1,98 +1,86 @@
-﻿#include "WindowConfig.hpp"
-#include <string>
-#include "Systems/picojson.hpp"
-#include <iostream>
+﻿////////////////////////////////////////////
+// (c) 2016  white   WindowsConfig.cpp
+////////////////////////////////////////////
 
-namespace jubeon { namespace models {
-	bool WindowConfig::Init(picojson::value val) {
-		if (!val.is<picojson::object>()) {
-			return false;
-		}
+#include "WindowConfig.hpp"
+#include "Systems/Logger.hpp"
 
-		auto root = val.get<picojson::object>();
-		if (root.find("layout_type") == root.end()
-			|| !root["layout_type"].is<std::string>()) {
-			return false;
-		}
+jubeon::models::WindowConfig::WindowConfig(const std::string filename)
+	: ModelBase(filename),
+	layoutType(LayoutType::HORIZONTAL),
+	size(sf::Vector2f(0, 0)),
+	position(sf::Vector2f(0, 0)),
+	vsyncEnabled(true)
+{
+}
 
-		if (root.find("vsync_enabled") == root.end()
-			|| !root["vsync_enabled"].is<bool>()) {
-			return false;
-		}
+sf::Vector2i jubeon::models::WindowConfig::getSize() const
+{
+	return this->size;
+}
 
-		if (root.find("size") == root.end()
-			|| !root["size"].is<picojson::object>()) {
-			return false;
-		}
-		auto size = root["size"].get<picojson::object>();
-		if (size.find("width") == size.end()
-			|| !size["width"].is<double>()) {
-			return false;
-		}
-		if (size.find("height") == size.end()
-			|| !size["height"].is<double>()) {
-			return false;
-		}
+sf::Vector2i jubeon::models::WindowConfig::getPosition() const
+{
+	return this->position;
+}
 
-		if (root.find("position") == root.end()
-			|| !root["position"].is<picojson::object>()) {
-			return false;
-		}
-		auto position = root["position"].get<picojson::object>();
-		if (position.find("x") == position.end()
-			|| !position["x"].is<double>()) {
-			return false;
-		}
-		if (position.find("y") == position.end()
-			|| !position["y"].is<double>()) {
-			return false;
-		}
+bool jubeon::models::WindowConfig::getVsyncEnabled() const
+{
+	return this->vsyncEnabled;
+}
 
-		std::string layoutTypeStr = root["layout_type"].get<std::string>();
-		if (layoutTypeStr == "vertival") {
-			this->layoutType = LayoutType::VERTICAL;
-		}
-		else {
-			this->layoutType = LayoutType::HORIZONTAL;
-		}
+jubeon::models::WindowConfig::LayoutType jubeon::models::WindowConfig::getLayoutType() const
+{
+	return this->layoutType;
+}
 
-		this->size = sf::Vector2f(
-			static_cast<float>(size["width"].get<double>()),
-			static_cast<float>(size["height"].get<double>()));
+bool jubeon::models::WindowConfig::set()
+{
 
-		this->position = sf::Vector2f(
-			static_cast<float>(position["x"].get<double>()),
-			static_cast<float>(position["y"].get<double>()));
-
-		this->vsyncEnabled = root["vsync_enabled"].get<bool>();
-		return true;
+	std::string err_str;
+	auto add_err = [&err_str](std::string key, std::string str) { 
+		if (!err_str.empty()) err_str += "\n";
+		err_str += "[key:" + key + "]" + str; 
 	};
+	
+	std::string layout_type = (*this->json)["layout_type"].str();
+	if (this->json->isError()) add_err("layout_type", this->json->getError());
 
-	picojson::value WindowConfig::GetJsonValue() {
-		picojson::object root;
-		std::string layoutTypeStr = "";
-		if (this->layoutType == LayoutType::VERTICAL) {
-			layoutTypeStr = "vertical";
-		}
-		else {
-			layoutTypeStr = "horizontal";
-		}
-		root.insert(std::make_pair("layout_type", picojson::value(layoutTypeStr)));
-		root.insert(std::make_pair("vsync_enabled", picojson::value(this->vsyncEnabled)));
-		
-		picojson::object sizeObj;
-		sizeObj.insert(
-			std::make_pair("width", picojson::value(static_cast<double>(this->size.x))));
-		sizeObj.insert(
-			std::make_pair("height", picojson::value(static_cast<double>(this->size.y))));
-		root.insert(std::make_pair("size", picojson::value(sizeObj)));
+	bool vsync_enabled = (*this->json)["vsync_enabled"].is();
+	if (this->json->isError()) add_err("layout_enabled", this->json->getError());
 
-		picojson::object positionObj;
-		positionObj.insert(
-			std::make_pair("x", picojson::value(static_cast<double>(this->position.x))));
-		positionObj.insert(
-			std::make_pair("y", picojson::value(static_cast<double>(this->position.y))));
-		root.insert(std::make_pair("position", picojson::value(positionObj)));
-		return picojson::value(root);
-	};
-}};
+	//size
+	double size_w = (*this->json)["size"]["width"].num();
+	if (this->json->isError()) add_err("size.width", this->json->getError());
+
+	double size_h = (*this->json)["size"]["height"].num();
+	if (this->json->isError()) add_err("size.height", this->json->getError());
+
+	//position
+	double position_x = (*this->json)["position"]["x"].num();
+	if (this->json->isError()) add_err("position.x", this->json->getError());
+
+	double position_y = (*this->json)["position"]["y"].num();
+	if (this->json->isError()) add_err("position.y", this->json->getError());
+
+
+	if (layout_type == "vertical") this->layoutType = LayoutType::VERTICAL;
+	else if (layout_type == "horizontal") this->layoutType = LayoutType::HORIZONTAL;
+
+	this->vsyncEnabled = vsync_enabled;
+	this->size.x = static_cast<int>(size_w);
+	this->size.y = static_cast<int>(size_h);
+	this->position.x = static_cast<int>(position_x);
+	this->position.y = static_cast<int>(position_y);
+
+
+	//errors
+	if (!err_str.empty()) {
+		systems::Logger::warning("Json file has some errors. ERRORS:" + err_str);
+		return false;
+	}
+
+	return true;
+}
+
+

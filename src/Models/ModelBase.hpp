@@ -35,13 +35,13 @@ namespace jubeon {
 			/** Load the file and create Json class.
 			 *@returns true means the file loaded successfully. false means it occured some error while loading the file.
 			 */
-			bool load(void);
+			virtual bool load(void);
 
 			/** Release the Json data.
 			 */
 			void release(void);
 
-			/** Check if the load finished successfully.
+			/** Check if the loaded. This function does not check if the json data has some errors or not.
 			 *@returns true means yes.
 			 */
 			bool isLoaded(void) const;
@@ -56,6 +56,10 @@ namespace jubeon {
 			//Json data SHP
 			std::unique_ptr<wlib::Json> json;
 
+			/** This function is called by load function. Analyze the json file and set up your member variables.
+			 *@returns true means setting up finished successfully.
+			 */
+			virtual bool set(void);
 
 		private:
 

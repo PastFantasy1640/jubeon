@@ -122,11 +122,6 @@ namespace jubeon {
 			//TO DO : MusicBarは未定義
 			//std::array<MusicBar, 3>	musicbar_challenge;	//ミュージックバーチャレンジ
 
-			virtual picojson::value GetJsonValue() override;
-
-			void set(const int music_id, const std::string meta_file_name);
-
-			virtual bool Init(picojson::value val) override;
 
 		};
 	}

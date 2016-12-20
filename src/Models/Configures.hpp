@@ -8,6 +8,7 @@
 #define JUBEON_MODEL_CONFIGURES_HPP
 
 #include "WindowConfig.hpp"
+#include "PanelConfig.hpp"
 
 #include <memory>
 
@@ -20,7 +21,7 @@ namespace jubeon {
 			// Configures
 			///////////////////////////////////////////////
 			std::shared_ptr<WindowConfig> window_config;
-
+			std::shared_ptr<PanelConfig> panel_config;
 
 
 

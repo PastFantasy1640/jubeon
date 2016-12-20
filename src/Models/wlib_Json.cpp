@@ -89,6 +89,7 @@ T wlib::Json::get()
 }
 
 template double wlib::Json::get<double>();
+template bool wlib::Json::get<bool>();
 template std::string wlib::Json::get<std::string>();
 
 
@@ -100,6 +101,11 @@ double wlib::Json::num()
 std::string wlib::Json::str()
 {
 	return this->get<std::string>();
+}
+
+bool wlib::Json::is()
+{
+	return this->get<bool>();
 }
 
 

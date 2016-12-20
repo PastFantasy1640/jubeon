@@ -21,8 +21,7 @@ namespace jubeon {
 				INVALID_CONFIG_KEYBOARD_NUM = -2
 			};
 
-			virtual bool Init(picojson::value val) override;
-			virtual picojson::value GetJsonValue() override;
+			PanelConfig(const std::string filename);
 
 			/// <summary>HIDのIDを取得する。キーボードの場合-1を、Joystickの場合0～7を返す</summary>
 			/// <param name='p_index'>パネル番号</param>
@@ -39,12 +38,10 @@ namespace jubeon {
 			/// <returns>整数型コード</returns>
 			int getJoystickCode(const unsigned int p_index) const;
 
-			void setInstance(std::shared_ptr<PanelConfig> ptr);
-			static PanelConfig * getInstance();
 
 		private:
-			
-			static std::shared_ptr<PanelConfig> instance;
+
+			virtual bool set(void) override;
 
 			int hid_id_[16];
 			sf::Keyboard::Key key_code_[16];
