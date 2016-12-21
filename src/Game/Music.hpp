@@ -9,8 +9,8 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "Models/ModelBase.hpp"
-
 #include "DifficultyDefinition.hpp"
+#include "Storages/Resource.hpp"
 
 namespace jubeon {
 	namespace game {
@@ -19,18 +19,31 @@ namespace jubeon {
 		//レベルのtypedef。1～10
 		typedef unsigned char Level;
 
-		class Music : protected jubeon::models::ModelBase {
+		class Music : public jubeon::models::ModelBase {
 				
 		public:
-
-			Music(std::string meta_file_path);
+			
+			//コンストラクタ
+			Music(std::string meta_file_path, std::string root_path);
 			
 			//デストラクタ
 			virtual ~Music();
 
-			//Musicの生成とロードを同時に行う
-			static std::shared_ptr<Music> load(const std::string meta_file_name);
 
+			//Musicの生成とロードを同時に行う
+			//static std::shared_ptr<Music> load(const std::string meta_file_name);
+
+			
+			storages::Resource_UP tex_title;
+			storages::Resource_UP tex_artist;
+			storages::Resource_UP tex_jacket;
+			storages::Resource_UP tex_title_bottom;
+
+			storages::Resource_UP snd_shortloop;
+			storages::Resource_UP snd_music;
+
+			
+			
 			//***** アクセサ *****
 			//楽曲IDを取得する
 			int getID(void) const;
@@ -38,20 +51,8 @@ namespace jubeon {
 			//ノーツのファイルパスを取得する
 			std::string getNotesFilePath(const Difficulty level) const;
 
-			//bpmのテクスチャを取得
-			std::string getBpm(void) const;
-
-			//曲名、アーティスト名の画像ファイル
-			const sf::Texture & getMusicNameAndArtistTexture(void) const;
-
-			//曲名の下画面用画像ファイル
-			const sf::Texture & getMusicNameTexture(void) const;
-
-			//ショートループ用の曲データを取得
-			const sf::SoundBuffer & getSoundForShortLoop(void) const;
-
-			//サムネイルを取得
-			const sf::Texture & getThumbnailTexture(void) const;
+			//bpmを取得
+			std::string getBpmString(void) const;
 
 			//レベルの取得
 			Level getLevel(const Difficulty difficulty) const;
@@ -65,7 +66,7 @@ namespace jubeon {
 			//プレイ記録のファイルパス取得（直近）
 			std::string getLatestPlayRecordFilePath(const Difficulty difficulty) const;
 
-
+			// TO DO : 削除
 			//***** 楽曲操作 *****
 			//曲を再生する準備を行う（スレッドアンセーフだがSceneからのみ呼び出し）
 			void setForPlay(void);
@@ -85,24 +86,28 @@ namespace jubeon {
 			sf::Clock							wait_offset_ck;
 		private:
 
+			//ロード
+			virtual bool set() override;
+
+			std::string root_path;
+
 			//メンバー変数(*がついているものは、loadした後はアクセサがあり、かつスレッドセーフ）
 			int									music_id;					//*楽曲ID
-			std::string							metafile_path;				//メタファイルパス
 
 			//管理を画像ベースに
 
 			//*** ノーツ関連 ***
 			std::array<std::string, 3>			notes_filepath;				//*ノーツの譜面ファイルパス
-			std::string							bpm_string;					//*曲のbpm
+			std::string							bpm_str;					//*曲のbpm
 			std::string							decode_type;				//ノーツファイルの形式	TO DO : 継承クラスを実装
 
 			//*** 曲関係 ***
 			//const std::string					name;						//*曲名
 			//const std::string					artist;						//*アーティスト名
-			sf::Texture							music_name_artist;			//*曲名、アーティスト名の画像ファイル
-			sf::Texture							music_name_mini;			//*曲名、アーティスト名の画像ファイル
-			std::string							sound_filepath;				//*楽曲ファイルパス
-			sf::SoundBuffer						sound_short_loop;			//*ショートループ用のバッファ領域
+			//sf::Texture							music_name_artist;			//*曲名、アーティスト名の画像ファイル
+			//sf::Texture							music_name_mini;			//*曲名、アーティスト名の画像ファイル
+			//std::string							sound_filepath;				//*楽曲ファイルパス
+			//sf::SoundBuffer						sound_short_loop;			//*ショートループ用のバッファ領域
 			std::unique_ptr<sf::SoundBuffer>	up_sound_buffer;			//*バッファ
 			sf::Sound							sound;						// プレイヤー
 			sf::Texture							thumbnail;					//*サムネ

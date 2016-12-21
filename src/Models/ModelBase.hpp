@@ -53,6 +53,8 @@ namespace jubeon {
 
 		protected:
 
+			wlib::Json & getJson() { return *this->json; }
+
 			//Json data SHP
 			std::unique_ptr<wlib::Json> json;
 
@@ -63,7 +65,7 @@ namespace jubeon {
 
 		private:
 
-			std::string filename;
+			const std::string filename;
 
 			//Default Constructor is private.
 			ModelBase();

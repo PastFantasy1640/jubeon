@@ -2,6 +2,8 @@
 
 #include "Storages/ResourceManager.hpp"
 
+using namespace jubeon::storages;
+
 jubeon::game::layers::RivalShutterLayer::RivalShutterLayer(const sf::Vector2f position, const std::shared_ptr<Music>& music, const Difficulty & difficulty)
 	: music(music), difficulty(difficulty), enable(true)
 {
@@ -20,16 +22,16 @@ void jubeon::game::layers::RivalShutterLayer::Init()
 
 	//プレイヤーが居る時といない時で背景が切り替わる
 	if (this->enable) {
-		storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/combowhite.png");
-		storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/rival_frame.png");
+		Resource::setf("media/image/combowhite.png", Resource::TEX);
+		Resource::setf("media/image/rival_frame.png", Resource::TEX);
 		switch (this->difficulty) {
-		case BASIC:		storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/rival_basic_frame.png"); break;
-		case ADVANCED:	storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/rival_advanced_frame.png"); break;
-		case EXTREME:	storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/rival_extreme_frame.png"); break;
+		case BASIC:		Resource::setf("media/image/rival_basic_frame.png", Resource::TEX); break;
+		case ADVANCED:	Resource::setf("media/image/rival_advanced_frame.png", Resource::TEX); break;
+		case EXTREME:	Resource::setf("media/image/rival_extreme_frame.png", Resource::TEX); break;
 		}
 	}
 	else {
-		storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/default_rival.png");
+		Resource::setf("media/image/default_rival.png", Resource::TEX);
 	}
 }
 
@@ -40,24 +42,24 @@ void jubeon::game::layers::RivalShutterLayer::Draw()
 
 	if (this->enable) {
 		//####################TEMPORARY
-		sf::Sprite tmp(storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/combowhite.png"));
+		sf::Sprite tmp(*Resource::setf("media/image/combowhite.png", Resource::TEX).gett());
 		tmp.setScale(0.25263, 0.25263);
 		this->draw(tmp);
 
 		sf::Sprite sp;
 		switch (this->difficulty) {
-		case BASIC:		sp.setTexture(storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/rival_basic_frame.png")); break;
-		case ADVANCED:	sp.setTexture(storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/rival_advanced_frame.png")); break;
-		case EXTREME:	sp.setTexture(storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/rival_extreme_frame.png")); break;
+		case BASIC:		sp.setTexture(*Resource::setf("media/image/rival_basic_frame.png", Resource::TEX).gett()); break;
+		case ADVANCED:	sp.setTexture(*Resource::setf("media/image/rival_advanced_frame.png", Resource::TEX).gett()); break;
+		case EXTREME:	sp.setTexture(*Resource::setf("media/image/rival_extreme_frame.png", Resource::TEX).gett()); break;
 		}
 		this->draw(sp);
 
-		sf::Sprite rival_frame(storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/rival_frame.png"));
+		sf::Sprite rival_frame(*Resource::setf("media/image/rival_frame.png", Resource::TEX).gett());
 
 	}
 	else {
 		//プレイヤー無し
-		this->draw(sf::Sprite(storages::ResourceManager<sf::Texture>::getInstance()->get("media/image/default_rival.png")));
+		this->draw(sf::Sprite(*Resource::setf("media/image/default_rival.png", Resource::TEX).gett()));
 	}
 }
 
