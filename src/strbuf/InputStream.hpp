@@ -16,6 +16,7 @@ namespace strbuf{
          * @param input que data.
          * @returns true means this function finished the process successfully.
          */
+
         bool operator<< (const T & input){
             this->que(input);
 			return true;

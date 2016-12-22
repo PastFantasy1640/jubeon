@@ -70,7 +70,6 @@ void jubeon::input::Event::process(jubeon::graphics::LayerManager * main_window)
 		*(this->input) << EventContainer(e, this->clock.getElapsedTime() + sf::milliseconds(this->offset));
         this->flush();
         
-        systems::Logger::information("Queued.");
 	}
 
 	systems::Logger::information("Closed event queuing function.");
