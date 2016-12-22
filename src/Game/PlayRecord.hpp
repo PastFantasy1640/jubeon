@@ -20,8 +20,6 @@ namespace jubeon {
 		public:
 			Judge judge;	//ジャッジ情報が追加
 
-			//デフォルトコンストラクタ
-			JudgedPanelInput() {}
 
 			//全指定コンストラクタ
 			JudgedPanelInput(unsigned char panel_no, jubeon::Type t, unsigned int ms, const Judge & judge)

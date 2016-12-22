@@ -13,22 +13,17 @@ namespace jubeon {
 		public:
 
 			//デフォルトコンストラクタ
-			PanelPosition();
+			PanelPosition(const std::string json_file);
 
 			const sf::IntRect & get(unsigned char panel_no) const;
 
-			bool loadJson(const std::string json_file);
 
 			void set(const std::array<sf::IntRect, 16> & value);
 
 			static float get_ex(int origin, int to);
 
-			virtual bool Init(picojson::value val) override;
+			virtual bool set() override;
 
-		protected:
-
-
-			virtual picojson::value GetJsonValue() override;
 
 		private:
 			std::array<sf::IntRect,16> panel_rect;

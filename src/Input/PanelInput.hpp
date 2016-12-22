@@ -13,24 +13,33 @@
 //for type definition of note member
 #include "Game/NoteDefinition.hpp"
 
+#include "Event.hpp"
+
 //namespace is jubeon::input
 namespace jubeon {
 	namespace input {
 
 		//structure
-		typedef struct PanelInput {
-			jPanel			panel_no;		//PanelNo
-			jubeon::Type	t;				//Type(PUSH or RELEASE)
-			jMillisec		ms;				//millisecond
+		class PanelInput {
+		public:
+			const jPanel	panel_no;		//PanelNo
+			const jubeon::Type	t;				//Type(PUSH or RELEASE)
+			const jMillisec		ms;				//millisecond
 
-			//Default Constructor
-			PanelInput() : panel_no(0), t(RELEASE), ms(0) {}
 			
 			//Args Constructor
 			PanelInput(unsigned char panel_no, jubeon::Type t, unsigned int ms)
 				: panel_no(panel_no), t(t), ms(ms) {}
+
+			PanelInput(EventContainer ec);
+
+
 		
-		}PanelInput;
+		private:
+
+			//Default Constructor
+			PanelInput() : panel_no(0), t(RELEASE), ms(0) {}
+		};
 	
 	};
 };

@@ -79,17 +79,17 @@ int main(int argc, char * argv[]){
     ///////////////////////////////////////////////////////////
     //Load config
     Logger::information("Loading window layout.");
-    Configures::getInstance()->window_config = JsonFileStorage("media/config/window_layout.json").getModel<WindowConfig>();
+	Configures::getInstance()->window_config.reset(new WindowConfig("media/config/window_layout.json"));
+	Configures::getInstance()->window_config->load();
 
     //create window
     LayerManager mainwindow("mainwindow");
-
-	//
+		
     
     mainwindow.create(
         sf::VideoMode(
-            static_cast<unsigned int>(Configures::getInstance()->window_config->getSize().x),
-            static_cast<unsigned int>(Configures::getInstance()->window_config->getSize().y)),
+            Configures::getInstance()->window_config->getSize().x,
+            Configures::getInstance()->window_config->getSize().y),
         "jubeon v0.1",              //window title
         sf::Style::None);
         
@@ -111,10 +111,8 @@ int main(int argc, char * argv[]){
 /////////////////////////////////////////
 
 	//パネルコンフィグ
-	jubeon::storages::JsonFileStorage keyconfig_storage("media/config/keyconfig.json");
-	shared_ptr<jubeon::models::PanelConfig> pconfig = keyconfig_storage.getModel<jubeon::models::PanelConfig>();
-
-	pconfig->setInstance(pconfig);	//シングルトン？
+	Configures::getInstance()->panel_config.reset(new jubeon::models::PanelConfig("media/config/keyconfig.json"));
+	Configures::getInstance()->panel_config->load();
 
 ////////////////////////////////////////
 	
