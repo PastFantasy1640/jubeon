@@ -1,12 +1,13 @@
 #include "Sequence.hpp"
 #include "PlayRecord.hpp"
 
+//hold is duration > 0
 
 jubeon::game::Note::Note(const int just_time, const int panel_idx)
 	: justTime(just_time),
 	panelIndex(panel_idx),
 	duration(0),
-	holdMarkerIndex(-1)
+	holdMarkerIndex(0)
 {
 }
 

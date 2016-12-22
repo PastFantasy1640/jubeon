@@ -12,6 +12,7 @@
 #include "Game/PanelPosition.hpp"
 
 #include "Jmemo2/Parser.hpp"
+#include "Jmemo2/YoubeatParser.hpp"
 
 //for sort
 #include <algorithm>
@@ -31,7 +32,7 @@ using namespace jubeon::input;
 void jubeon::game::scenes::GameScene::init(void)
 {
 
-	this->music.reset(new Music("musics/SABM/SABM.json", "musics/SABM"));
+	this->music.reset(new Music("musics/Daydream Cafe/Daydream Cafe.json", "musics/Daydream Cafe"));
 	this->music->load();
 
 	//パネルの設定を読み出す
@@ -80,15 +81,16 @@ void jubeon::game::scenes::GameScene::init(void)
 	//SAMB読んで見る
 	Jmemo2::Parser jmemo2;
 	jmemo2.initWithFileName("musics/SABM/SABM.jmemo2");
+	
+	this->sequence.reset( new jubeon::parser::YoubeatParser(jubeon::parser::YoubeatParser::loadFromFile("musics/Daydream Cafe/note.ndt")));
+	
 
 	std::vector<Note> notes = jmemo2.getNotes();
 
-	std::sort(notes.begin(), notes.end(), [](Note x, Note y) -> int { return (x.getJustTime() < y.getJustTime()); });
+	//std::sort(notes.begin(), notes.end(), [](Note x, Note y) -> int { return (x.getJustTime() < y.getJustTime()); });
 
 	//*********シーケンステストここまで
 
-	//ファイルを読み込んでセット
-	this->sequence.reset(new Sequence(notes));
 
 
 	//TEMP
@@ -128,7 +130,7 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	music->setForPlay();
 
-	music->playSound(2000);
+	music->playSound(0);
 
 	
 }

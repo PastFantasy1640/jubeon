@@ -7,6 +7,7 @@
 #include <string>
 #include <memory>
 #include "JudgeDefinition.hpp"
+#include "NoteDefinition.hpp"
 
 namespace jubeon {
 	namespace game {
@@ -14,24 +15,27 @@ namespace jubeon {
 		//Noteはconst付きメソッドのみでRead Onlyなためスレッドセーフ
 		class Note{
 
+
 		private:
 
 			//デフォルトコンストラクタは禁止
 			Note();
 
+			void operator=(Note & n);
+
 		protected:
 			
 			//ジャストタイム(ms)
-			int justTime;
+			const jMillisec justTime;
 
 			//パネル番号(0-15)
-			int panelIndex;
+			const jPanel panelIndex;
 
 			//ホールドの時間(0の場合はタッチ譜面）
-			int duration;
+			const jMillisec duration;
 
 			//ホールドマーカーの出現位置パネル
-			int holdMarkerIndex;
+			const jPanel holdMarkerIndex;
 
 			
 		public:

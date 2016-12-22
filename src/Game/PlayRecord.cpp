@@ -95,7 +95,7 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 	//データの間違いがあれば即終了
 	std::string str;
 	std::string str2;
-	JudgedPanelInput tmp;
+	
 
 	//dateを読み込む
 	std::getline(ifst, str);
@@ -117,6 +117,10 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 	std::vector<std::string> tmp_vector;
 	while (!ifst.eof())
 	{
+		jMillisec t_ms;
+		jPanel t_pno;
+		Judge t_judge;
+		Type t_type;
 		// read by line
 		std::getline(ifst, str);
 
@@ -139,8 +143,8 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 
 		//分析
 		try {
-			tmp.ms = std::stoi(tmp_vector[0]);
-			tmp.panel_no = std::stoi(tmp_vector[1]);
+			t_ms = std::stoi(tmp_vector[0]);
+			t_pno = std::stoi(tmp_vector[1]);
 		}
 		catch (std::invalid_argument e) {
 			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: 数値に変換できません");
@@ -148,27 +152,27 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 		}
 
 		//タイプ
-		if (tmp_vector[2].compare("PUSH") == 0) tmp.t = PUSH;
-		else if (tmp_vector[2].compare("RELEASE") == 0) tmp.t = RELEASE;
+		if (tmp_vector[2].compare("PUSH") == 0) t_type = PUSH;
+		else if (tmp_vector[2].compare("RELEASE") == 0) t_type = RELEASE;
 		else {
 			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: PUSH、RELEASE以外の値が指定されています");
 			return false;
 		}
 
 		//判定
-		if (tmp_vector[3].compare("PERFECT") == 0) tmp.judge = PERFECT;
-		else if (tmp_vector[3].compare("GREAT") == 0) tmp.judge = GREAT;
-		else if (tmp_vector[3].compare("GOOD") == 0) tmp.judge = GOOD;
-		else if (tmp_vector[3].compare("EARLY") == 0) tmp.judge = EARLY;
-		else if (tmp_vector[3].compare("LATE") == 0) tmp.judge = LATE;
-		else if (tmp_vector[3].compare("MISS") == 0) tmp.judge = MISS;
-		else if (tmp_vector[3].compare("NOJUDGE") == 0) tmp.judge = NOJUDGE;
+		if (tmp_vector[3].compare("PERFECT") == 0) t_judge = PERFECT;
+		else if (tmp_vector[3].compare("GREAT") == 0) t_judge = GREAT;
+		else if (tmp_vector[3].compare("GOOD") == 0) t_judge = GOOD;
+		else if (tmp_vector[3].compare("EARLY") == 0) t_judge = EARLY;
+		else if (tmp_vector[3].compare("LATE") == 0) t_judge = LATE;
+		else if (tmp_vector[3].compare("MISS") == 0) t_judge = MISS;
+		else if (tmp_vector[3].compare("NOJUDGE") == 0) t_judge = NOJUDGE;
 		else {
 			systems::Logger::warning("プレイ記録ファイル" + src + "の文法に間違いがあります。: 判定の値が異常です");
 			return false;
 		}
 
-		this->judged_list->push_back(tmp);
+		this->judged_list->push_back(JudgedPanelInput(t_pno,t_type,t_ms,t_judge));
 	}
 
 	systems::Logger::information("プレイ記録ファイルの読み込みを完了しました");
