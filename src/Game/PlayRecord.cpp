@@ -7,14 +7,13 @@
 
 
 jubeon::game::PlayRecord::PlayRecord()
-	: judged_list(new std::vector<JudgedPanelInput>())
 {
 }
 
 jubeon::game::PlayRecord::~PlayRecord()
 {
 }
-
+/*
 void jubeon::game::PlayRecord::addJudged(const jubeon::input::PanelInput p, Judge judge)
 {
 	//’Ç‰Á
@@ -26,6 +25,9 @@ void jubeon::game::PlayRecord::addJudged(const JudgedPanelInput judged_p)
 	//ƒŠƒXƒg‚Ö’Ç‰Á
 	this->judged_list->push_back(judged_p);
 }
+*/
+
+
 
 bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 {
