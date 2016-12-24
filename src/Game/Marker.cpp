@@ -158,6 +158,20 @@ bool jubeon::game::Marker::load(void)
 	return true;
 }
 
+unsigned int jubeon::game::Marker::getLengthBefore() const
+{
+	return this->appear->getDuration();
+}
+
+unsigned int jubeon::game::Marker::getLengthAfterMax() const
+{
+	unsigned int ret = 1000000;
+	for (auto p : this->disappear) {
+		if (ret > p->getDuration()) ret = p->getDuration();
+	}
+	return ret;
+}
+
 const sf::Texture * jubeon::game::Marker::getTexturePtr(const int diff_ms, const jubeon::Judge judge) const
 {
 	if (diff_ms < 0) {
@@ -180,6 +194,11 @@ jubeon::game::Marker::MarkerTextures::MarkerTextures(const int id, const unsigne
 int jubeon::game::Marker::MarkerTextures::getID() const
 {
 	return this->id;
+}
+
+unsigned int jubeon::game::Marker::MarkerTextures::getDuration() const
+{
+	return this->duration;
 }
 
 const sf::Texture * jubeon::game::Marker::MarkerTextures::getTexture(int diff_ms) const

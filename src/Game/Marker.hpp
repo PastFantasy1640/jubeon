@@ -36,6 +36,8 @@ namespace jubeon {
 
 				int getID() const;
 
+				unsigned int getDuration() const;
+
 				const sf::Texture * getTexture(const int diff_ms) const;
 
 				using std::vector<std::unique_ptr<sf::Texture>>::push_back;
@@ -75,6 +77,9 @@ namespace jubeon {
 
 			//ロード。trueで成功
 			bool load(void);
+
+			unsigned int getLengthBefore() const;
+			unsigned int getLengthAfterMax() const;
 
 			//時間を指定して適切なテクスチャを返す関数
 			//マイナスを指定した場合はappear

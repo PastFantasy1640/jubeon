@@ -41,8 +41,6 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<PanelPosition> sub_panel1_position(new PanelPosition("media/config/subpanel1.json"));
 	sub_panel1_position->load();
 	
-	//マッピングの用意
-	this->seq_pr_mapping.reset(new map<const size_t, size_t>);
 
 	vector<Note> hoge;
 
@@ -104,8 +102,8 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::RivalShutterLayer> rival1(new layers::RivalShutterLayer(sf::Vector2f(30.0f, 122.0f), this->music, BASIC));
 	shared_ptr<layers::RivalShutterLayer> rival2(new layers::RivalShutterLayer(sf::Vector2f(288.0f, 122.0f), this->music, EXTREME));
 	shared_ptr<layers::RivalShutterLayer> rival3(new layers::RivalShutterLayer(sf::Vector2f(546.0f, 122.0f)));
-	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, main_panel_position, this->offset));
-	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, sub_panel1_position, 0));
+	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, main_panel_position, this->offset));
+	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, sub_panel1_position, 0));
 
 	this->push_frame_layer.reset(new layers::PushframeLayer(main_panel_position, music));
 
@@ -137,16 +135,6 @@ void jubeon::game::scenes::GameScene::init(void)
 
 int jubeon::game::scenes::GameScene::process(void)
 {
-	/*sf::Event e;
-	while (this->getMainWindow()->getWindowEvent(e)) {
-		if (e.type == sf::Event::Closed) {
-			return 1;
-		}
-		else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
-			this->playrecord->writeToFile("hogehogehoge.txt");
-			return 1;
-		}
-	}*/
 
 	//パネルから入力を取ってくる
 	std::vector<PanelInput> pinput;// = ListenPanel::getEvent();
@@ -159,52 +147,6 @@ int jubeon::game::scenes::GameScene::process(void)
 				this->push_frame_layer->setReleasing(ite.panel_no);
 			}
 
-			if (ite.t) {
-				const jMillisec now = ite.ms - this->offset;
-				const auto p = this->sequence->search(now + JudgeSize::B_POOR);
-				size_t distance = std::distance(this->sequence->begin(), p);
-				Judge j(NOJUDGE);
-				auto ptemp = p;
-				for (; ptemp != this->sequence->end(); ptemp++, distance++) {
-					if (ptemp->getJustTime() >= now + JudgeSize::A_POOR) break;	//範囲外
-
-					if (ptemp->getPanelIndex() == ite.panel_no && this->seq_pr_mapping->count(distance) == 0) {
-						//同じパネルでまだ未判定
-						if (ptemp->getJustTime() + JudgeSize::B_POOR <= now && now <= ptemp->getJustTime() + JudgeSize::A_POOR) {
-							//範囲内だ！
-							if (ptemp->getJustTime() + JudgeSize::B_GOOD <= now && now <= ptemp->getJustTime() + JudgeSize::A_GOOD) {
-								//GOOD内
-								if (ptemp->getJustTime() + JudgeSize::B_GREAT <= now && now <= ptemp->getJustTime() + JudgeSize::A_GREAT) {
-									//GREAT内
-									if (ptemp->getJustTime() + JudgeSize::B_PERFECT <= now && now <= ptemp->getJustTime() + JudgeSize::A_PERFECT) {
-										//すごい！Perfect
-										j = PERFECT; break;
-									}
-									j = GREAT;
-									break;
-								}
-								j = GOOD;
-								break;
-							}
-
-							//POORだった
-							if (ptemp->getJustTime() < now) j = LATE;
-							else j = EARLY;
-
-							break;
-						}
-					}
-				}
-
-				playrecord->addJudged(ite, j);
-
-				if (j != NOJUDGE) {
-					//判定がついたらマッピング
-					std::cout << "HOGE" << std::endl;
-					auto last = --playrecord->getJudgedList()->end();
-					(*this->seq_pr_mapping)[distance] = (playrecord->getJudgedList()->size() - 1);
-				}
-			}
 		}
 	}
 

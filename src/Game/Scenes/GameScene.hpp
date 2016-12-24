@@ -23,7 +23,6 @@ namespace jubeon {
 			public:
 				virtual void init() override;
 				
-				std::shared_ptr<std::map<const size_t, size_t>> seq_pr_mapping;
 				std::shared_ptr<Sequence> sequence;
 				std::shared_ptr<PlayRecord> playrecord;
 				std::shared_ptr<Music> music;

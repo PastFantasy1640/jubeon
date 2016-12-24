@@ -5,31 +5,58 @@
 
 #include "../Systems/Logger.hpp"
 
+#include "JudgeDefinition.hpp"
+
 
 jubeon::game::PlayRecord::PlayRecord()
 {
 }
 
 jubeon::game::PlayRecord::~PlayRecord()
+{/*
+	for (auto p : *this) {
+		if(p != nullptr) delete p;
+	}
+*/}
+
+
+void jubeon::game::PlayRecord::judge(Sequence & seq, const input::PanelInput panel_input)
 {
+
+	Notes::const_iterator end = seq.search(panel_input.ms + JudgeSize::B_POOR);
+
+	for (auto ite = seq.search(panel_input.ms - JudgeSize::A_POOR); ite != end; ite++) {
+		if (ite->second != nullptr && ite->first.getPanelIndex() == panel_input.panel_no) {
+			//判定対象
+			Judge j = NOJUDGE;
+			if (ite->first.getJustTime() >= panel_input.ms) {
+				//Before
+				jMillisec distance = ite->first.getJustTime() - panel_input.ms;
+				if (distance <= JudgeSize::B_PERFECT) j = PERFECT;
+				else if (distance <= JudgeSize::B_GREAT) j = GREAT;
+				else if (distance <= JudgeSize::B_GOOD) j = GOOD;
+				else if (distance <= JudgeSize::B_POOR) j = EARLY;	//意味のない判定…だが一応…。
+			}
+			else {
+				//After
+				jMillisec distance = panel_input.ms - ite->first.getJustTime();
+				if (distance <= JudgeSize::A_PERFECT) j = PERFECT;
+				else if (distance <= JudgeSize::A_GREAT) j = GREAT;
+				else if (distance <= JudgeSize::A_GOOD) j = GOOD;
+				else if (distance <= JudgeSize::A_POOR) j = LATE;	//意味のない判定…だが一応…。
+			}
+			if (j != NOJUDGE) {
+				//追加
+				std::unique_ptr<JudgedPanelInput> jptr(new JudgedPanelInput(panel_input, j));
+				seq.setJudgedPanelInput(ite, jptr.get());
+				this->emplace_back(std::move(jptr));
+			}
+		}
+	}
+
 }
-/*
-void jubeon::game::PlayRecord::addJudged(const jubeon::input::PanelInput p, Judge judge)
-{
-	//追加
-	this->addJudged(JudgedPanelInput(p, judge));
-}
 
-void jubeon::game::PlayRecord::addJudged(const JudgedPanelInput judged_p)
-{
-	//リストへ追加
-	this->judged_list->push_back(judged_p);
-}
-*/
-
-
-
-bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
+bool jubeon::game::PlayRecord::writeToFile(const std::string dst) const
 {
 	//書き出し
 	//書式->ASCII
@@ -55,13 +82,13 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 	//情報の書き出し
 	std::string type_str;
 	std::string judge_str;
-	for (auto p = this->judged_list->begin(); p != this->judged_list->end(); p++) {
-		switch (p->t) {
+	for (auto p = this->begin(); p != this->end(); p++) {
+		switch ((*p)->t) {
 		case Type::PUSH: type_str = "PUSH"; break;
 		case Type::RELEASE: type_str = "RELEASE"; break;
 		}
 
-		switch (p->judge) {
+		switch ((*p)->judge) {
 		case PERFECT:	judge_str = "PERFECT"; break;
 		case GREAT:		judge_str = "GREAT";   break;
 		case GOOD:		judge_str = "GOOD";	   break;
@@ -70,7 +97,7 @@ bool jubeon::game::PlayRecord::writeToFile(const std::string dst)
 		case MISS:		judge_str = "MISS";	   break;
 		case NOJUDGE:	judge_str = "NOJUDGE"; break;
 		}
-		ofst << std::to_string(p->ms) << "," << std::to_string(p->panel_no) << "," << type_str << "," << judge_str << std::endl;
+		ofst << std::to_string((*p)->ms) << "," << std::to_string((*p)->panel_no) << "," << type_str << "," << judge_str << std::endl;
 	}
 
 	systems::Logger::information("プレイ記録ファイルの保存を完了しました");
@@ -83,7 +110,7 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 	systems::Logger::information("プレイ記録ファイルの読み込みを開始します。");
 
 	//まず既存のlistを削除
-	this->judged_list->clear();
+	this->clear();
 
 	//ファイルストリーム
 	std::ifstream ifst(src);
@@ -174,7 +201,7 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 			return false;
 		}
 
-		this->judged_list->push_back(JudgedPanelInput(t_pno,t_type,t_ms,t_judge));
+		this->emplace_back(new JudgedPanelInput(t_pno,t_type,t_ms,t_judge));
 	}
 
 	systems::Logger::information("プレイ記録ファイルの読み込みを完了しました");
@@ -182,12 +209,8 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 	return true;
 }
 
-const std::shared_ptr<std::vector<jubeon::game::JudgedPanelInput>> jubeon::game::PlayRecord::getJudgedList() const
-{
-	return this->judged_list;
-}
 
-std::vector<jubeon::game::JudgedPanelInput>::const_iterator jubeon::game::PlayRecord::getIteratorFromTime(const std::vector<JudgedPanelInput>& list, const int ms)
+jubeon::game::JudgedPanelInputs::const_iterator jubeon::game::PlayRecord::getIteratorFromTime(const int ms) const
 {
 	//ラムダ式使ってみる？
 	std::function<size_t(size_t, size_t, int)> search = [&](size_t left, size_t right, int ms)
@@ -197,27 +220,25 @@ std::vector<jubeon::game::JudgedPanelInput>::const_iterator jubeon::game::PlayRe
 		if (right == left) return right;
 
 		if (right - 1 == left) {
-			if (list[left].ms <= ms) return right;
+			if (this->at(left)->ms <= ms) return right;
 			else return left;
 		}
 
 		//終了しない時
 		//ちなみにrightは領域の+1の場所
 		size_t center = (left + right) / 2;
-		if (list[center].ms <= ms) return search(center, right, ms);
+		if (this->at(center)->ms <= ms) return search(center, right, ms);
 		else return search(left, center, ms);
 	};
 
-	size_t idx = search(0, list.size(), ms);
+	size_t idx = search(0, this->size(), ms);
 
-	if (idx > list.size()) {
+	if (idx > this->size()) {
 		//おかしい
 		//とりあえずエラー出力
 		systems::Logger::warning("二分探索に失敗しています");
-		return list.end();
+		return this->end();
 	}
 
-	return list.begin() + idx;
+	return this->begin() + idx;
 }
-
-
