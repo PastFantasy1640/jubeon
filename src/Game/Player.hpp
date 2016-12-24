@@ -23,6 +23,9 @@
 //strbuf
 #include "strbuf/strbuf.hpp"
 
+//PlayRecord
+#include "PlayRecord.hpp"
+
 namespace jubeon {
 	namespace game {
 		class Player {
@@ -50,13 +53,18 @@ namespace jubeon {
 			// Input
 			////////////////////
 		public:
-			strbuf::StreamBuffer<input::Event> event_sb;
-			strbuf::StreamBuffer<input::PanelInput> pinput_sb;
 
-
+			void setInputFromEvent(input::Event & instance);
+			void setInputFromNetwork();	//TO DO
+			const PlayRecord * getPlayRecord(void) const;
+			void updateInput(Sequence & seq);
 
 		private:
-
+			std::shared_ptr<strbuf::OutputStream<input::EventContainer>> event_output;
+			std::shared_ptr<strbuf::InputStream<input::PanelInput>> pinput_input;
+			std::shared_ptr<strbuf::OutputStream<input::PanelInput>> pinput_output;
+			strbuf::StreamBuffer<input::PanelInput> pinput_sb;
+			PlayRecord record;
 
 		};
 	}

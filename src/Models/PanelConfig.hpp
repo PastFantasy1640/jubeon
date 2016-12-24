@@ -38,7 +38,7 @@ namespace jubeon {
 			/// <returns>®”Œ^ƒR[ƒh</returns>
 			int getJoystickCode(const unsigned int p_index) const;
 
-
+			size_t getPanelNum(void) const { return size_t(16); }
 		private:
 
 			virtual bool set(void) override;
