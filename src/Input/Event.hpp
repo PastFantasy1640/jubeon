@@ -9,7 +9,51 @@
 
 #ifndef JUBEON_INPUT_EVENT_HPP
 #define JUBEON_INPUT_EVENT_HPP
+/*
+//Mutex
+#include <mutex>
 
+//list
+#include <list>
+
+#include <SFML/Graphics.hpp>
+
+#include <vector>
+
+namespace jubeon {
+	namespace input {
+
+
+		class Event {
+		public:
+
+			Event(sf::Window * layermanager);
+			virtual ~Event();
+
+			//std::bind(std::mem_fn(&Foo::Do), &foo);
+			void setCallback(Callback function);
+			void run(void);
+
+			static bool getInstance(const sf::Window * layermanager, Event * dst);
+		private:
+
+			Event();
+
+			sf::Window * window;
+
+			Callback cb;
+
+			std::mutex mtx;
+
+			static std::vector<Event *> events;
+		};
+	}
+}
+
+*/
+
+
+/*
 //Clock, Event
 #include <SFML/Graphics.hpp>
 
@@ -46,22 +90,16 @@ namespace jubeon {
 		class Event : protected strbuf::StreamBuffer<EventContainer>{
 		public:
 
-            static const std::size_t QUEUE_MAXSIZE = 1024;
+            static c
 
-            /** Listening to panel input and process.
-             */
 			void process(jubeon::graphics::LayerManager * main_window);
 
-            /** Restart the timer. 
-             */
-			void restartTimer(const int offset);
+			const unsigned int getTimerCount() const;
 			
-			/** set OutputStream
-			 */
+
 			using strbuf::StreamBuffer<EventContainer>::addOutputStream;
 
-			/** get Instance
-			 */
+			E
 			static Event * getInstance(const jubeon::graphics::LayerManager * window);
 
 			// Destructor
@@ -78,7 +116,7 @@ namespace jubeon {
 			std::shared_ptr<strbuf::InputStream<EventContainer>> input;
 									
 			//offset
-			std::atomic<int> offset;
+			//std::atomic<int> offset;
 
 			//flags
 			std::unordered_map<sf::Event::EventType, bool> flags;
@@ -93,6 +131,6 @@ namespace jubeon {
 	}
 
 }
-
+*/
 
 #endif

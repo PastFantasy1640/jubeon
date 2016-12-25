@@ -26,6 +26,8 @@
 //PlayRecord
 #include "PlayRecord.hpp"
 
+#include "Music.hpp"
+
 namespace jubeon {
 	namespace game {
 		class Player {
@@ -34,6 +36,13 @@ namespace jubeon {
 			Player();
 
 			virtual ~Player();
+
+
+			////////////////////
+			// Play
+			////////////////////
+		public:
+			void initForPlay(strbuf::StreamBuffer<input::PanelInput> * panel_strbuf, const int playing_offset = 0);
 
 
 			////////////////////
@@ -53,18 +62,26 @@ namespace jubeon {
 			// Input
 			////////////////////
 		public:
-
-			void setInputFromEvent(input::Event & instance);
-			void setInputFromNetwork();	//TO DO
-			const PlayRecord * getPlayRecord(void) const;
-			void updateInput(Sequence & seq);
+			PlayRecord * getPlayRecord(void);
+			void updateInput(Sequence * seq);
 
 		private:
-			std::shared_ptr<strbuf::OutputStream<input::EventContainer>> event_output;
-			std::shared_ptr<strbuf::InputStream<input::PanelInput>> pinput_input;
-			std::shared_ptr<strbuf::OutputStream<input::PanelInput>> pinput_output;
-			strbuf::StreamBuffer<input::PanelInput> pinput_sb;
-			PlayRecord record;
+
+			std::shared_ptr<strbuf::OutputStream<input::PanelInput>> panel_que;
+			std::unique_ptr<PlayRecord> record;
+
+
+			////////////////////
+			// Music
+			////////////////////
+		public:			
+			void setPlayerOffset(const int offset);
+			int getPlayerOffset(void) const;
+			int getCurrentTime(const Music * music) const;
+
+		private:
+			int offset;
+
 
 		};
 	}

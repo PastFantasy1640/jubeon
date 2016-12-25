@@ -155,6 +155,31 @@ void jubeon::graphics::LayerManager::process(void) {
     
 }
 
+void jubeon::graphics::LayerManager::eventLoop(void)
+{
+	bool is_exit = false;
+
+	while (!is_exit && this->isOpen()) {
+		sf::Event e;
+		if (!this->waitEvent(e)) break;
+
+		if (e.type == sf::Event::KeyPressed && e.key.alt == true && e.key.code == sf::Keyboard::F4) break;
+
+		if (this->event_cb) this->event_cb(e);
+	}
+
+	systems::Logger::information("Closed event queuing function.");
+}
+
+void jubeon::graphics::LayerManager::setCallback(Callback function)
+{
+	{ //Mutable Area
+		std::lock_guard<std::mutex> lock(this->mtx);
+		this->event_cb = function;
+	}
+}
+
+
 jubeon::graphics::LayerManager * jubeon::graphics::LayerManager::getInstance(const std::string & name){
     return layermanager_map.at(name);
 }

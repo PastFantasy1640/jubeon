@@ -16,6 +16,10 @@
 
 #include <map>
 
+#include "strbuf/strbuf.hpp"
+
+//Player
+#include "Game/Player.hpp"
 namespace jubeon {
 	namespace game {
 		namespace scenes {
@@ -24,8 +28,10 @@ namespace jubeon {
 				virtual void init() override;
 				
 				std::shared_ptr<Sequence> sequence;
-				std::shared_ptr<PlayRecord> playrecord;
 				std::shared_ptr<Music> music;
+				Player player;
+
+
 
 				//レイヤー
 				std::shared_ptr<layers::PushframeLayer> push_frame_layer;
@@ -33,10 +39,14 @@ namespace jubeon {
 
 				virtual int process(void) override;
 
-			private:
+				strbuf::StreamBuffer<input::PanelInput> * getPanelStreamBuf(void);
 
-				//オフセット
-				jMillisec offset;
+				void EventToPanel(sf::Event e);
+
+			private:
+				strbuf::InputStream<input::PanelInput> pinput_que;
+				strbuf::StreamBuffer<input::PanelInput> pinput_sb;
+
 			};
 		};
 	};

@@ -23,7 +23,7 @@ jubeon::game::PlayRecord::~PlayRecord()
 void jubeon::game::PlayRecord::judge(Sequence & seq, const input::PanelInput panel_input)
 {
 
-	Notes::const_iterator end = seq.search(panel_input.ms + JudgeSize::B_POOR);
+	Notes::const_iterator end = seq.search(panel_input.ms - JudgeSize::B_POOR);
 
 	for (auto ite = seq.search(panel_input.ms - JudgeSize::A_POOR); ite != end; ite++) {
 		if (ite->second != nullptr && ite->first.getPanelIndex() == panel_input.panel_no) {

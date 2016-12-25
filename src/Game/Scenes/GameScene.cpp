@@ -23,6 +23,7 @@
 //for debug
 #include <iostream>
 
+
 using namespace jubeon::game;
 using namespace jubeon::graphics;
 using namespace jubeon::systems;
@@ -31,6 +32,9 @@ using namespace jubeon::input;
 
 void jubeon::game::scenes::GameScene::init(void)
 {
+	//イベントのコールバックをこっちに変更
+	//LayerManager::getInstance("mainwindow")->getEvent()->setCallback(std::bind( std::mem_fn(&GameScene::EventToPanel), *this));
+
 
 	this->music.reset(new Music("musics/Daydream Cafe/Daydream Cafe.json", "musics/Daydream Cafe"));
 	this->music->load();
@@ -44,11 +48,10 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	vector<Note> hoge;
 
-	this->offset = -430;
+	//this->offset = -430;
 
 
 	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
-	this->playrecord.reset(new jubeon::game::PlayRecord);
 	/*
 	for (int i = 0; i < 15; i++) {
 		this->playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
@@ -102,8 +105,8 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::RivalShutterLayer> rival1(new layers::RivalShutterLayer(sf::Vector2f(30.0f, 122.0f), this->music, BASIC));
 	shared_ptr<layers::RivalShutterLayer> rival2(new layers::RivalShutterLayer(sf::Vector2f(288.0f, 122.0f), this->music, EXTREME));
 	shared_ptr<layers::RivalShutterLayer> rival3(new layers::RivalShutterLayer(sf::Vector2f(546.0f, 122.0f)));
-	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, main_panel_position, this->offset));
-	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, sub_panel1_position, 0));
+	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, std::shared_ptr<const PlayRecord>(this->player.getPlayRecord()), main_panel_position, 0));
+	//shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, sub_panel1_position, 0));
 
 	this->push_frame_layer.reset(new layers::PushframeLayer(main_panel_position, music));
 
@@ -124,7 +127,6 @@ void jubeon::game::scenes::GameScene::init(void)
 	//楽曲の再生
 
 	//タイムマーカーを打つ
-	Event::getInstance(mainwindow)->restartTimer(-2300);
 
 	music->setForPlay();
 
@@ -150,6 +152,17 @@ int jubeon::game::scenes::GameScene::process(void)
 		}
 	}
 
+	player.updateInput(this->sequence.get());
 
 	return 0;
+}
+
+strbuf::StreamBuffer<jubeon::input::PanelInput>* jubeon::game::scenes::GameScene::getPanelStreamBuf(void)
+{
+	return &this->pinput_sb;
+}
+
+void jubeon::game::scenes::GameScene::EventToPanel(sf::Event e)
+{
+	
 }

@@ -122,7 +122,7 @@ int main(int argc, char * argv[]){
 	
 	
 	//イベント監視
-	jubeon::input::Event::getInstance(&mainwindow)->process(&mainwindow);
+	mainwindow.eventLoop();
 
 	//現在起動中のウィンドウを終了し、レイヤーを全部解放
 	mainwindow.closeWindow();

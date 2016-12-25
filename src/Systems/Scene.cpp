@@ -11,10 +11,7 @@ jubeon::graphics::LayerManager * jubeon::systems::Scene::main_window;
 
 //Constructor
 jubeon::systems::Scene::Scene()
-    : event(new strbuf::OutputStream<sf::Event>)
 {
-    //Connect OutputStream
-    //Scene::main_window->getEventBuffer()->addOutputStream(this->event);
 }
 
 //Š—LŒ ‚ÌˆÚ“®

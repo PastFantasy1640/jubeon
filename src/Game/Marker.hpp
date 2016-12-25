@@ -64,10 +64,10 @@ namespace jubeon {
 			//消滅のマーカー画像群
 			std::array<SPMarkerTextures , 6> disappear;
 
-			//例によってデフォルトコンストラクタは禁止
-			Marker();
 
 		public:
+			//Default Marker
+			Marker();
 
 			//コンストラクタ。ロードはしない
 			Marker(const std::string directory, const std::string meta_filepath);

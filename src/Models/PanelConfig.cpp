@@ -29,9 +29,9 @@ int jubeon::models::PanelConfig::getJoystickCode(const unsigned int p_index) con
 bool jubeon::models::PanelConfig::set(void)
 {
 	for (int i = 0; i < 16; i++) {
-		this->hid_id_[i] = static_cast<int>((*this->json)["keyconfig"][i][0].num());
+		this->hid_id_[i] = static_cast<int>((*this->json)["keyconfig"][i][0].num()) - 1;
 		int value = ((*this->json)["keyconfig"][i][1].num());
-		if (this->hid_id_[i] == 0) this->key_code_[i] = static_cast<sf::Keyboard::Key>(value);
+		if (this->hid_id_[i] == -1) this->key_code_[i] = static_cast<sf::Keyboard::Key>(value);
 		else this->joystick_code_[i] = static_cast<int>(value);
 	}
 	return false;
