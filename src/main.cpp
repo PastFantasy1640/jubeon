@@ -83,7 +83,7 @@ int main(int argc, char * argv[]){
 	Configures::getInstance()->window_config->load();
 
     //create window
-    LayerManager mainwindow("mainwindow");
+    LayerManager mainwindow("mainwindow",Configures::getInstance()->window_config->getLayoutType());
 		
     
     mainwindow.create(

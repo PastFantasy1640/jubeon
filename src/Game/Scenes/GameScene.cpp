@@ -7,6 +7,7 @@
 #include "Game/Layers/SequencePlayer.hpp"
 #include "Game/Layers/ShutterLayer.hpp"
 #include "Game/Layers/RivalShutterLayer.hpp"
+#include "Game/Layers/ScoreLayer.hpp"
 
 //for panel position config
 #include "Game/PanelPosition.hpp"
@@ -87,6 +88,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::RivalShutterLayer> rival3(new layers::RivalShutterLayer(sf::Vector2f(546.0f, 122.0f)));
 	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, std::shared_ptr<const PlayRecord>(this->player.getPlayRecord()), main_panel_position, 0));
 	//shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, sub_panel1_position, 0));
+	shared_ptr<layers::ScoreLayer> scorelayer(new layers::ScoreLayer(&this->player, this->music.get()));
 
 	this->push_frame_layer.reset(new layers::PushframeLayer(main_panel_position, this->gs_event.getPanelStreamBuf()));
 
@@ -94,6 +96,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	mainwindow->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
 	mainwindow->addLayer(frame, jubeon::graphics::LayerManager::FOREGROUND, 0);
 	mainwindow->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
+	mainwindow->addLayer(scorelayer, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(rival1, jubeon::graphics::LayerManager::MAIN, 0);
 	//mainwindow->addLayer(rival2, jubeon::graphics::LayerManager::MAIN, 0);
 	//mainwindow->addLayer(rival3, jubeon::graphics::LayerManager::MAIN, 0);

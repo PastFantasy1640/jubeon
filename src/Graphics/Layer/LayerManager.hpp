@@ -54,8 +54,15 @@ namespace jubeon{
 		class LayerManager : private sf::RenderWindow{
 		public:
 
+			typedef enum {
+				Y_PLUS,
+				X_PLUS,
+				Y_MINUS,
+				X_MINUS
+			} LayoutType;
+
             //Default Constructor
-			LayerManager(const std::string & name);
+			LayerManager(const std::string & name, const LayoutType layout_type);
 
             //Destructor
 			virtual ~LayerManager();
@@ -139,6 +146,8 @@ namespace jubeon{
 
 			//Event
 			Callback event_cb;
+
+			const LayoutType layout_type;
             
             //Size of render texture
 			const static sf::Vector2u RENDER_TEXTURE_SIZE;

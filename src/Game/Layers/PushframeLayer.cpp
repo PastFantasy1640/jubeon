@@ -14,8 +14,7 @@ void jubeon::game::layers::PushframeLayer::Init()
 {
 
 	//パネル枠の読み込み
-	storages::Resource res = storages::Resource::setf("media/image/panel_shadow.png", storages::Resource::TEX);
-	storages::Resource::setKey("panel_shadow", res);
+	storages::Resource::setf("media/image/panel_shadow.png", storages::Resource::TEX).setKey("panel_shadow");
 	
 	//画面プッシュは無し
 	this->pushing = 0;
