@@ -31,14 +31,13 @@ namespace jubeon {
 			PanelInput(unsigned char panel_no, jubeon::Type t, unsigned int ms)
 				: panel_no(panel_no), t(t), ms(ms) {}
 
-			PanelInput(EventContainer ec);
 
+			//Default Constructor
+			PanelInput() : panel_no(0), t(RELEASE), ms(0) {}
 
 		
 		private:
 
-			//Default Constructor
-			PanelInput() : panel_no(0), t(RELEASE), ms(0) {}
 		};
 	
 	};

@@ -16,17 +16,43 @@
 
 #include <map>
 
+#include "strbuf/strbuf.hpp"
+
+#include "Input/Event.hpp"
+
+//Player
+#include "Game/Player.hpp"
 namespace jubeon {
 	namespace game {
 		namespace scenes {
+
+			class EventBase {
+			private:
+				std::shared_ptr<strbuf::InputStream<input::PanelInput>> pinput_que;
+				strbuf::StreamBuffer<input::PanelInput> pinput_sb;
+
+			public:
+				EventBase();
+				virtual ~EventBase() {}
+
+				Music * music;
+				void pollEvent(sf::Event e);
+
+				strbuf::StreamBuffer<jubeon::input::PanelInput> * jubeon::game::scenes::EventBase::getPanelStreamBuf(void);
+
+
+			};
+
 			class GameScene : public jubeon::systems::Scene{
 			public:
 				virtual void init() override;
 				
-				std::shared_ptr<std::map<const size_t, size_t>> seq_pr_mapping;
 				std::shared_ptr<Sequence> sequence;
-				std::shared_ptr<PlayRecord> playrecord;
 				std::shared_ptr<Music> music;
+				Player player;
+
+				EventBase gs_event;
+
 
 				//レイヤー
 				std::shared_ptr<layers::PushframeLayer> push_frame_layer;
@@ -34,10 +60,6 @@ namespace jubeon {
 
 				virtual int process(void) override;
 
-			private:
-
-				//オフセット
-				jMillisec offset;
 			};
 		};
 	};

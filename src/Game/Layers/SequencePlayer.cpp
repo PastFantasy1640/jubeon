@@ -16,11 +16,10 @@
 jubeon::game::layers::SequencePlayer::SequencePlayer(
 	std::shared_ptr<jubeon::game::Sequence> sequence,
 	std::shared_ptr<jubeon::game::Music> music,
-	std::shared_ptr<jubeon::game::PlayRecord> playrecord,
-	std::shared_ptr<std::map<const size_t, size_t>> seq_pr_mapping,
+	std::shared_ptr<const jubeon::game::PlayRecord> playrecord,
 	std::shared_ptr<jubeon::game::PanelPosition> panel_position,
 	int offset_ms)
-	: sequence(sequence), music(music), playrecord(playrecord), seq_pr_mapping(seq_pr_mapping), panel_position(panel_position), offset_ms(offset_ms)
+	: sequence(sequence), music(music), playrecord(playrecord), panel_position(panel_position), offset_ms(offset_ms)
 {
 }
 
@@ -31,7 +30,6 @@ jubeon::game::layers::SequencePlayer::SequencePlayer(
 void jubeon::game::layers::SequencePlayer::Init()
 {
 	//初期化処理
-
 
 
 
@@ -61,30 +59,26 @@ void jubeon::game::layers::SequencePlayer::Draw()
 	//### 譜面の描写 ###
 	//譜面表示の可能性のあるmsは、CurrentMS - (disappear_time * 2)から、CurrentMS + appear_time
 	//全て最高500msであると仮定して
-	const int start_ms = ms - 1000;
-	const int end_ms = ms + 500;
+	const int start_ms = ms - this->mk->getLengthAfterMax();	//逆なんだな―
+	const int end_ms = ms + this->mk->getLengthBefore();
 
 	//まずms以降のSequenceのイテレータを取得
-	std::vector<Note>::const_iterator ite_n = this->sequence->search(start_ms);
-	size_t sequence_idx = std::distance(this->sequence->begin(), ite_n);
+	Notes::const_iterator begin = this->sequence->search(start_ms);
+	Notes::const_iterator end = this->sequence->search(end_ms);
 
-	//それ以降でマッピングを確認していく
-	for (; sequence_idx < this->sequence->size(); sequence_idx++){
-		if (this->sequence->at(sequence_idx).getJustTime() > end_ms) break;	//描写範囲外
+	for (auto ite = begin; ite != end; ite++) {
+		//描写範囲内
 
-		//マッピングがあるか
-		
-		const std::map<const size_t, size_t>::const_iterator jpi = this->seq_pr_mapping->find(sequence_idx);
-		if (jpi != this->seq_pr_mapping->end()) {
+		if (ite->second != nullptr) {
 			//あった
 			//ということはすでに判定が終わっている場合である。
 			//Markerのテクスチャを取得
-			const sf::Texture * tex = this->mk->getTexturePtr(mms - this->playrecord->getJudgedList()->at(jpi->second).ms, this->playrecord->getJudgedList()->at(jpi->second).judge);
+			const sf::Texture * tex = this->mk->getTexturePtr(ms - ite->second->ms, ite->second->judge);
 			if (tex != nullptr) {
 
 				sf::Sprite markersp(*tex);
 
-				const sf::IntRect & rect = this->panel_position->get(this->playrecord->getJudgedList()->at(jpi->second).panel_no);
+				const sf::IntRect & rect = this->panel_position->get(ite->second->panel_no);
 
 				markersp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
 				markersp.setScale(PanelPosition::get_ex(tex->getSize().x, rect.width), PanelPosition::get_ex(tex->getSize().y, rect.height));
@@ -96,19 +90,20 @@ void jubeon::game::layers::SequencePlayer::Draw()
 			//なかった
 			//まだ終わってない
 			//Markerのテクスチャを取得
-			const sf::Texture * tex = this->mk->getTexturePtr(ms - this->sequence->at(sequence_idx).getJustTime(), NOJUDGE);
+			const sf::Texture * tex = this->mk->getTexturePtr(ms - ite->first.getJustTime(), NOJUDGE);
 			if (tex != nullptr) {
 
 				sf::Sprite markersp(*tex);
-				const sf::IntRect & rect = this->panel_position->get(this->sequence->at(sequence_idx).getPanelIndex());
+				const sf::IntRect & rect = this->panel_position->get(ite->first.getPanelIndex());
 
 				markersp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
 				markersp.setScale(PanelPosition::get_ex(tex->getSize().x, rect.width), PanelPosition::get_ex(tex->getSize().y, rect.height));
 				this->draw(markersp);
 
 			}
-		
+
 		}
+	
 	}
 
 

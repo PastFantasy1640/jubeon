@@ -14,6 +14,8 @@
 #include "Jmemo2/Parser.hpp"
 #include "Jmemo2/YoubeatParser.hpp"
 
+#include "Models/Configures.hpp"
+
 //for sort
 #include <algorithm>
 
@@ -22,6 +24,7 @@
 
 //for debug
 #include <iostream>
+
 
 using namespace jubeon::game;
 using namespace jubeon::graphics;
@@ -35,43 +38,21 @@ void jubeon::game::scenes::GameScene::init(void)
 	this->music.reset(new Music("musics/Daydream Cafe/Daydream Cafe.json", "musics/Daydream Cafe"));
 	this->music->load();
 
+	//イベントのコールバックをこっちに変更
+	this->gs_event.music = this->music.get();
+	LayerManager::getInstance("mainwindow")->setCallback(std::bind(std::mem_fn(&EventBase::pollEvent), &this->gs_event, std::placeholders::_1));
+
+	this->player.initForPlay(this->gs_event.getPanelStreamBuf(), 0);
+
 	//パネルの設定を読み出す
 	shared_ptr<PanelPosition> main_panel_position(new PanelPosition("media/config/mainpanel.json"));
 	main_panel_position->load();
 	shared_ptr<PanelPosition> sub_panel1_position(new PanelPosition("media/config/subpanel1.json"));
 	sub_panel1_position->load();
 	
-	//マッピングの用意
-	this->seq_pr_mapping.reset(new map<const size_t, size_t>);
 
 	vector<Note> hoge;
 
-	this->offset = -430;
-
-
-	//このデータをいじって、あらかじめjudgedに入れておけば自動プレイ（リプレイ）が可能
-	this->playrecord.reset(new jubeon::game::PlayRecord);
-	/*
-	for (int i = 0; i < 15; i++) {
-		this->playrecord->addJudged(PanelInput(2, PUSH, i * 4000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(1, PUSH, i * 4000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(5, PUSH, i * 4000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(7, PUSH, i * 4000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(8, PUSH, i * 4000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(9, PUSH, i * 4000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(12, PUSH, i * 4000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(13, PUSH, i * 4000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(2, RELEASE, i * 4000 + 50), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(1, RELEASE, i * 4000 + 100), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(5, RELEASE, i * 4000 + 200), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(7, RELEASE, i * 4000 + 500), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(8, RELEASE, i * 4000 + 1000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(9, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(12, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-		this->playrecord->addJudged(PanelInput(13, RELEASE, i * 4000 + 2000), Judge::NOJUDGE);
-	}*/
-
-	//this->playrecord->readFromFile("hogehogehoge.txt");
 
 
 
@@ -104,10 +85,10 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::RivalShutterLayer> rival1(new layers::RivalShutterLayer(sf::Vector2f(30.0f, 122.0f), this->music, BASIC));
 	shared_ptr<layers::RivalShutterLayer> rival2(new layers::RivalShutterLayer(sf::Vector2f(288.0f, 122.0f), this->music, EXTREME));
 	shared_ptr<layers::RivalShutterLayer> rival3(new layers::RivalShutterLayer(sf::Vector2f(546.0f, 122.0f)));
-	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, main_panel_position, this->offset));
-	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, this->seq_pr_mapping, sub_panel1_position, 0));
+	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, std::shared_ptr<const PlayRecord>(this->player.getPlayRecord()), main_panel_position, 0));
+	//shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, sub_panel1_position, 0));
 
-	this->push_frame_layer.reset(new layers::PushframeLayer(main_panel_position, music));
+	this->push_frame_layer.reset(new layers::PushframeLayer(main_panel_position, this->gs_event.getPanelStreamBuf()));
 
     LayerManager * mainwindow = LayerManager::getInstance("mainwindow");
 	mainwindow->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
@@ -119,14 +100,13 @@ void jubeon::game::scenes::GameScene::init(void)
 	mainwindow->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
 //	mainwindow->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
-//	mainwindow->addLayer(this->push_frame_layer, LayerManager::MAIN, 0);
+	mainwindow->addLayer(this->push_frame_layer, LayerManager::MAIN, 0);
 
 
 
 	//楽曲の再生
 
 	//タイムマーカーを打つ
-	Event::getInstance(mainwindow)->restartTimer(-2300);
 
 	music->setForPlay();
 
@@ -137,16 +117,6 @@ void jubeon::game::scenes::GameScene::init(void)
 
 int jubeon::game::scenes::GameScene::process(void)
 {
-	/*sf::Event e;
-	while (this->getMainWindow()->getWindowEvent(e)) {
-		if (e.type == sf::Event::Closed) {
-			return 1;
-		}
-		else if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Escape) {
-			this->playrecord->writeToFile("hogehogehoge.txt");
-			return 1;
-		}
-	}*/
 
 	//パネルから入力を取ってくる
 	std::vector<PanelInput> pinput;// = ListenPanel::getEvent();
@@ -159,55 +129,53 @@ int jubeon::game::scenes::GameScene::process(void)
 				this->push_frame_layer->setReleasing(ite.panel_no);
 			}
 
-			if (ite.t) {
-				const jMillisec now = ite.ms - this->offset;
-				const auto p = this->sequence->search(now + JudgeSize::B_POOR);
-				size_t distance = std::distance(this->sequence->begin(), p);
-				Judge j(NOJUDGE);
-				auto ptemp = p;
-				for (; ptemp != this->sequence->end(); ptemp++, distance++) {
-					if (ptemp->getJustTime() >= now + JudgeSize::A_POOR) break;	//範囲外
+		}
+	}
 
-					if (ptemp->getPanelIndex() == ite.panel_no && this->seq_pr_mapping->count(distance) == 0) {
-						//同じパネルでまだ未判定
-						if (ptemp->getJustTime() + JudgeSize::B_POOR <= now && now <= ptemp->getJustTime() + JudgeSize::A_POOR) {
-							//範囲内だ！
-							if (ptemp->getJustTime() + JudgeSize::B_GOOD <= now && now <= ptemp->getJustTime() + JudgeSize::A_GOOD) {
-								//GOOD内
-								if (ptemp->getJustTime() + JudgeSize::B_GREAT <= now && now <= ptemp->getJustTime() + JudgeSize::A_GREAT) {
-									//GREAT内
-									if (ptemp->getJustTime() + JudgeSize::B_PERFECT <= now && now <= ptemp->getJustTime() + JudgeSize::A_PERFECT) {
-										//すごい！Perfect
-										j = PERFECT; break;
-									}
-									j = GREAT;
-									break;
-								}
-								j = GOOD;
-								break;
-							}
+	player.updateInput(this->sequence.get());
 
-							//POORだった
-							if (ptemp->getJustTime() < now) j = LATE;
-							else j = EARLY;
+	return 0;
+}
 
-							break;
-						}
-					}
-				}
+strbuf::StreamBuffer<jubeon::input::PanelInput>* jubeon::game::scenes::EventBase::getPanelStreamBuf(void)
+{
+	return &this->pinput_sb;
+}
 
-				playrecord->addJudged(ite, j);
+jubeon::game::scenes::EventBase::EventBase()
+	: pinput_que(new strbuf::InputStream<input::PanelInput>())
+{
+	this->pinput_sb.addInputStream(this->pinput_que);
+}
 
-				if (j != NOJUDGE) {
-					//判定がついたらマッピング
-					std::cout << "HOGE" << std::endl;
-					auto last = --playrecord->getJudgedList()->end();
-					(*this->seq_pr_mapping)[distance] = (playrecord->getJudgedList()->size() - 1);
+
+void jubeon::game::scenes::EventBase::pollEvent(sf::Event e)
+{
+	//Select Input data
+
+	if (e.type == sf::Event::KeyPressed || e.type == sf::Event::KeyReleased) {
+		for (size_t pidx = 0; pidx < models::Configures::getInstance()->panel_config->getPanelNum(); pidx++) {
+			if (models::Configures::getInstance()->panel_config->getHidID(pidx) == -1) {
+				if (models::Configures::getInstance()->panel_config->getKeyCode(pidx) == e.key.code) {
+					//getPlayingCurrentTime is const function so this is thread safe.
+					this->pinput_que->que(input::PanelInput(pidx, (e.type == sf::Event::KeyPressed ? PUSH : RELEASE), music->getPlayingCurrentTime()));
+					this->pinput_sb.flush();
+					break;
 				}
 			}
 		}
 	}
-
-
-	return 0;
+	else if (e.type == sf::Event::JoystickButtonPressed || e.type == sf::Event::JoystickButtonReleased) {
+		for (size_t pidx = 0; pidx < models::Configures::getInstance()->panel_config->getPanelNum(); pidx++) {
+			if (models::Configures::getInstance()->panel_config->getHidID(pidx) == e.joystickButton.joystickId) {
+				if (models::Configures::getInstance()->panel_config->getJoystickCode(pidx) == e.joystickButton.button) {
+					this->pinput_que->que(input::PanelInput(pidx, (e.type == sf::Event::JoystickButtonPressed ? PUSH : RELEASE), music->getPlayingCurrentTime()));
+					this->pinput_sb.flush();
+					break;
+				}
+			}
+		}
+	}
+	this->pinput_sb.flush();
 }
+

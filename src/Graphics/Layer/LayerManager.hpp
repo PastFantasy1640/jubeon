@@ -30,11 +30,15 @@
 //LayerManager manages the instances of LayerBase class.
 #include "LayerBase.hpp"
 
-//Polling Stream
-#include "strbuf/strbuf.hpp"
+#include <functional>
 
 //for thread safe
 #include <mutex>
+
+//for Event
+#include "Input/Event.hpp"
+
+#include "Input/PanelInput.hpp"
 
 
 //namespace is jubeon::graphics
@@ -42,8 +46,11 @@ namespace jubeon{
 	namespace graphics {
 
 		/** This class manages the instances of LayerBase class. Create a instance of LayerManager for each a window.
-		 * @version 1.1
+		 * @version 1.2
 		 */
+
+		typedef std::function<void(sf::Event)> Callback;
+
 		class LayerManager : private sf::RenderWindow{
 		public:
 
@@ -80,7 +87,11 @@ namespace jubeon{
 			 */
 			void process(void);
 			
-			
+			/** get Event instance.
+			 */
+			void eventLoop(void);
+			void setCallback(Callback function);
+
 			/** get instance from name
 			 */
 			static LayerManager * getInstance(const std::string & name);
@@ -125,6 +136,9 @@ namespace jubeon{
 
             //mutex
             std::mutex mtx;
+
+			//Event
+			Callback event_cb;
             
             //Size of render texture
 			const static sf::Vector2u RENDER_TEXTURE_SIZE;

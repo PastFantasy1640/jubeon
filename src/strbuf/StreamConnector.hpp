@@ -33,11 +33,15 @@ namespace strbuf{
             //Copy
             std::lock_guard<std::mutex> lock(this->mutex_);
             for(auto i = this->inputs_.begin(); i != this->inputs_.end();){
+				if (!*i) 
+					continue;
                 if(i->unique()) i = this->inputs_.erase(i);
                 else{
                     while((*i)->getQueSize()){
                         T tmp = (*i)->unque();   //unque
                         for(auto o = this->outputs_.begin(); o != this->outputs_.end(); ){
+							if (!*o) 
+								continue;
                             (*o)->que(tmp); //que
                             if(o->unique()) o = this->outputs_.erase(o);
                             else o++;

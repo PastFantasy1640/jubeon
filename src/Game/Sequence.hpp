@@ -8,6 +8,7 @@
 #include <memory>
 #include "JudgeDefinition.hpp"
 #include "NoteDefinition.hpp"
+#include "JudgedPanelInput.hpp"
 
 namespace jubeon {
 	namespace game {
@@ -22,6 +23,7 @@ namespace jubeon {
 			Note();
 
 			void operator=(Note & n);
+
 
 		protected:
 			
@@ -53,43 +55,40 @@ namespace jubeon {
 			int getHoldDuration(void) const;
 			int getHoldMarkerIndex(void) const;
 			bool isHold(void) const;
-			/*
-			bool operator == (Note n) { 
-				return (n.duration == this->duration
-					&& n.holdMarkerIndex == this->holdMarkerIndex
-					&& n.justTime == this->justTime
-					&& n.panelIndex == this->panelIndex);
-			}*/
-			
+
 		};
-		
+	
+		typedef std::pair<const Note, JudgedPanelInput *> NoteJudgePair;
+		typedef std::vector<NoteJudgePair> Notes;
+
 		//Noteはconst付きメソッドのみでRead Onlyなためスレッドセーフ
-		class Sequence : protected std::vector<Note>{
+		class Sequence : protected Notes{
 
 		private:
 			
 			//デフォルトコンストラクタは禁止
 			Sequence(void);
 
-			//コピーコンストラクタも禁止。
-			Sequence(const Sequence & cp);
 
 		public:
 
+			Sequence(const Sequence & cp);
+
 			//初期化
 			Sequence(const std::vector<Note> notes);
+
+			Notes::const_iterator jubeon::game::Sequence::search(const jMillisec ms) const;
 			
-			const Note & operator[] (size_t idx) const;
+			using Notes::const_iterator;
+			using Notes::operator[];
+			using Notes::at;
+			using Notes::begin;
+			using Notes::end;
+			using Notes::size;
+			using Notes::empty;
 
-			const Note & at(size_t idx) const;
+			void setJudgedPanelInput(const Notes::const_iterator target, JudgedPanelInput * judged);
 
-			std::vector<Note>::const_iterator begin() const;
-
-			std::vector<Note>::const_iterator end() const;
-
-			std::vector<Note>::const_iterator search(const int ms) const;
-
-			std::size_t size() const;
 		};
 	}
 }

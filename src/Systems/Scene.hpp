@@ -70,8 +70,6 @@ namespace jubeon {
 			//次のシーンを設定する
 			static void setNextScene(const std::shared_ptr<Scene> & next_scene);
 			
-			//event stream
-			std::shared_ptr<strbuf::OutputStream<sf::Event>> event;
             
 		public:
 			//コンストラクタ

@@ -36,6 +36,8 @@ namespace jubeon {
 
 				int getID() const;
 
+				unsigned int getDuration() const;
+
 				const sf::Texture * getTexture(const int diff_ms) const;
 
 				using std::vector<std::unique_ptr<sf::Texture>>::push_back;
@@ -62,10 +64,11 @@ namespace jubeon {
 			//消滅のマーカー画像群
 			std::array<SPMarkerTextures , 6> disappear;
 
-			//例によってデフォルトコンストラクタは禁止
-			Marker();
+			
 
 		public:
+			//Default Marker
+			Marker();
 
 			//コンストラクタ。ロードはしない
 			Marker(const std::string directory, const std::string meta_filepath);
@@ -75,6 +78,9 @@ namespace jubeon {
 
 			//ロード。trueで成功
 			bool load(void);
+
+			unsigned int getLengthBefore() const;
+			unsigned int getLengthAfterMax() const;
 
 			//時間を指定して適切なテクスチャを返す関数
 			//マイナスを指定した場合はappear
