@@ -24,18 +24,20 @@ void jubeon::game::PlayRecord::judge(Sequence & seq, const input::PanelInput pan
 {
 
 	Notes::const_iterator end = seq.search(panel_input.ms - JudgeSize::B_POOR);
-
-	for (auto ite = seq.search(panel_input.ms - JudgeSize::A_POOR); ite != end; ite++) {
-		if (ite->second != nullptr && ite->first.getPanelIndex() == panel_input.panel_no) {
+	Notes::const_iterator ite;
+	
+	Judge j = NOJUDGE;
+	for (ite = seq.search(panel_input.ms - JudgeSize::A_POOR); ite != end; ite++) {
+		if (ite->second == nullptr && ite->first.getPanelIndex() == panel_input.panel_no) {
 			//判定対象
-			Judge j = NOJUDGE;
 			if (ite->first.getJustTime() >= panel_input.ms) {
 				//Before
 				jMillisec distance = ite->first.getJustTime() - panel_input.ms;
-				if (distance <= JudgeSize::B_PERFECT) j = PERFECT;
-				else if (distance <= JudgeSize::B_GREAT) j = GREAT;
-				else if (distance <= JudgeSize::B_GOOD) j = GOOD;
-				else if (distance <= JudgeSize::B_POOR) j = EARLY;	//意味のない判定…だが一応…。
+				if (distance <= -JudgeSize::B_PERFECT) j = PERFECT;
+				else if (distance <= -JudgeSize::B_GREAT) j = GREAT;
+				else if (distance <= -JudgeSize::B_GOOD) j = GOOD;
+				else if (distance <= -JudgeSize::B_POOR) j = EARLY;	//意味のない判定…だが一応…。
+				break;
 			}
 			else {
 				//After
@@ -44,15 +46,15 @@ void jubeon::game::PlayRecord::judge(Sequence & seq, const input::PanelInput pan
 				else if (distance <= JudgeSize::A_GREAT) j = GREAT;
 				else if (distance <= JudgeSize::A_GOOD) j = GOOD;
 				else if (distance <= JudgeSize::A_POOR) j = LATE;	//意味のない判定…だが一応…。
-			}
-			if (j != NOJUDGE) {
-				//追加
-				std::unique_ptr<JudgedPanelInput> jptr(new JudgedPanelInput(panel_input, j));
-				seq.setJudgedPanelInput(ite, jptr.get());
-				this->emplace_back(std::move(jptr));
+				break;
 			}
 		}
 	}
+
+	//追加
+	std::unique_ptr<JudgedPanelInput> jptr(new JudgedPanelInput(panel_input, j));
+	if(j != NOJUDGE) seq.setJudgedPanelInput(ite, jptr.get());
+	this->emplace_back(std::move(jptr));
 
 }
 

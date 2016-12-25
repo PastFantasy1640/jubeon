@@ -8,6 +8,53 @@
 
 #include "Systems/Logger.hpp"
 /*
+strbuf::StreamBuffer<jubeon::input::PanelInput>* jubeon::game::scenes::EventBase::getPanelStreamBuf(void)
+{
+	return &this->pinput_sb;
+}
+
+jubeon::game::scenes::EventBase::EventBase()
+	: pinput_que(new strbuf::InputStream<input::PanelInput>())
+{
+	this->pinput_sb.addInputStream(this->pinput_que);
+}
+
+template<typename T>
+jubeon::input::EventBase<T>::~EventBase()
+{
+}
+
+void jubeon::game::scenes::EventBase::EventToPanel(sf::Event e)
+{
+	//Select Input data
+
+	if (e.type == sf::Event::KeyPressed || e.type == sf::Event::KeyReleased) {
+		for (size_t pidx = 0; pidx < models::Configures::getInstance()->panel_config->getPanelNum(); pidx++) {
+			if (models::Configures::getInstance()->panel_config->getHidID(pidx) == -1) {
+				if (models::Configures::getInstance()->panel_config->getKeyCode(pidx) == e.key.code) {
+					//getPlayingCurrentTime is const function so this is thread safe.
+					this->pinput_que->que(input::PanelInput(pidx, (e.type == sf::Event::KeyPressed ? PUSH : RELEASE), music->getPlayingCurrentTime()));
+					this->pinput_sb.flush();
+					break;
+				}
+			}
+		}
+	}
+	else if (e.type == sf::Event::JoystickButtonPressed || e.type == sf::Event::JoystickButtonReleased) {
+		for (size_t pidx = 0; pidx < models::Configures::getInstance()->panel_config->getPanelNum(); pidx++) {
+			if (models::Configures::getInstance()->panel_config->getHidID(pidx) == e.joystickButton.joystickId) {
+				if (models::Configures::getInstance()->panel_config->getJoystickCode(pidx) == e.joystickButton.button) {
+					this->pinput_que->que(input::PanelInput(pidx, (e.type == sf::Event::JoystickButtonPressed ? PUSH : RELEASE), music->getPlayingCurrentTime()));
+					this->pinput_sb.flush();
+					break;
+				}
+			}
+		}
+	}
+	this->pinput_sb.flush();
+}
+
+/*
 std::vector<jubeon::input::Event *> jubeon::input::Event::events;
 
 

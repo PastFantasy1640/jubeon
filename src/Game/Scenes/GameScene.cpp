@@ -14,6 +14,8 @@
 #include "Jmemo2/Parser.hpp"
 #include "Jmemo2/YoubeatParser.hpp"
 
+#include "Models/Configures.hpp"
+
 //for sort
 #include <algorithm>
 
@@ -32,12 +34,15 @@ using namespace jubeon::input;
 
 void jubeon::game::scenes::GameScene::init(void)
 {
-	//イベントのコールバックをこっちに変更
-	//LayerManager::getInstance("mainwindow")->getEvent()->setCallback(std::bind( std::mem_fn(&GameScene::EventToPanel), *this));
-
 
 	this->music.reset(new Music("musics/Daydream Cafe/Daydream Cafe.json", "musics/Daydream Cafe"));
 	this->music->load();
+
+	//イベントのコールバックをこっちに変更
+	this->gs_event.music = this->music.get();
+	LayerManager::getInstance("mainwindow")->setCallback(std::bind(std::mem_fn(&EventBase::pollEvent), &this->gs_event, std::placeholders::_1));
+
+	this->player.initForPlay(this->gs_event.getPanelStreamBuf(), 0);
 
 	//パネルの設定を読み出す
 	shared_ptr<PanelPosition> main_panel_position(new PanelPosition("media/config/mainpanel.json"));
@@ -157,12 +162,45 @@ int jubeon::game::scenes::GameScene::process(void)
 	return 0;
 }
 
-strbuf::StreamBuffer<jubeon::input::PanelInput>* jubeon::game::scenes::GameScene::getPanelStreamBuf(void)
+strbuf::StreamBuffer<jubeon::input::PanelInput>* jubeon::game::scenes::EventBase::getPanelStreamBuf(void)
 {
 	return &this->pinput_sb;
 }
 
-void jubeon::game::scenes::GameScene::EventToPanel(sf::Event e)
+jubeon::game::scenes::EventBase::EventBase()
+	: pinput_que(new strbuf::InputStream<input::PanelInput>())
 {
-	
+	this->pinput_sb.addInputStream(this->pinput_que);
 }
+
+
+void jubeon::game::scenes::EventBase::pollEvent(sf::Event e)
+{
+	//Select Input data
+
+	if (e.type == sf::Event::KeyPressed || e.type == sf::Event::KeyReleased) {
+		for (size_t pidx = 0; pidx < models::Configures::getInstance()->panel_config->getPanelNum(); pidx++) {
+			if (models::Configures::getInstance()->panel_config->getHidID(pidx) == -1) {
+				if (models::Configures::getInstance()->panel_config->getKeyCode(pidx) == e.key.code) {
+					//getPlayingCurrentTime is const function so this is thread safe.
+					this->pinput_que->que(input::PanelInput(pidx, (e.type == sf::Event::KeyPressed ? PUSH : RELEASE), music->getPlayingCurrentTime()));
+					this->pinput_sb.flush();
+					break;
+				}
+			}
+		}
+	}
+	else if (e.type == sf::Event::JoystickButtonPressed || e.type == sf::Event::JoystickButtonReleased) {
+		for (size_t pidx = 0; pidx < models::Configures::getInstance()->panel_config->getPanelNum(); pidx++) {
+			if (models::Configures::getInstance()->panel_config->getHidID(pidx) == e.joystickButton.joystickId) {
+				if (models::Configures::getInstance()->panel_config->getJoystickCode(pidx) == e.joystickButton.button) {
+					this->pinput_que->que(input::PanelInput(pidx, (e.type == sf::Event::JoystickButtonPressed ? PUSH : RELEASE), music->getPlayingCurrentTime()));
+					this->pinput_sb.flush();
+					break;
+				}
+			}
+		}
+	}
+	this->pinput_sb.flush();
+}
+
