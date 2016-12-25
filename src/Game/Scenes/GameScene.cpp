@@ -113,7 +113,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, std::shared_ptr<const PlayRecord>(this->player.getPlayRecord()), main_panel_position, 0));
 	//shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, sub_panel1_position, 0));
 
-	this->push_frame_layer.reset(new layers::PushframeLayer(main_panel_position, music));
+	this->push_frame_layer.reset(new layers::PushframeLayer(main_panel_position, this->gs_event.getPanelStreamBuf()));
 
     LayerManager * mainwindow = LayerManager::getInstance("mainwindow");
 	mainwindow->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
@@ -125,7 +125,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	mainwindow->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
 //	mainwindow->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
-//	mainwindow->addLayer(this->push_frame_layer, LayerManager::MAIN, 0);
+	mainwindow->addLayer(this->push_frame_layer, LayerManager::MAIN, 0);
 
 
 
