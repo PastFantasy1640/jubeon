@@ -26,13 +26,6 @@ namespace jubeon {
 	namespace game {
 		namespace scenes {
 
-			/*class GameSceneEvent : public jubeon::input::EventBase<PanelInput> {
-			public:
-				virtual void pollEvent(sf::Event e) override {
-				
-				}
-			};*/
-
 			class EventBase {
 			private:
 				std::shared_ptr<strbuf::InputStream<input::PanelInput>> pinput_que;
@@ -66,8 +59,6 @@ namespace jubeon {
 
 
 				virtual int process(void) override;
-
-
 
 			};
 		};
