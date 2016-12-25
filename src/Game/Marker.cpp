@@ -2,6 +2,10 @@
 #include "../Systems/Logger.hpp"
 
 
+jubeon::game::Marker::Marker()
+{
+}
+
 //************************** MarkerTexture関連 ******************************
 //コンストラクタ
 jubeon::game::Marker::Marker(const std::string directory, const std::string meta_filepath)

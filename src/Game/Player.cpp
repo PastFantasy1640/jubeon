@@ -26,7 +26,7 @@ void jubeon::game::Player::setMarker(const std::shared_ptr<Marker>& new_marker)
 
 void jubeon::game::Player::setMarker(const Marker & new_marker)
 {
-	marker.reset(new Marker(new_marker));
+//	marker.reset(new Marker(new_marker));
 }
 
 const jubeon::game::Marker * jubeon::game::Player::getMarker(void) const

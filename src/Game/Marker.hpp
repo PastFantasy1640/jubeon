@@ -64,6 +64,7 @@ namespace jubeon {
 			//消滅のマーカー画像群
 			std::array<SPMarkerTextures , 6> disappear;
 
+			
 
 		public:
 			//Default Marker
