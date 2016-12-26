@@ -16,10 +16,10 @@
 jubeon::game::layers::SequencePlayer::SequencePlayer(
 	std::shared_ptr<jubeon::game::Sequence> sequence,
 	std::shared_ptr<jubeon::game::Music> music,
-	std::shared_ptr<const jubeon::game::PlayRecord> playrecord,
+	const Player * player,
 	std::shared_ptr<jubeon::game::PanelPosition> panel_position,
 	int offset_ms)
-	: sequence(sequence), music(music), playrecord(playrecord), panel_position(panel_position), offset_ms(offset_ms)
+	: sequence(sequence), music(music), player(player), panel_position(panel_position), offset_ms(offset_ms)
 {
 }
 
@@ -51,8 +51,8 @@ void jubeon::game::layers::SequencePlayer::Draw()
 
 	//•`ŽÊ
 	//Music‚É–â‚¢‡‚í‚¹‚Ä¡‚ÌÄ¶Žž‚ðŽæ“¾
-	const int mms = this->music->getPlayingCurrentTime();
-	const int ms = this->music->getPlayingCurrentTime() - this->offset_ms;
+	const int mms = this->player->getCurrentTime(this->music.get());
+	const int ms = mms - this->offset_ms;
 
 
 

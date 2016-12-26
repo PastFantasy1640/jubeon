@@ -50,6 +50,7 @@ namespace jubeon {
 				std::shared_ptr<Sequence> sequence;
 				std::shared_ptr<Music> music;
 				Player player;
+				Player player1;
 
 				EventBase gs_event;
 

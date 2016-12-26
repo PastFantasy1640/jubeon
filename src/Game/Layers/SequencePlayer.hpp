@@ -12,6 +12,7 @@
 #include "../Sequence.hpp"
 #include "../Music.hpp"
 #include "../PlayRecord.hpp"
+#include "../Player.hpp"
 
 #include "../Marker.hpp"
 #include "../PanelPosition.hpp"
@@ -29,7 +30,7 @@ namespace jubeon {
 				SequencePlayer(
 					std::shared_ptr<jubeon::game::Sequence> sequence,
 					std::shared_ptr<jubeon::game::Music> music,
-					std::shared_ptr<const jubeon::game::PlayRecord> playrecord,
+					const Player * player,
 					std::shared_ptr<jubeon::game::PanelPosition> panel_position,
 					int offset_ms
 					);
@@ -42,7 +43,7 @@ namespace jubeon {
 
 				const std::shared_ptr<jubeon::game::Sequence> sequence;
 				const std::shared_ptr<jubeon::game::Music> music;
-				const std::shared_ptr<const jubeon::game::PlayRecord> playrecord;
+				const Player * player;
 				const std::shared_ptr<PanelPosition> panel_position;
 
 

@@ -42,8 +42,9 @@ void jubeon::game::scenes::GameScene::init(void)
 	//イベントのコールバックをこっちに変更
 	this->gs_event.music = this->music.get();
 	LayerManager::getInstance("mainwindow")->setCallback(std::bind(std::mem_fn(&EventBase::pollEvent), &this->gs_event, std::placeholders::_1));
-
+	
 	this->player.initForPlay(this->gs_event.getPanelStreamBuf(), 0);
+	this->player1.initForPlay(this->gs_event.getPanelStreamBuf(), -2000);
 
 	//パネルの設定を読み出す
 	shared_ptr<PanelPosition> main_panel_position(new PanelPosition("media/config/mainpanel.json"));
@@ -86,7 +87,8 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::RivalShutterLayer> rival1(new layers::RivalShutterLayer(sf::Vector2f(30.0f, 122.0f), this->music, BASIC));
 	shared_ptr<layers::RivalShutterLayer> rival2(new layers::RivalShutterLayer(sf::Vector2f(288.0f, 122.0f), this->music, EXTREME));
 	shared_ptr<layers::RivalShutterLayer> rival3(new layers::RivalShutterLayer(sf::Vector2f(546.0f, 122.0f)));
-	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, std::shared_ptr<const PlayRecord>(this->player.getPlayRecord()), main_panel_position, 0));
+	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, &this->player, main_panel_position, 0));
+	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, &this->player1, sub_panel1_position, 0));
 	//shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, sub_panel1_position, 0));
 	shared_ptr<layers::ScoreLayer> scorelayer(new layers::ScoreLayer(&this->player, this->music.get()));
 
@@ -102,7 +104,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	mainwindow->addLayer(rival3, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
-//	mainwindow->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
+	mainwindow->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(this->push_frame_layer, LayerManager::MAIN, 0);
 
 
@@ -119,7 +121,7 @@ void jubeon::game::scenes::GameScene::init(void)
 }
 
 jubeon::game::scenes::GameScene::GameScene()
-	: player("white**")
+	: player("white**"), player1("player1")
 {
 }
 
