@@ -67,6 +67,7 @@ namespace jubeon {
 			//プレイ記録のファイルパス取得（直近）
 			std::string getLatestPlayRecordFilePath(const Difficulty difficulty) const;
 
+
 			// TO DO : 削除
 			//***** 楽曲操作 *****
 			//曲を再生する準備を行う（スレッドアンセーフだがSceneからのみ呼び出し）
@@ -77,6 +78,9 @@ namespace jubeon {
 
 			//再生中の時間を取得する関数（スレッドセーフ）
 			int getPlayingCurrentTime(void) const;
+			
+			//曲の長さ
+			unsigned int getMusicLength(void) const;
 
 			//曲をメモリから破棄する（スレッドアンセry
 			void deleteSound(void);

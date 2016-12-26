@@ -106,6 +106,11 @@ int jubeon::game::Music::getPlayingCurrentTime(void) const
 	return 0;
 }
 
+unsigned int jubeon::game::Music::getMusicLength(void) const
+{
+	return this->up_sound_buffer->getDuration().asMilliseconds();
+}
+
 void jubeon::game::Music::deleteSound(void)
 {
 	this->sound.resetBuffer();
