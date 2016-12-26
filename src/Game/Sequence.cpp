@@ -6,27 +6,31 @@
 //cerr
 #include <iostream>
 
+jubeon::game::Sequence::Sequence(const Sequence & cp) 
+	: Notes(cp)
+{
+}
+
 jubeon::game::Sequence::Sequence(const std::vector<Note> notes)
-	: std::vector<Note>(notes)
 {
+	for (const Note n : notes) {
+		this->emplace_back(NoteJudgePair(n, nullptr));
+	}
 }
 
-const jubeon::game::Note & jubeon::game::Sequence::at(size_t idx) const
+void jubeon::game::Sequence::setJudgedPanelInput(const Notes::const_iterator target, JudgedPanelInput * judged)
 {
-	return std::vector<Note>::at(idx);
+	Notes::iterator ite(this->begin());
+
+	std::advance(ite, std::distance<Notes::const_iterator>(ite, target));
+
+	if (ite != this->end() && judged != nullptr) {
+		ite->second = judged;
+	}
 }
 
-std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::begin() const
-{
-	return std::vector<Note>::begin();
-}
 
-std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::end() const
-{
-	return std::vector<Note>::end();
-}
-
-std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::search(const int ms) const
+jubeon::game::Notes::const_iterator jubeon::game::Sequence::search(const jubeon::jMillisec ms) const
 {
 	//“ñ•ª’Tõ
 	//ƒ‰ƒ€ƒ_®
@@ -37,14 +41,14 @@ std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::search(c
 		if (right == left) return right;
 
 		if (right - 1 == left) {
-			if (this->at(left).getJustTime() <= ms) return right;
+			if (this->at(left).first.getJustTime() <= ms) return right;
 			else return left;
 		}
 
 		//I—¹‚µ‚È‚¢
 		//‚¿‚È‚İ‚Éright‚Í—Ìˆæ‚Ì+1‚ÌêŠ
 		size_t center = (left + right) / 2;
-		if (this->at(center).getJustTime() <= ms) return search(center, right, ms);
+		if (this->at(center).first.getJustTime() <= ms) return search(center, right, ms);
 		else return search(left, center, ms);
 	};
 
@@ -60,8 +64,5 @@ std::vector<jubeon::game::Note>::const_iterator jubeon::game::Sequence::search(c
 	
 }
 
-std::size_t jubeon::game::Sequence::size() const
-{
-	return std::vector<Note>::size();
-}
+
 

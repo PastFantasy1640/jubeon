@@ -28,17 +28,18 @@ namespace strbuf{
         // unque data.
         // thread safe interface.
         //////////////////////////////////
-        T unque(void) {
-            T ret;
+        T unque() {
             { //Mutable Area
                 std::lock_guard<std::mutex> lock(this->mutex_);
                 if(this->size() > 0) {
-                    ret = this->front();
+                    T ret(this->front());
                     this->pop_front();
+					return ret;
                 }
             }
-            return ret;
+            return T();
         }
+
         
         //////////////////////////////////
         // que data.

@@ -10,89 +10,31 @@
 #ifndef JUBEON_INPUT_EVENT_HPP
 #define JUBEON_INPUT_EVENT_HPP
 
-//Clock, Event
-#include <SFML/Graphics.hpp>
-
-//Que Stream
 #include "strbuf/strbuf.hpp"
 
-//memory
-#include <memory>
-
-//thread safe
-#include <atomic>
-
-//array
-#include <array>
-
-//thread
-#include <thread>
-
-//to get event
-#include "Graphics/Layer/LayerManager.hpp"
-
-//mapping
-#include <unordered_map>
+#include "SFML/Graphics.hpp"
 
 namespace jubeon {
 	namespace input {
-		typedef struct EventContainer{
-			sf::Event e;
-			sf::Time time;
-			EventContainer() {}
-			EventContainer(const sf::Event & e, const sf::Time time) : e(e), time(time) {}
-		}EventContainer;
+		template<typename T>
+		class EventBase {
+		protected:
+			std::shared_ptr<strbuf::InputStream<T>> pinput_que;
+			strbuf::StreamBuffer<T> pinput_sb;
 
-		class Event : protected strbuf::StreamBuffer<EventContainer>{
 		public:
+			EventBase() : pinput_que(new strbuf::InputStream<T>()) {};
+			virtual ~EventBase() {}
 
-            static const std::size_t QUEUE_MAXSIZE = 1024;
-
-            /** Listening to panel input and process.
-             */
-			void process(jubeon::graphics::LayerManager * main_window);
-
-            /** Restart the timer. 
-             */
-			void restartTimer(const int offset);
+			//Music * music;
+			virtual void pollEvent(sf::Event e) = 0;
 			
-			/** set OutputStream
-			 */
-			using strbuf::StreamBuffer<EventContainer>::addOutputStream;
-
-			/** get Instance
-			 */
-			static Event * getInstance(const jubeon::graphics::LayerManager * window);
-
-			// Destructor
-			~Event();
-        private:
-			
-			// Constructor
-			Event();
-			
-			// Clocking
-			sf::Clock clock;
-			
-			// Input Stream
-			std::shared_ptr<strbuf::InputStream<EventContainer>> input;
-									
-			//offset
-			std::atomic<int> offset;
-
-			//flags
-			std::unordered_map<sf::Event::EventType, bool> flags;
-
-			//Event Buffer
-			strbuf::StreamBuffer<EventContainer> event_buffer;
-
-			//sigleton instance
-			static std::unordered_map<const jubeon::graphics::LayerManager *, std::unique_ptr<Event>> instance;
+			virtual strbuf::StreamBuffer<T> * getPanelStreamBuf(void) {
+				return this->pinput_que.get();
+			}
 
 		};
-	}
-
-}
-
+	};
+};
 
 #endif
