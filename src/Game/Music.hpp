@@ -34,13 +34,14 @@ namespace jubeon {
 			//static std::shared_ptr<Music> load(const std::string meta_file_name);
 
 			
-			storages::Resource_UP tex_title;
-			storages::Resource_UP tex_artist;
-			storages::Resource_UP tex_jacket;
-			storages::Resource_UP tex_title_bottom;
+			storages::Resource tex_title;
+			storages::Resource tex_artist;
+			storages::Resource tex_jacket;
+			storages::Resource tex_title_bottom;
+			storages::Resource tex_music_bpm;
 
-			storages::Resource_UP snd_shortloop;
-			storages::Resource_UP snd_music;
+			storages::Resource snd_shortloop;
+			storages::Resource snd_music;
 
 			
 			

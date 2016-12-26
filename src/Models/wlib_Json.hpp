@@ -62,7 +62,7 @@ namespace wlib {
 		* @returns the string.
 		*/
 		std::string str();
-
+		
 
 		/** Get the value as boolean.
 		* @returns the flags.

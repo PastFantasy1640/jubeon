@@ -1,9 +1,14 @@
 #include "Player.hpp"
 #include "Models/Configures.hpp"
-#include "Marker.hpp"
+#include "Systems/Logger.hpp"
 
 jubeon::game::Player::Player()
-	: marker(new Marker())
+	: name("Illegal Constructor"), marker(nullptr)
+{
+}
+
+jubeon::game::Player::Player(const std::string player_name)
+	: name(player_name), marker(nullptr)
 {
 }
 
@@ -11,53 +16,58 @@ jubeon::game::Player::~Player()
 {
 }
 
-void jubeon::game::Player::initForPlay(strbuf::StreamBuffer<input::PanelInput>* panel_strbuf, const int playing_offset)
+void jubeon::game::Player::initForPlay(strbuf::StreamBuffer<input::PanelInput>* panel_strbuf,
+	const Sequence & notes,
+	const int playing_offset)
 {
+	//init and reset Sequence
+	this->sequence.reset(new Sequence(notes));
+
+	//reset PlayRecord
+	this->record.reset(new PlayRecord());
+
+	//connect PanelInput Streaming
 	panel_que.reset(new strbuf::OutputStream<input::PanelInput>());
 	panel_strbuf->addOutputStream(panel_que);
-	this->setPlayerOffset(playing_offset);
-	this->record.reset(new PlayRecord());
+
+	//set playing offset
+	this->offset = playing_offset;
+
+	systems::Logger::information("Finished to initialize the player. PLAYER : [Name="
+		+ this->name + ",offset=" + std::to_string(this->offset)
+		+ ",Sequence.size=" + std::to_string(this->sequence->size())
+		+ ",PlayRecord.size=" + std::to_string(this->record->size()) + "]");
 }
 
-void jubeon::game::Player::setMarker(const std::shared_ptr<Marker>& new_marker)
+void jubeon::game::Player::setMarker(Marker * new_marker)
 {
 	marker = new_marker;
 }
 
-void jubeon::game::Player::setMarker(const Marker & new_marker)
-{
-//	marker.reset(new Marker(new_marker));
-}
-
 const jubeon::game::Marker * jubeon::game::Player::getMarker(void) const
 {
-	return this->marker.get();
+	if (this->marker == nullptr) systems::Logger::error("[ERROR:Player]Tried to get the marker data, but it is nullptr.");
+	return this->marker;
 }
 
-jubeon::game::PlayRecord * jubeon::game::Player::getPlayRecord(void)
+const jubeon::game::Sequence * jubeon::game::Player::getSequence(void) const
 {
+	return this->sequence.get();
+}
+
+jubeon::game::PlayRecord * jubeon::game::Player::getPlayRecord(void) const
+{
+	if (!this->record) systems::Logger::error("[ERROR:Player]Tried to get the playrecord data, but it is empty.");
 	return this->record.get();
 }
 
-void jubeon::game::Player::updateInput(Sequence * seq)
+void jubeon::game::Player::updateInput(void)
 {
-	
-
 	while (this->panel_que->getQueSize()) {
 		input::PanelInput p = this->panel_que->unque();
 
-		this->record->judge(*seq, p);
+		this->record->judge(*this->sequence.get(), p);
 	}
-}
-
-void jubeon::game::Player::setPlayerOffset(const int offset)
-{
-	this->offset = offset;
-}
-
-int jubeon::game::Player::getPlayerOffset(void) const
-{
-	return this->offset;
 }
 
 int jubeon::game::Player::getCurrentTime(const Music * music) const
@@ -66,23 +76,3 @@ int jubeon::game::Player::getCurrentTime(const Music * music) const
 }
 
 
-
-/*
-void jubeon::game::Player::setInputFromEvent(input::Event * instance, const game::Music * music)
-{
-	instance->addOutputStream(this->event_output);
-	this->playing_music.reset(music);
-}
-
-const jubeon::game::PlayRecord * jubeon::game::Player::getPlayRecord(void) const
-{
-	return &this->record;
-}
-
-void jubeon::game::Player::updateInput(Sequence * seq)
-{
-
-}
-
-
-*/

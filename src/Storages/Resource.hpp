@@ -37,7 +37,7 @@ namespace jubeon {
 			std::shared_ptr<sf::SoundBuffer> gets(void);
 			std::shared_ptr<sf::Font> getf(void);
 
-			//void release();
+			void release();
 
 			static Resource setf(const std::string filename, const TYPE type);
 			static Resource seti(std::unique_ptr<sf::InputStream> * inputstream, const TYPE type);

@@ -18,7 +18,7 @@ void jubeon::game::layers::MusicInfoLayer::Init()
 	this->level_string_tex.loadFromFile("media/image/level_string.png");
 	this->level_string_tex.setSmooth(true);
 
-	this->level_numeric_tex.loadFromFile("media/image/level_10.png");
+	this->level_numeric_tex.loadFromFile("media/image/level_8.png");
 	this->level_numeric_tex.setSmooth(true);
 }
 
@@ -31,8 +31,8 @@ void jubeon::game::layers::MusicInfoLayer::Draw()
 	// ƒTƒ€ƒlƒCƒ‹
 	/////////////////////
 	{
-		sf::Sprite sp(*this->music->tex_jacket->gett());
-		sf::Vector2u size = this->music->tex_jacket->gett()->getSize();
+		sf::Sprite sp(*this->music->tex_jacket.gett());
+		sf::Vector2u size = this->music->tex_jacket.gett()->getSize();
 
 		//Šg‘å—¦‚ÌŒvŽZ
 		sf::Vector2f ex(42.0f / static_cast<float>(size.x), 42.0f / static_cast<float>(size.y));
@@ -51,7 +51,7 @@ void jubeon::game::layers::MusicInfoLayer::Draw()
 	// ‹È–¼
 	////////////////////
 	{
-		sf::Sprite sp(*this->music->tex_title->gett());
+		sf::Sprite sp(*this->music->tex_title.gett());
 		//•`ŽÊ440,20
 		sp.setPosition(440, 20);
 		this->draw(sp);

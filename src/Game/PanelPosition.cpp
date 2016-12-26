@@ -8,6 +8,11 @@ jubeon::game::PanelPosition::PanelPosition(const std::string json_file)
 	for (auto p : this->panel_rect) p = sf::IntRect(0, 0, 100, 100);
 }
 
+jubeon::game::PanelPosition::PanelPosition(const PanelPosition & pp)
+	: ModelBase(pp.getFilename()), panel_rect(pp.panel_rect)
+{
+}
+
 const sf::IntRect & jubeon::game::PanelPosition::get(unsigned char panel_no) const
 {
 	return this->panel_rect.at(panel_no);

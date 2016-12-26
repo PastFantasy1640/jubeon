@@ -26,7 +26,8 @@ const sf::Vector2u jubeon::graphics::LayerManager::RENDER_TEXTURE_SIZE = sf::Vec
 std::unordered_map<std::string, LayerManager *> jubeon::graphics::LayerManager::layermanager_map;
 
 //Constructor with arguments
-jubeon::graphics::LayerManager::LayerManager(const std::string & mapping_name)
+jubeon::graphics::LayerManager::LayerManager(const std::string & mapping_name, const LayoutType window_type)
+	: layout_type(window_type)
 {
     //create window buffer
 	if (!this->window_buffer.create(this->RENDER_TEXTURE_SIZE.x, this->RENDER_TEXTURE_SIZE.y)) {
@@ -129,15 +130,36 @@ void jubeon::graphics::LayerManager::process(void) {
 
 	//スプライトごにょごにょ
 	sf::Vector2f scale;
-	scale.x = static_cast<float>(this->getSize().x) / static_cast<float>(window_buffer.getSize().x);
-	scale.y = static_cast<float>(this->getSize().y) / static_cast<float>(window_buffer.getSize().y);
+
+	sf::Vector2u size = window_buffer.getSize();
+	float rotate = 0.0f;
+
+	if (this->layout_type == LayoutType::Y_PLUS) {
+		unsigned int n = size.x;
+		size.x = size.y;
+		size.y = n;
+		rotate = 90.0f;
+	}
+	else if (this->layout_type == LayoutType::X_MINUS) {
+		rotate = 180.0f;
+	}
+	else if (this->layout_type == LayoutType::Y_MINUS) {
+		rotate = 270.0f;
+		unsigned int n = size.x;
+		size.x = size.y;
+		size.y = n;
+	}
+	
+
+	scale.x = static_cast<float>(this->getSize().x) / static_cast<float>(size.x);
+	scale.y = static_cast<float>(this->getSize().y) / static_cast<float>(size.y);
 
 	if (scale.x > scale.y) scale.x = scale.y;
 	else scale.y = scale.x;
 
 	wsp.setOrigin(static_cast<float>(this->RENDER_TEXTURE_SIZE.x) / 2.0f, static_cast<float>(this->RENDER_TEXTURE_SIZE.y) / 2.0f);
 	wsp.setPosition(this->getSize().x / 2.0f, this->getSize().y / 2.0f);
-	
+	wsp.setRotation(rotate);
 	wsp.setScale(scale);
 
     { //mutable area

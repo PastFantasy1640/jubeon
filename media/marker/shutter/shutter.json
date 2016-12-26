@@ -4,7 +4,7 @@
 	"resources" : [
 		{
 			"id":1,
-			"duration":500,
+			"duration":566,
 			"rectangle":[
 				["shutter.png"	,0	,0	,230,230],
 				["shutter.png"	,230,0	,230,230],
@@ -25,7 +25,7 @@
 		},
 		{
 			"id":2,
-			"duration":300,
+			"duration":266,
 			"rectangle":[
 				["shutter.png"	,0	,690,230,230],
 				["shutter.png"	,230,690,230,230],
@@ -38,7 +38,7 @@
 		},
 		{
 			"id":3,
-			"duration":300,
+			"duration":266,
 			"rectangle":[
 				["shutter_p.png"	,0	,0	,230,230],
 				["shutter_p.png"	,230,0	,230,230],
@@ -54,7 +54,7 @@
 		},
 		{
 			"id":4,
-			"duration":300,
+			"duration":266,
 			"rectangle":[
 				["shutter_gr.png"	,0	,0	,230,230],
 				["shutter_gr.png"	,230,0	,230,230],
@@ -65,7 +65,7 @@
 		},
 		{
 			"id":5,
-			"duration":300,
+			"duration":266,
 			"rectangle":[
 				["shutter_go.png"	,0	,0	,230,230],
 				["shutter_go.png"	,230,0	,230,230],

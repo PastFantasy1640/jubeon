@@ -31,7 +31,7 @@ bool jubeon::game::Music::set()
 	this->snd_music = Resource::setf(this->root_path + this->getJson()["music"]["soundfile"].str(), Resource::SOUND);
 	this->snd_shortloop = Resource::setf(this->root_path + this->getJson()["music"]["shortsoundfile"].str(), Resource::SOUND);
 
-	this->bpm_str = this->getJson()["music"]["bpm_string"].str();
+	this->tex_music_bpm = Resource::setf(this->root_path + this->getJson()["music"]["bpm_tex"].str(), Resource::TEX);
 
 
 	return true;
@@ -79,7 +79,7 @@ void jubeon::game::Music::setForPlay(void)
 {
 
 
-	this->sound.setBuffer(*this->snd_music->gets());
+	this->sound.setBuffer(*this->snd_music.gets());
 	this->sound.play();
 	this->sound.pause();
 	return;

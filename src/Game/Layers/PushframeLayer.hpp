@@ -34,7 +34,7 @@ namespace jubeon {
 		namespace layers {
 			class PushframeLayer : public jubeon::graphics::LayerBase {
 			public:
-				PushframeLayer(const std::shared_ptr<PanelPosition> & panelposition, strbuf::StreamBuffer<input::PanelInput> * pinput_sb );	//新規プレイ用
+				PushframeLayer(const PanelPosition * panelposition, strbuf::StreamBuffer<input::PanelInput> * pinput_sb );	//新規プレイ用
 
 				virtual void Init() override;
 				virtual void Draw() override;
@@ -52,7 +52,7 @@ namespace jubeon {
 
 			private:
 
-				std::shared_ptr<PanelPosition> panelposition;
+				const PanelPosition * panel_position;
 
 				//どのマーカーが押されたままか
 				unsigned int pushing;
