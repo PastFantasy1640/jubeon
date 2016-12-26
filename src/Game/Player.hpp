@@ -26,6 +26,10 @@
 //PlayRecord
 #include "PlayRecord.hpp"
 
+//Sequence
+#include "Sequence.hpp"
+
+//Music(only pointer)
 #include "Music.hpp"
 
 namespace jubeon {
@@ -36,59 +40,35 @@ namespace jubeon {
 			Player(const std::string player_name);
 
 			virtual ~Player();
+
+			
+			void initForPlay(strbuf::StreamBuffer<input::PanelInput> * panel_strbuf,
+				std::vector<Note> & notes,
+				const int playing_offset = 0);
+
+			
+			void setMarker(Marker * new_marker);
+			const Marker * getMarker(void) const;
+			
+			PlayRecord * getPlayRecord(void) const;
+			void updateInput(void);
+
+
+			int getCurrentTime(const Music * music) const;
+
+			const std::string name;
+
 		private:
 			Player();
 
-			////////////////////
-			// Play
-			////////////////////
-		public:
-			void initForPlay(strbuf::StreamBuffer<input::PanelInput> * panel_strbuf, const int playing_offset = 0);
-
-
-			////////////////////
-			// Marker
-			////////////////////
-		public:
-			void setMarker(const std::shared_ptr<Marker> & new_marker);
-			void setMarker(const Marker & new_marker);
-			
-			const Marker * getMarker(void) const;
-
-		private:
-			std::shared_ptr<Marker> marker;
-
-
-			////////////////////
-			// Input
-			////////////////////
-		public:
-			PlayRecord * getPlayRecord(void);
-			void updateInput(Sequence * seq);
-
-		private:
-
-			std::shared_ptr<strbuf::OutputStream<input::PanelInput>> panel_que;
+			std::unique_ptr<Sequence> sequence;
 			std::unique_ptr<PlayRecord> record;
 
-
-			////////////////////
-			// Music
-			////////////////////
-		public:			
-			void setPlayerOffset(const int offset);
-			int getPlayerOffset(void) const;
-			int getCurrentTime(const Music * music) const;
-
-		private:
+			Marker * marker;
+			
+			std::shared_ptr<strbuf::OutputStream<input::PanelInput>> panel_que;
+			
 			int offset;
-
-
-			////////////////////
-			// Name
-			////////////////////
-		public:
-			const std::string name;
 		};
 	}
 }
