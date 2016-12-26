@@ -28,10 +28,10 @@ namespace jubeon {
 			public:
 
 				SequencePlayer(
-					std::shared_ptr<jubeon::game::Sequence> sequence,
-					std::shared_ptr<jubeon::game::Music> music,
+					const Sequence * sequence,
+					const Music * music,
 					const Player * player,
-					std::shared_ptr<jubeon::game::PanelPosition> panel_position,
+					const PanelPosition * panel_position,
 					int offset_ms
 					);
 				
@@ -41,10 +41,10 @@ namespace jubeon {
 
 			private:
 
-				const std::shared_ptr<jubeon::game::Sequence> sequence;
-				const std::shared_ptr<jubeon::game::Music> music;
+				const Sequence * sequence;
+				const jubeon::game::Music * music;
 				const Player * player;
-				const std::shared_ptr<PanelPosition> panel_position;
+				const PanelPosition * panel_position;
 
 
 				//描写するオフセットms

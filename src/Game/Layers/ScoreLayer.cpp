@@ -12,7 +12,6 @@ void jubeon::game::layers::ScoreLayer::Init()
 {
 	this->createBuffer(sf::Vector2u(768, 150));
 	this->buffer_sprite.setPosition(0, 314);
-	this->setSmooth(true);
 	
 	storages::Resource::setf("media/image/musicbar_start.png", storages::Resource::TEX).setKey("ScoreLayer.start");
 	storages::Resource::setf("media/image/musicbar_end.png", storages::Resource::TEX).setKey("ScoreLayer.end");

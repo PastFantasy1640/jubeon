@@ -3,9 +3,9 @@
 
 
 
-jubeon::game::layers::PushframeLayer::PushframeLayer(const std::shared_ptr<PanelPosition> & panelposition, strbuf::StreamBuffer<input::PanelInput> * pinput_sb)
+jubeon::game::layers::PushframeLayer::PushframeLayer(const jubeon::game::PanelPosition * panelposition, strbuf::StreamBuffer<input::PanelInput> * pinput_sb)
 	: poutput_que(new strbuf::OutputStream<input::PanelInput>()),
-	panelposition(panelposition)
+	panel_position(panelposition)
 {
 	pinput_sb->addOutputStream(this->poutput_que);
 }
@@ -36,7 +36,7 @@ void jubeon::game::layers::PushframeLayer::Draw()
 		if (this->isPushing(i)) {
 			const sf::Texture & pframe = *storages::Resource::setk("panel_shadow").gett();
 			sf::Sprite sp(pframe);
-			const sf::IntRect & rect = this->panelposition->get(i);
+			const sf::IntRect & rect = this->panel_position->get(i);
 
 			sp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
 			sp.setScale(PanelPosition::get_ex(pframe.getSize().x, rect.width), PanelPosition::get_ex(pframe.getSize().y, rect.height));

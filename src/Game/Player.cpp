@@ -17,7 +17,7 @@ jubeon::game::Player::~Player()
 }
 
 void jubeon::game::Player::initForPlay(strbuf::StreamBuffer<input::PanelInput>* panel_strbuf,
-	std::vector<Note> & notes,
+	const Sequence & notes,
 	const int playing_offset)
 {
 	//init and reset Sequence
@@ -48,6 +48,11 @@ const jubeon::game::Marker * jubeon::game::Player::getMarker(void) const
 {
 	if (this->marker == nullptr) systems::Logger::error("[ERROR:Player]Tried to get the marker data, but it is nullptr.");
 	return this->marker;
+}
+
+const jubeon::game::Sequence * jubeon::game::Player::getSequence(void) const
+{
+	return this->sequence.get();
 }
 
 jubeon::game::PlayRecord * jubeon::game::Player::getPlayRecord(void) const

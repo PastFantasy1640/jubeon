@@ -43,12 +43,13 @@ namespace jubeon {
 
 			
 			void initForPlay(strbuf::StreamBuffer<input::PanelInput> * panel_strbuf,
-				std::vector<Note> & notes,
+				const Sequence & sequence,
 				const int playing_offset = 0);
 
 			
 			void setMarker(Marker * new_marker);
 			const Marker * getMarker(void) const;
+			const Sequence * getSequence(void) const;
 			
 			PlayRecord * getPlayRecord(void) const;
 			void updateInput(void);

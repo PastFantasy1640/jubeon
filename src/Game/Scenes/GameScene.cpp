@@ -43,17 +43,12 @@ void jubeon::game::scenes::GameScene::init(void)
 	this->gs_event.music = this->music.get();
 	LayerManager::getInstance("mainwindow")->setCallback(std::bind(std::mem_fn(&EventBase::pollEvent), &this->gs_event, std::placeholders::_1));
 	
-	this->player.initForPlay(this->gs_event.getPanelStreamBuf(), 0);
-	this->player1.initForPlay(this->gs_event.getPanelStreamBuf(), -2000);
 
 	//パネルの設定を読み出す
-	shared_ptr<PanelPosition> main_panel_position(new PanelPosition("media/config/mainpanel.json"));
-	main_panel_position->load();
-	shared_ptr<PanelPosition> sub_panel1_position(new PanelPosition("media/config/subpanel1.json"));
-	sub_panel1_position->load();
+	for (auto pp = this->panel_position.begin(); pp != this->panel_position.end(); pp++) pp->load();
 	
 
-	vector<Note> hoge;
+	parser::YoubeatParser notes(jubeon::parser::YoubeatParser::loadFromFile("musics/Daydream Cafe/note.ndt"));
 
 
 
@@ -62,13 +57,15 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	//シーケンステスト
 	//SAMB読んで見る
-	Jmemo2::Parser jmemo2;
-	jmemo2.initWithFileName("musics/SABM/SABM.jmemo2");
+	//Jmemo2::Parser jmemo2;
+	//jmemo2.initWithFileName("musics/SABM/SABM.jmemo2");
 	
-	this->sequence.reset( new jubeon::parser::YoubeatParser(jubeon::parser::YoubeatParser::loadFromFile("musics/Daydream Cafe/note.ndt")));
+	//this->sequence.reset( new jubeon::parser::YoubeatParser(jubeon::parser::YoubeatParser::loadFromFile("musics/Daydream Cafe/note.ndt")));
 	
+	this->player.initForPlay(this->gs_event.getPanelStreamBuf(), notes, 0);
+	this->player1.initForPlay(this->gs_event.getPanelStreamBuf(), notes, -2000);
 
-	std::vector<Note> notes = jmemo2.getNotes();
+	//std::vector<Note> notes = jmemo2.getNotes();
 
 	//std::sort(notes.begin(), notes.end(), [](Note x, Note y) -> int { return (x.getJustTime() < y.getJustTime()); });
 
@@ -87,12 +84,11 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::RivalShutterLayer> rival1(new layers::RivalShutterLayer(sf::Vector2f(30.0f, 122.0f), this->music, BASIC));
 	shared_ptr<layers::RivalShutterLayer> rival2(new layers::RivalShutterLayer(sf::Vector2f(288.0f, 122.0f), this->music, EXTREME));
 	shared_ptr<layers::RivalShutterLayer> rival3(new layers::RivalShutterLayer(sf::Vector2f(546.0f, 122.0f)));
-	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->sequence, this->music, &this->player, main_panel_position, 0));
-	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, &this->player1, sub_panel1_position, 0));
+	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->player.getSequence(), this->music.get(), &this->player, &this->panel_position[0], 0));
+	shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->player1.getSequence(), this->music.get(), &this->player1, &this->panel_position[1], 0));
 	//shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, sub_panel1_position, 0));
 	shared_ptr<layers::ScoreLayer> scorelayer(new layers::ScoreLayer(&this->player, this->music.get()));
-
-	this->push_frame_layer.reset(new layers::PushframeLayer(main_panel_position, this->gs_event.getPanelStreamBuf()));
+	shared_ptr<layers::PushframeLayer> push_frame_layer(new layers::PushframeLayer(&this->panel_position[0], this->gs_event.getPanelStreamBuf()));
 
     LayerManager * mainwindow = LayerManager::getInstance("mainwindow");
 	mainwindow->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
@@ -105,7 +101,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	mainwindow->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
-	mainwindow->addLayer(this->push_frame_layer, LayerManager::MAIN, 0);
+	mainwindow->addLayer(push_frame_layer, LayerManager::MAIN, 0);
 
 
 
@@ -121,28 +117,21 @@ void jubeon::game::scenes::GameScene::init(void)
 }
 
 jubeon::game::scenes::GameScene::GameScene()
-	: player("white**"), player1("player1")
+	: player("white**"), player1("player1"),
+	panel_position
+		{PanelPosition("media/config/mainpanel.json"),
+		PanelPosition("media/config/subpanel1.json"),
+		PanelPosition("media/config/subpanel2.json"),
+		PanelPosition("media/config/subpanel3.json")}
 {
 }
 
 int jubeon::game::scenes::GameScene::process(void)
 {
 
-	//パネルから入力を取ってくる
-	std::vector<PanelInput> pinput;// = ListenPanel::getEvent();
+	
 
-	if (pinput.size() > 0) {
-		for (auto ite : pinput) {
-
-			if (ite.t) this->push_frame_layer->setPushing(ite.panel_no);
-			else {
-				this->push_frame_layer->setReleasing(ite.panel_no);
-			}
-
-		}
-	}
-
-	player.updateInput(this->sequence.get());
+	player.updateInput();
 
 	return 0;
 }

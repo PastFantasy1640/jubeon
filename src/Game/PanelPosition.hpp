@@ -14,6 +14,7 @@ namespace jubeon {
 
 			//デフォルトコンストラクタ
 			PanelPosition(const std::string json_file);
+			PanelPosition(const PanelPosition & pp);
 
 			const sf::IntRect & get(unsigned char panel_no) const;
 
@@ -26,6 +27,8 @@ namespace jubeon {
 
 
 		private:
+			PanelPosition();
+
 			std::array<sf::IntRect,16> panel_rect;
 
 		};
