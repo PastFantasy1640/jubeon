@@ -7,6 +7,11 @@ jubeon::game::Player::Player()
 {
 }
 
+jubeon::game::Player::Player(const std::string player_name)
+	: name(player_name)
+{
+}
+
 jubeon::game::Player::~Player()
 {
 }
@@ -66,23 +71,3 @@ int jubeon::game::Player::getCurrentTime(const Music * music) const
 }
 
 
-
-/*
-void jubeon::game::Player::setInputFromEvent(input::Event * instance, const game::Music * music)
-{
-	instance->addOutputStream(this->event_output);
-	this->playing_music.reset(music);
-}
-
-const jubeon::game::PlayRecord * jubeon::game::Player::getPlayRecord(void) const
-{
-	return &this->record;
-}
-
-void jubeon::game::Player::updateInput(Sequence * seq)
-{
-
-}
-
-
-*/

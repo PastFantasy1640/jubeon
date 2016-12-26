@@ -33,10 +33,11 @@ namespace jubeon {
 		class Player {
 		public:
 
-			Player();
+			Player(const std::string player_name);
 
 			virtual ~Player();
-
+		private:
+			Player();
 
 			////////////////////
 			// Play
@@ -83,6 +84,11 @@ namespace jubeon {
 			int offset;
 
 
+			////////////////////
+			// Name
+			////////////////////
+		public:
+			const std::string name;
 		};
 	}
 }

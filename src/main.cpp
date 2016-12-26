@@ -36,6 +36,8 @@
 
 #include <thread>
 
+#include "Storages/Resource.hpp"
+
 //for linux (multi thread)
 #ifndef _MBCS
 #include <X11/Xlib.h>
@@ -72,7 +74,8 @@ int main(int argc, char * argv[]){
 	Logger::information("[DEBUG]Output the log leaked memories.");
 #endif
 #endif
-
+	
+	Resource::setf("media/font/deffont.ttf", Resource::FONT).setKey("default_font");
 
 	///////////////////////////////////////////////////////////
     // main window create

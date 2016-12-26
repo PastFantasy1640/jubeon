@@ -53,6 +53,7 @@ namespace jubeon {
 
 				EventBase gs_event;
 
+				GameScene();
 
 				//ƒŒƒCƒ„[
 				std::shared_ptr<layers::PushframeLayer> push_frame_layer;

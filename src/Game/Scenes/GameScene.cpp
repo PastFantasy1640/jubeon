@@ -98,8 +98,8 @@ void jubeon::game::scenes::GameScene::init(void)
 	mainwindow->addLayer(musicinfo, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(scorelayer, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(rival1, jubeon::graphics::LayerManager::MAIN, 0);
-	//mainwindow->addLayer(rival2, jubeon::graphics::LayerManager::MAIN, 0);
-	//mainwindow->addLayer(rival3, jubeon::graphics::LayerManager::MAIN, 0);
+	mainwindow->addLayer(rival2, jubeon::graphics::LayerManager::MAIN, 0);
+	mainwindow->addLayer(rival3, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
 //	mainwindow->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
@@ -116,6 +116,11 @@ void jubeon::game::scenes::GameScene::init(void)
 	music->playSound(0);
 
 	
+}
+
+jubeon::game::scenes::GameScene::GameScene()
+	: player("white**")
+{
 }
 
 int jubeon::game::scenes::GameScene::process(void)
