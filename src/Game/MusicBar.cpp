@@ -10,11 +10,15 @@ void jubeon::game::MusicBar::init(const Sequence * sequence, const Music * music
 	//‰ğÍ
 	double length = static_cast<double>(music->getMusicLength());
 
+	this->sequence = sequence;
+
+
 	//•ª‚¯‚é
 	for (size_t i = 0; i < BAR_SIZE; i++) {
 		Bar b;
 		b.ms = static_cast<unsigned int>(i * length / BAR_SIZE);
 		b.result = Bar::Result::NJDGE;
+		b.num = 0;
 		this->at(i) = b;
 	}
 
@@ -22,7 +26,7 @@ void jubeon::game::MusicBar::init(const Sequence * sequence, const Music * music
 	Sequence::const_iterator ite = sequence->begin();
 	for (size_t i = 0; i < BAR_SIZE; i++) {
 		Sequence::const_iterator end;
-		if (i == BAR_SIZE) end = sequence->end();
+		if (i == BAR_SIZE - 1) end = sequence->end();
 		else end = sequence->search(this->at(i + 1).ms);
 		for (; ite != end && this->at(i).num < 8; ite++) {
 			++this->at(i).num;
@@ -37,8 +41,14 @@ void jubeon::game::MusicBar::update(const Music * music)
 
 	if (this->before_check_ms > now) {
 		//Šª‚«–ß‚Á‚½
-		
+		MusicBar::iterator p(this->begin());
+		std::advance(p, std::distance<MusicBar::const_iterator>(p, this->search(now)));
+		if (p != this->begin()) p--;
+		for (; p != this->end(); p++) {
+			p->result = Bar::NJDGE;
+		}
 	}
+	this->before_check_ms = now;
 
 	MusicBar::iterator ite(this->begin());
 	std::advance(ite, std::distance<MusicBar::const_iterator>(ite, this->search(now)));

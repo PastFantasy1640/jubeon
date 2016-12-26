@@ -38,6 +38,7 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	this->music.reset(new Music("musics/Daydream Cafe/Daydream Cafe.json", "musics/Daydream Cafe"));
 	this->music->load();
+	music->setForPlay();
 
 	//イベントのコールバックをこっちに変更
 	this->gs_event.music = this->music.get();
@@ -109,7 +110,6 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	//タイムマーカーを打つ
 
-	music->setForPlay();
 
 	music->playSound(0);
 

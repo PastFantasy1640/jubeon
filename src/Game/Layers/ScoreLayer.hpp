@@ -12,7 +12,7 @@
 #include "Game/Music.hpp"
 #include "Game/JudgedPanelInput.hpp"
 #include "Game/Sequence.hpp"
-
+#include "Game/MusicBar.hpp"
 
 namespace jubeon {
 	namespace game {
@@ -23,14 +23,21 @@ namespace jubeon {
 				Player *const player;
 				Music *const music;
 
+				MusicBar musicbar;
+
 
 				sf::Sprite start_sp;
 				sf::Sprite end_sp;
 				sf::Sprite bpm_sp;
 				sf::Sprite bpm_string_sp;
+				sf::Sprite gray_chip_sp;
+				sf::Sprite blue_chip_sp;
+				sf::Sprite yellow_chip_sp;
+				sf::Sprite seek_sp;
 
 				sf::Text play_name;
 
+				unsigned int music_length;
 
 				ScoreLayer();
 				
