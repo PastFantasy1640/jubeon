@@ -21,10 +21,15 @@ bool jubeon::storages::Resource::load(void)
 
 	if (this->isReady()) return true;
 
-	if (this->id == 0) return false;
+	if (this->id == 0) {
+		systems::Logger::warning("[FAILED:Resource]Tried to load the resource which id is ZERO.");
+		return false;
+	}
+
 	else if (this->resm->filename_map.count(this->id) > 0) {
 		//filename
 		std::string filename = this->resm->filename_map.at(this->id);
+		systems::Logger::information("Loading the file. FILE : [(" + std::to_string(this->id) + ")" + filename + "]");
 		//not yet
 		switch (this->type) {
 		case TEX:
@@ -63,6 +68,9 @@ bool jubeon::storages::Resource::load(void)
 		}
 	}
 
+	if (!result) {
+		systems::Logger::warning("[WARNING:Resource]Failed to load the resource. FILE : [(" + std::to_string(this->id) + ")<unknown>]");
+	}
 
 	return result;
 }
@@ -92,7 +100,8 @@ std::shared_ptr<sf::Texture> jubeon::storages::Resource::gett(void)
 	if (!this->isReady()) {
 		if (!this->load()) {
 			//error
-			return std::shared_ptr<sf::Texture>();
+			systems::Logger::warning("[WARNING:Resource]Failed to load the texture. Replaced the empty texture.");
+			return std::shared_ptr<sf::Texture>(new sf::Texture());
 		}
 	}
 	this->tex_sp = this->resm->textures.at(this->id);
@@ -104,7 +113,7 @@ std::shared_ptr<sf::SoundBuffer> jubeon::storages::Resource::gets(void)
 	if (!this->isReady()) {
 		if (!this->load()) {
 			//error
-			return std::shared_ptr<sf::SoundBuffer>();
+			return std::shared_ptr<sf::SoundBuffer>(new sf::SoundBuffer());
 		}
 	}
 	this->snd_sp = this->resm->sounds.at(this->id);
@@ -116,11 +125,30 @@ std::shared_ptr<sf::Font> jubeon::storages::Resource::getf(void)
 	if (!this->isReady()) {
 		if (!this->load()) {
 			//error
-			return std::shared_ptr<sf::Font>();
+			return std::shared_ptr<sf::Font>(new sf::Font());
 		}
 	}
 	this->font_sp = this->resm->fonts.at(this->id);
 	return this->font_sp;
+}
+
+void jubeon::storages::Resource::release()
+{
+	//読み込み済みのデータがあれば消す。ただし対応マッピングはそのまま
+	switch (this->type) {
+	case TEX:
+		Resource::ResourceManager::getInstance()->textures.erase(this->id);
+		systems::Logger::information("Unloaded the texture. ID : [" + std::to_string(this->id) + "]");
+		break;
+	case FONT:
+		Resource::ResourceManager::getInstance()->fonts.erase(this->id);
+		systems::Logger::information("Unloaded the font. ID : [" + std::to_string(this->id) + "]");
+		break;
+	case SOUND:
+		Resource::ResourceManager::getInstance()->sounds.erase(this->id);
+		systems::Logger::information("Unloaded the sound. ID : [" + std::to_string(this->id) + "]");
+		break;
+	}
 }
 
 jubeon::storages::Resource jubeon::storages::Resource::setf(const std::string filename, const TYPE type)
@@ -129,6 +157,7 @@ jubeon::storages::Resource jubeon::storages::Resource::setf(const std::string fi
 	
 	//存在しないので追加
 	Resource res(ResourceManager::getInstance()->getNextID(), type);
+	systems::Logger::information("Add the resource from filename. FILE : [(" + std::to_string(res.id) + ")" + filename + "]");
 
 	ResourceManager::getInstance()->filename_map[res.id] = filename;
 	ResourceManager::getInstance()->filename_map_id[filename] = res.id;
@@ -142,6 +171,7 @@ jubeon::storages::Resource jubeon::storages::Resource::seti(std::unique_ptr<sf::
 
 	//存在しないので追加
 	Resource res(ResourceManager::getInstance()->getNextID(), type);
+	systems::Logger::information("Add the resource from inputstream. FILE : [(" + std::to_string(res.id) + ")inputstream]");
 
 	ResourceManager::getInstance()->inputstream_map[res.id] = std::move(*inputstream);
 	ResourceManager::getInstance()->inputstream_map_id[inputstream->get()] = res.id;
@@ -151,18 +181,16 @@ jubeon::storages::Resource jubeon::storages::Resource::seti(std::unique_ptr<sf::
 jubeon::storages::Resource jubeon::storages::Resource::setk(const std::string key)
 {
 	if (ResourceManager::getInstance()->key_map.count(key)) return ResourceManager::getInstance()->key_map.at(key);
-	systems::Logger::error("Failed to get key. There is no Key : " + key);
+	systems::Logger::error("[EXCEPTION:Resource]Failed to get key. There is no such key. KEY : [" + key + "]");
 	return Resource(0,TEX);
 }
 
 bool jubeon::storages::Resource::setKey(const std::string key)
 {
-	if (ResourceManager::getInstance()->key_map.count(key)) return false;
-
 	bool res =  ResourceManager::getInstance()->key_map.insert(std::pair<std::string,Resource>(key,*this)).second;
 
 	if (!res) {
-		systems::Logger::error("Failed to set key. (Resource.cpp  setKey function)  Key : " + key);
+		systems::Logger::error("[EXCEPTION:Resource]Failed to set key. Already used. KEY : [" + key + "]");
 	}
 	return res;
 }
