@@ -37,7 +37,7 @@ void jubeon::game::MusicBar::init(const Sequence * sequence, const Music * music
 
 void jubeon::game::MusicBar::update(const Music * music)
 {
-	unsigned int now = music->getPlayingCurrentTime();
+	unsigned int now = music->getPlayingCurrentTime() - A_POOR;
 
 	if (this->before_check_ms > now) {
 		//Šª‚«–ß‚Á‚½
