@@ -38,6 +38,7 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	this->music.reset(new Music("musics/Daydream Cafe/Daydream Cafe.json", "musics/Daydream Cafe"));
 	this->music->load();
+	music->setForPlay();
 
 	//イベントのコールバックをこっちに変更
 	this->gs_event.music = this->music.get();
@@ -62,7 +63,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	
 	//this->sequence.reset( new jubeon::parser::YoubeatParser(jubeon::parser::YoubeatParser::loadFromFile("musics/Daydream Cafe/note.ndt")));
 	
-	this->player.initForPlay(this->gs_event.getPanelStreamBuf(), notes, 0);
+	this->player.initForAuto(notes, 0);
 	this->player1.initForPlay(this->gs_event.getPanelStreamBuf(), notes, -2000);
 
 	//std::vector<Note> notes = jmemo2.getNotes();
@@ -81,7 +82,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::FrameLayer> frame(new layers::FrameLayer);
 	shared_ptr<layers::MusicInfoLayer> musicinfo(new layers::MusicInfoLayer(music));
 	shared_ptr<layers::ShutterLayer> shutterlayer(new layers::ShutterLayer);
-	shared_ptr<layers::RivalShutterLayer> rival1(new layers::RivalShutterLayer(sf::Vector2f(30.0f, 122.0f), this->music, BASIC));
+	shared_ptr<layers::RivalShutterLayer> rival1(new layers::RivalShutterLayer(sf::Vector2f(this->panel_position[1].get(0).left, this->panel_position[1].get(0).top), this->music, BASIC));
 	shared_ptr<layers::RivalShutterLayer> rival2(new layers::RivalShutterLayer(sf::Vector2f(288.0f, 122.0f), this->music, EXTREME));
 	shared_ptr<layers::RivalShutterLayer> rival3(new layers::RivalShutterLayer(sf::Vector2f(546.0f, 122.0f)));
 	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->player.getSequence(), this->music.get(), &this->player, &this->panel_position[0], 0));
@@ -109,7 +110,6 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	//タイムマーカーを打つ
 
-	music->setForPlay();
 
 	music->playSound(0);
 
@@ -117,7 +117,7 @@ void jubeon::game::scenes::GameScene::init(void)
 }
 
 jubeon::game::scenes::GameScene::GameScene()
-	: player("white**"), player1("player1"),
+	: player("WHITE**"), player1("PLAYER1"),
 	panel_position
 		{PanelPosition("media/config/mainpanel.json"),
 		PanelPosition("media/config/subpanel1.json"),
@@ -131,7 +131,7 @@ int jubeon::game::scenes::GameScene::process(void)
 
 	
 
-	player.updateInput();
+	player.updateInput(this->music.get());
 
 	return 0;
 }

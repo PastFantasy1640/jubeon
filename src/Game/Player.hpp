@@ -45,6 +45,7 @@ namespace jubeon {
 			void initForPlay(strbuf::StreamBuffer<input::PanelInput> * panel_strbuf,
 				const Sequence & sequence,
 				const int playing_offset = 0);
+			void initForAuto(const Sequence & sequence, const int playing_offset = 0);
 
 			
 			void setMarker(Marker * new_marker);
@@ -52,7 +53,7 @@ namespace jubeon {
 			const Sequence * getSequence(void) const;
 			
 			PlayRecord * getPlayRecord(void) const;
-			void updateInput(void);
+			void updateInput(const Music * music);
 
 
 			int getCurrentTime(const Music * music) const;

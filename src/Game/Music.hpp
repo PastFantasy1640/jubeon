@@ -67,6 +67,7 @@ namespace jubeon {
 			//プレイ記録のファイルパス取得（直近）
 			std::string getLatestPlayRecordFilePath(const Difficulty difficulty) const;
 
+
 			// TO DO : 削除
 			//***** 楽曲操作 *****
 			//曲を再生する準備を行う（スレッドアンセーフだがSceneからのみ呼び出し）
@@ -77,6 +78,9 @@ namespace jubeon {
 
 			//再生中の時間を取得する関数（スレッドセーフ）
 			int getPlayingCurrentTime(void) const;
+			
+			//曲の長さ
+			unsigned int getMusicLength(void) const;
 
 			//曲をメモリから破棄する（スレッドアンセry
 			void deleteSound(void);
@@ -109,7 +113,6 @@ namespace jubeon {
 			//sf::Texture							music_name_mini;			//*曲名、アーティスト名の画像ファイル
 			//std::string							sound_filepath;				//*楽曲ファイルパス
 			//sf::SoundBuffer						sound_short_loop;			//*ショートループ用のバッファ領域
-			std::unique_ptr<sf::SoundBuffer>	up_sound_buffer;			//*バッファ
 			sf::Sound							sound;						// プレイヤー
 			sf::Texture							thumbnail;					//*サムネ
 

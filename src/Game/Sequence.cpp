@@ -47,7 +47,7 @@ jubeon::game::Notes::const_iterator jubeon::game::Sequence::search(const jubeon:
 
 		//I—¹‚µ‚È‚¢Žž
 		//‚¿‚È‚Ý‚Éright‚Í—Ìˆæ‚Ì+1‚ÌêŠ
-		size_t center = (left + right) / 2;
+		size_t center = left + (right - left) / 2;
 		if (this->at(center).first.getJustTime() <= ms) return search(center, right, ms);
 		else return search(left, center, ms);
 	};
@@ -63,6 +63,8 @@ jubeon::game::Notes::const_iterator jubeon::game::Sequence::search(const jubeon:
 	return this->begin() + idx;
 	
 }
+
+
 
 
 
