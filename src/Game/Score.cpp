@@ -1,6 +1,8 @@
 #include "Score.hpp"
 
-jubeon::game::Score::Score(const int notes_num) : notes_num(notes_num),score(0){
+jubeon::game::Score::Score(const int notes_num) 
+	: notes_num(notes_num),score(0),before_score(0),
+	judge_counts{ 0,0,0,0,0,0 } {
 
 }
 
@@ -10,7 +12,15 @@ jubeon::game::Score::~Score(){
 }
 
 
-int jubeon::game::Score::getScore(void) const{
+unsigned int jubeon::game::Score::getScore(void) const{
+	return this->score;
+}
+
+unsigned int jubeon::game::Score::getAnimatedScore(void) const
+{
+	if (this->score_clock.getElapsedTime().asMilliseconds() < this->SCORE_INCRESE_SPEED_MS) {
+		return this->before_score + static_cast<unsigned int>(this->diff_score * this->score_clock.getElapsedTime().asMilliseconds() / 500.0f);
+	}
 	return this->score;
 }
 
@@ -99,8 +109,15 @@ void jubeon::game::Score::incMissCount(void){
 
 void jubeon::game::Score::calcScore(void){
 
-	this->score = (900000.0f / this->notes_num) * (this->getPerfectCount() + this->getGreatCount() * 0.7 + this->getGoodCount() * 0.4 + this->getPoorCount() * 0.1);
+	
+	this->before_score = this->getAnimatedScore();
 
+	this->score = (900000.0f / this->notes_num) * ((double)this->getPerfectCount() + (double)this->getGreatCount() * 0.7 + this->getGoodCount() * 0.4 + this->getPoorCount() * 0.1);
+
+	//‚Ð‚Á‚­‚è•Ô‚ç‚È‚¢‚æ‚¤‚É
+	if (this->score > this->before_score)	this->diff_score = this->score - this->before_score;
+
+	this->score_clock.restart();
 }
 
 
@@ -108,8 +125,10 @@ unsigned int jubeon::game::Score::getJudgeCount(const Judge & judge) const{
 	return this->judge_counts.at(judge);
 }
 
+#include <iostream>
 
-void jubeon::game::Score::incJudgeCount(const Judge & judge) const{
+void jubeon::game::Score::incJudgeCount(const Judge & judge) {
 	this->judge_counts[judge]++;
 	this->calcScore();
+	std::cout << "Score:" << this->getScore() << std::endl;
 }

@@ -45,6 +45,7 @@ namespace jubeon {
 			void initForPlay(strbuf::StreamBuffer<input::PanelInput> * panel_strbuf,
 				const Sequence & sequence,
 				const int playing_offset = 0);
+			void initForAuto(const Sequence & sequence, const int playing_offset = 0);
 
 			
 			void setMarker(Marker * new_marker);

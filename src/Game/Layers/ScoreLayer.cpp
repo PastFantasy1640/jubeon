@@ -23,6 +23,9 @@ void jubeon::game::layers::ScoreLayer::Init()
 	storages::Resource::setf("media/image/yellow_chip.png", storages::Resource::TEX).setKey("ScoreLayer.yellowchip");
 	storages::Resource::setf("media/image/seekbar.png", storages::Resource::TEX).setKey("ScoreLayer.seekbar");
 
+	storages::Resource::setf("media/font/Frutiger.ttf", storages::Resource::FONT).setKey("ScoreLayer.scorefont");
+	
+	this->seek_sp.setColor(sf::Color(255,255,255, 255));
 
 	this->start_sp.setTexture(*storages::Resource::setk("ScoreLayer.start").gett());
 	this->end_sp.setTexture(*storages::Resource::setk("ScoreLayer.end").gett());
@@ -35,13 +38,17 @@ void jubeon::game::layers::ScoreLayer::Init()
 	
 	this->start_sp.setPosition(14, 92);
 	this->end_sp.setPosition(722, 92);
-	this->bpm_sp.setPosition(15, 111);
-	this->bpm_string_sp.setPosition(44, 111);
+	this->bpm_sp.setPosition(15, 113);
+	this->bpm_string_sp.setPosition(44, 113);
 
 	this->play_name.setString(this->player->name);
 	this->play_name.setColor(sf::Color::Black);
 	this->play_name.setPosition(33, 31);
 	this->play_name.setFont(*storages::Resource::setk("default_font").getf());
+	
+	this->score_text.setColor(sf::Color::Black);
+	this->score_text.setCharacterSize(48);
+	this->score_text.setFont(*storages::Resource::setk("ScoreLayer.scorefont").getf());
 
 	this->musicbar.init(this->player->getSequence(), this->music);
 	this->music_length = this->music->getMusicLength();
@@ -99,8 +106,19 @@ void jubeon::game::layers::ScoreLayer::Draw()
 
 	double length = this->music->getPlayingCurrentTime() * 600.0f / this->music_length;
 	this->seek_sp.setPosition(68 + length, 69);
+
 	this->draw(this->seek_sp);
 
+	//Draw Score
+	std::string str = std::to_string(this->player->getPlayRecord()->getScore()->getAnimatedScore());
+	int x = 463;
+	for (auto c = str.rbegin(); c != str.rend(); c++) {
+		char buf[2]{ *c, '\0' };
+		this->score_text.setString(std::string(buf));
+		this->score_text.setPosition(x, 12);
+		this->draw(this->score_text);
+		x -= 30;
+	}
 }
 
 void jubeon::game::layers::ScoreLayer::Exit()

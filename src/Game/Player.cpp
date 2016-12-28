@@ -17,14 +17,14 @@ jubeon::game::Player::~Player()
 }
 
 void jubeon::game::Player::initForPlay(strbuf::StreamBuffer<input::PanelInput>* panel_strbuf,
-	const Sequence & notes,
+	const Sequence & sequence,
 	const int playing_offset)
 {
 	//init and reset Sequence
-	this->sequence.reset(new Sequence(notes));
+	this->sequence.reset(new Sequence(sequence));
 
 	//reset PlayRecord
-	this->record.reset(new PlayRecord());
+	this->record.reset(new PlayRecord(this->sequence.get()));
 
 	//connect PanelInput Streaming
 	panel_que.reset(new strbuf::OutputStream<input::PanelInput>());
@@ -34,6 +34,31 @@ void jubeon::game::Player::initForPlay(strbuf::StreamBuffer<input::PanelInput>* 
 	this->offset = playing_offset;
 
 	systems::Logger::information("Finished to initialize the player. PLAYER : [Name="
+		+ this->name + ",offset=" + std::to_string(this->offset)
+		+ ",Sequence.size=" + std::to_string(this->sequence->size())
+		+ ",PlayRecord.size=" + std::to_string(this->record->size()) + "]");
+}
+
+void jubeon::game::Player::initForAuto(const Sequence & sequence, const int playing_offset)
+{
+	//init and reset Sequence
+	this->sequence.reset(new Sequence(sequence));
+
+	//reset PlayRecord
+	this->record.reset(new PlayRecord(this->sequence.get()));
+
+	//create auto file.
+	for (auto ite = this->sequence->begin(); ite != this->sequence->end(); ite++) {
+		JudgedPanelInput(
+	}
+
+	//connect PanelInput Streaming
+	panel_que.reset(new strbuf::OutputStream<input::PanelInput>());
+
+	//set playing offset
+	this->offset = playing_offset;
+
+	systems::Logger::information("Finished to initialize the Auto player. PLAYER : [Name="
 		+ this->name + ",offset=" + std::to_string(this->offset)
 		+ ",Sequence.size=" + std::to_string(this->sequence->size())
 		+ ",PlayRecord.size=" + std::to_string(this->record->size()) + "]");
@@ -66,7 +91,7 @@ void jubeon::game::Player::updateInput(void)
 	while (this->panel_que->getQueSize()) {
 		input::PanelInput p = this->panel_que->unque();
 
-		this->record->judge(*this->sequence.get(), p);
+		this->record->judge(p);
 	}
 }
 

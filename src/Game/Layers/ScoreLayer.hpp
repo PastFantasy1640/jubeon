@@ -34,8 +34,9 @@ namespace jubeon {
 				sf::Sprite blue_chip_sp;
 				sf::Sprite yellow_chip_sp;
 				sf::Sprite seek_sp;
-
+				
 				sf::Text play_name;
+				sf::Text score_text;
 
 				unsigned int music_length;
 

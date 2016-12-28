@@ -8,7 +8,8 @@
 #include "JudgeDefinition.hpp"
 
 
-jubeon::game::PlayRecord::PlayRecord()
+jubeon::game::PlayRecord::PlayRecord(jubeon::game::Sequence * sequence)
+	: sequence(sequence), score(sequence->size())
 {
 }
 
@@ -20,14 +21,14 @@ jubeon::game::PlayRecord::~PlayRecord()
 */}
 
 
-void jubeon::game::PlayRecord::judge(Sequence & seq, const input::PanelInput panel_input)
+void jubeon::game::PlayRecord::judge(const input::PanelInput panel_input)
 {
 
-	Notes::const_iterator end = seq.search(panel_input.ms - JudgeSize::B_POOR);
+	Notes::const_iterator end = this->sequence->search(panel_input.ms - JudgeSize::B_POOR);
 	Notes::const_iterator ite;
 	
 	Judge j = NOJUDGE;
-	for (ite = seq.search(panel_input.ms - JudgeSize::A_POOR); ite != end; ite++) {
+	for (ite = this->sequence->search(panel_input.ms - JudgeSize::A_POOR); ite != end; ite++) {
 		if (ite->second == nullptr && ite->first.getPanelIndex() == panel_input.panel_no) {
 			//”»’è‘ÎÛ
 			if (ite->first.getJustTime() >= panel_input.ms) {
@@ -53,7 +54,10 @@ void jubeon::game::PlayRecord::judge(Sequence & seq, const input::PanelInput pan
 
 	//’Ç‰Á
 	std::unique_ptr<JudgedPanelInput> jptr(new JudgedPanelInput(panel_input, j));
-	if(j != NOJUDGE) seq.setJudgedPanelInput(ite, jptr.get());
+	if (j != NOJUDGE) {
+		this->sequence->setJudgedPanelInput(ite, jptr.get());
+		this->score.incJudgeCount(j);
+	}
 	this->emplace_back(std::move(jptr));
 
 }
@@ -243,4 +247,9 @@ jubeon::game::JudgedPanelInputs::const_iterator jubeon::game::PlayRecord::getIte
 	}
 
 	return this->begin() + idx;
+}
+
+const jubeon::game::Score * jubeon::game::PlayRecord::getScore() const
+{
+	return &this->score;
 }

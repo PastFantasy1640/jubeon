@@ -14,6 +14,8 @@
 
 #include "Sequence.hpp"
 
+#include "Score.hpp"
+
 namespace jubeon {
 	namespace game {
 
@@ -22,12 +24,12 @@ namespace jubeon {
 		class PlayRecord : protected JudgedPanelInputs {
 		public:
 
-			PlayRecord();
+			PlayRecord(Sequence * sequence);
 			virtual ~PlayRecord();
 
 			//Judge
 			//ここで追加
-			void judge(Sequence & seq, const input::PanelInput panel_input);
+			void judge(const input::PanelInput panel_input);
 
 
 			//ファイルへ書き出し(TO DO : 未実装)
@@ -40,7 +42,7 @@ namespace jubeon {
 			//検索関数
 			JudgedPanelInputs::const_iterator getIteratorFromTime(const int ms) const;
 
-			
+			const Score * getScore() const;
 
 			using JudgedPanelInputs::const_iterator;
 			using JudgedPanelInputs::begin;
@@ -51,10 +53,15 @@ namespace jubeon {
 			using JudgedPanelInputs::operator[];
 
 		private:
+
+			PlayRecord();
+
+			Sequence * sequence;
 			
 			std::string name;
 			std::string date;
 			
+			Score score;
 
 		};
 	}

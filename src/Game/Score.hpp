@@ -12,6 +12,8 @@
 //for array
 #include <array>
 
+#include <SFML/Graphics.hpp>
+
 //for notes definition
 #include "Game/JudgeDefinition.hpp"
 
@@ -21,6 +23,8 @@ namespace jubeon{
 		
 		public:
 			
+			static const unsigned int SCORE_INCRESE_SPEED_MS = 300;
+
 			/** Constructor with args.
 			 * @param note_num notes size
 			 */
@@ -33,7 +37,9 @@ namespace jubeon{
 			/** Get the score.
 			 * @returns current score
 			 */
-			int getScore(void) const;
+			unsigned int getScore(void) const;
+
+			unsigned int getAnimatedScore(void) const;
 
 			unsigned int getPerfectCount(void) const;
 			void incPerfectCount(void);
@@ -69,6 +75,10 @@ namespace jubeon{
 			unsigned int score;
 			std::array < unsigned int, 6 > judge_counts;
 			unsigned int notes_num;
+
+			sf::Clock score_clock;
+			unsigned int before_score;
+			unsigned int diff_score;
 
 			//Internal Function.
 			//Score update
