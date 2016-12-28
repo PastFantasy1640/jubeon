@@ -22,8 +22,9 @@ void jubeon::game::layers::ScoreLayer::Init()
 	storages::Resource::setf("media/image/blue_chip.png", storages::Resource::TEX).setKey("ScoreLayer.bluechip");
 	storages::Resource::setf("media/image/yellow_chip.png", storages::Resource::TEX).setKey("ScoreLayer.yellowchip");
 	storages::Resource::setf("media/image/seekbar.png", storages::Resource::TEX).setKey("ScoreLayer.seekbar");
-
+	
 	storages::Resource::setf("media/font/Frutiger.ttf", storages::Resource::FONT).setKey("ScoreLayer.scorefont");
+	storages::Resource::setf("media/font/CrimsonText-Roman.ttf", storages::Resource::FONT).setKey("ScoreLayer.namefont");
 	
 	this->seek_sp.setColor(sf::Color(255,255,255, 255));
 
@@ -43,8 +44,9 @@ void jubeon::game::layers::ScoreLayer::Init()
 
 	this->play_name.setString(this->player->name);
 	this->play_name.setColor(sf::Color::Black);
-	this->play_name.setPosition(33, 31);
-	this->play_name.setFont(*storages::Resource::setk("default_font").getf());
+	this->play_name.setPosition(33, 35);
+	this->score_text.setCharacterSize(36);
+	this->play_name.setFont(*storages::Resource::setk("ScoreLayer.namefont").getf());
 	
 	this->score_text.setColor(sf::Color::Black);
 	this->score_text.setCharacterSize(48);
