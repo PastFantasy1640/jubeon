@@ -48,9 +48,12 @@ void jubeon::game::Player::initForAuto(const Sequence & sequence, const int play
 	this->record.reset(new PlayRecord(this->sequence.get()));
 
 	//create auto file.
+	std::vector<input::PanelInput> pinputs;
 	for (auto ite = this->sequence->begin(); ite != this->sequence->end(); ite++) {
-		JudgedPanelInput(
+		pinputs.emplace_back(input::PanelInput(ite->first.getPanelIndex(), jubeon::Type::PUSH, ite->first.getJustTime()));
+		pinputs.emplace_back(input::PanelInput(ite->first.getPanelIndex(), jubeon::Type::RELEASE, ite->first.getJustTime() + 10));
 	}
+	this->record->setPanelInputs(pinputs);
 
 	//connect PanelInput Streaming
 	panel_que.reset(new strbuf::OutputStream<input::PanelInput>());
@@ -58,7 +61,7 @@ void jubeon::game::Player::initForAuto(const Sequence & sequence, const int play
 	//set playing offset
 	this->offset = playing_offset;
 
-	systems::Logger::information("Finished to initialize the Auto player. PLAYER : [Name="
+	systems::Logger::information("Finished to initialize the AUTO player. PLAYER : [Name="
 		+ this->name + ",offset=" + std::to_string(this->offset)
 		+ ",Sequence.size=" + std::to_string(this->sequence->size())
 		+ ",PlayRecord.size=" + std::to_string(this->record->size()) + "]");
@@ -86,13 +89,14 @@ jubeon::game::PlayRecord * jubeon::game::Player::getPlayRecord(void) const
 	return this->record.get();
 }
 
-void jubeon::game::Player::updateInput(void)
+void jubeon::game::Player::updateInput(const Music * music)
 {
 	while (this->panel_que->getQueSize()) {
 		input::PanelInput p = this->panel_que->unque();
 
 		this->record->judge(p);
 	}
+	this->record->update(music);
 }
 
 int jubeon::game::Player::getCurrentTime(const Music * music) const

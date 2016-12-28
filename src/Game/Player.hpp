@@ -53,7 +53,7 @@ namespace jubeon {
 			const Sequence * getSequence(void) const;
 			
 			PlayRecord * getPlayRecord(void) const;
-			void updateInput(void);
+			void updateInput(const Music * music);
 
 
 			int getCurrentTime(const Music * music) const;
