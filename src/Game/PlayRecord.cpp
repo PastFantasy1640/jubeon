@@ -62,6 +62,17 @@ void jubeon::game::PlayRecord::judge(const input::PanelInput panel_input)
 
 }
 
+void jubeon::game::PlayRecord::update(const Music * music)
+{
+	for (auto ite = this->pinputs.begin(); ite != this->pinputs.end();) {
+		if (music->getPlayingCurrentTime() >= ite->ms) {
+			this->judge(*ite);
+			ite = this->pinputs.erase(ite);
+		}
+		else ite++;
+	}
+}
+
 bool jubeon::game::PlayRecord::writeToFile(const std::string dst) const
 {
 	//書き出し
@@ -213,6 +224,13 @@ bool jubeon::game::PlayRecord::readFromFile(const std::string src)
 	systems::Logger::information("プレイ記録ファイルの読み込みを完了しました");
 
 	return true;
+}
+
+void jubeon::game::PlayRecord::setPanelInputs(const std::vector<input::PanelInput> & pinputs)
+{
+	for (auto ite : pinputs) {
+		this->pinputs.push_back(ite);
+	}
 }
 
 

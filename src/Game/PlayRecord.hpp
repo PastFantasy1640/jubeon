@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <vector>
+#include <list>
 #include <string>
 
 #include <SFML/Graphics.hpp>
@@ -15,6 +16,8 @@
 #include "Sequence.hpp"
 
 #include "Score.hpp"
+
+#include "Music.hpp"
 
 namespace jubeon {
 	namespace game {
@@ -31,6 +34,8 @@ namespace jubeon {
 			//ここで追加
 			void judge(const input::PanelInput panel_input);
 
+			void update(const Music * music);
+
 
 			//ファイルへ書き出し(TO DO : 未実装)
 			bool writeToFile(const std::string dst) const;
@@ -38,6 +43,7 @@ namespace jubeon {
 			//ファイルから読み出し(TO DO : 未実装)
 			bool readFromFile(const std::string src);
 			
+			void setPanelInputs(const std::vector<input::PanelInput> & pinputs);
 			
 			//検索関数
 			JudgedPanelInputs::const_iterator getIteratorFromTime(const int ms) const;
@@ -62,6 +68,8 @@ namespace jubeon {
 			std::string date;
 			
 			Score score;
+
+			std::list<input::PanelInput> pinputs;
 
 		};
 	}
