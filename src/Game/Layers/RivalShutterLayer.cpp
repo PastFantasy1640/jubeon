@@ -61,6 +61,11 @@ void jubeon::game::layers::RivalShutterLayer::Draw()
 		//ƒvƒŒƒCƒ„[–³‚µ
 		this->draw(sf::Sprite(*Resource::setf("media/image/default_rival.png", Resource::TEX).gett()));
 	}
+
+	
+	sf::RectangleShape rshape(sf::Vector2f(500, 500));
+	rshape.setFillColor(sf::Color(255, 0, 0, 100));
+	this->draw(rshape);
 }
 
 void jubeon::game::layers::RivalShutterLayer::Exit()
