@@ -41,6 +41,8 @@
 
 #include "Graphics/Layer/LayerManager.hpp"
 
+#include <atomic>
+
 namespace jubeon {
 
 	namespace systems {
@@ -58,7 +60,9 @@ namespace jubeon {
 
 			//すでにstatic processメソッドは動いて居るか
 			//スレッドアンセーフ
-			static bool is_running;
+			static std::atomic<bool> is_running;
+
+			static std::atomic<bool> is_loop;
 
 			static bool is_scene_change;
 
@@ -95,6 +99,12 @@ namespace jubeon {
 			    std::thread th(&Scene::process2,first_scene);
 			    th.detach();
 			    return 0;//process2(first_scene);
+			}
+
+			static void ExitGame() {
+				is_loop.store(false);
+
+				while (is_running.load()) std::this_thread::sleep_for(std::chrono::microseconds(1));	//  1マイクロ秒
 			}
 
 		};	
