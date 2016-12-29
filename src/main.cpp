@@ -127,8 +127,9 @@ int main(int argc, char * argv[]){
 	//イベント監視
 	mainwindow.eventLoop();
 
-	//現在起動中のウィンドウを終了し、レイヤーを全部解放
-	mainwindow.closeWindow();
+	Logger::information("Exiting the system...");
+
+	Scene::ExitGame();
 
 	//システム終了
 	return ret;
