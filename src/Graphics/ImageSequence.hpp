@@ -65,19 +65,60 @@
 
 
 #pragma once
-#ifndef WG_IMAGESEQUENCE_IMAGESEQUENCE_H_
-#define WG_IMAGESEQUENCE_IMAGESEQUENCE_H_
+#ifndef WG_IMAGESEQUENCE_IMAGESEQUENCE_HPP_
+#define WG_IMAGESEQUENCE_IMAGESEQUENCE_HPP_
 
 //スレッド競合変数
 #include <atomic>
+#include <memory>
 
+//ファイル関係
+#include <fstream>
+#include <vector>
 //sf::Texture
 //sf::RenderTexture
 //sf::Clock
 #include <SFML/Graphics.hpp>
 
-/// <summary>wgライブラリ</summary>
-namespace jubeat_online {
+namespace wlib {
+
+	//ファイル実体
+	class ImageSequenceData : public sf::InputStream {
+	public:
+		ImageSequenceData(std::ifstream & ifs, const std::streampos & pos, const std::size_t & size_t);
+		
+		bool isLoaded() const;
+		bool load();
+		unsigned int getLoadTime(unsigned int add);
+		unsigned int getLoadTime() const;
+		void release();
+		
+		const std::streampos pos;
+		const size_t size;
+		
+		std::unique_ptr<sf::Texture> texture_up;
+
+		virtual sf::Int64 read(void * data, sf::Int64 size) override;
+		virtual sf::Int64 seek(sf::Int64 position) override;
+		virtual sf::Int64 tell() override;
+		virtual sf::Int64 getSize() override;
+		
+
+	private:
+		ImageSequenceData();
+
+		std::atomic<bool> is_loaded;
+
+		std::ifstream & ifs;
+				
+		unsigned int load_time;
+
+		std::vector<char> data;
+
+		sf::Int64 seek_pos;
+
+	};
+
 
 	/// <summary>イメージシーケンス。ひとつの連番動画のクラス。</summary>
 	class ImageSequence {
@@ -94,8 +135,8 @@ namespace jubeat_online {
 			STREAMING_DELETE = 2
 		};
 
-		/// <summary>コンストラクタ</summary>
-		ImageSequence();
+
+		ImageSequence(const std::string filename);
 
 		/// <summary>コピーコンストラクタ</summary>
 		/// <param name='copy'>コピー元</param>
@@ -107,18 +148,11 @@ namespace jubeat_online {
 
 		//### ロード ###
 
-		/// <summary>ロードするファイルを指定する</summary>
-		/// <param name='fpath'>ロードするファイルのパス</param>
-		void setLoadFile(const std::string fpath);
 
 		/// <summary>ファイルのロード</summary>
 		/// <param name='type'>ロード方式</param>
-		void LoadFile(const LoadType type);
+		void load(const LoadType type);
 
-		/// <summary>ファイルのロード</summary>
-		/// <param name='type'>ロード方式</param>
-		/// <param name='fpath'>ロードするファイルのパス</param>
-		void LoadFile(const LoadType type, const std::string fpath);
 
 		/// <summary>画像を分割する</summary>
 		/// <remarks>ISFファイルには適用できません</remarks>
@@ -127,7 +161,7 @@ namespace jubeat_online {
 		/// <param name='div_xnum'>横方向の分割数</param>
 		/// <param name='div_ynum'>縦方向の分割数</param>
 		/// <param name='frame'>総フレーム数</param>
-		void DivideImage(const unsigned int width, const unsigned int height, const unsigned int div_xnum, const unsigned int div_ynum, const unsigned int frame);
+		void divideImage(const unsigned int width, const unsigned int height, const unsigned int div_xnum, const unsigned int div_ynum, const unsigned int frame);
 
 
 
@@ -219,14 +253,18 @@ namespace jubeat_online {
 		/// <param name='fps'>設定するfps</param>
 		void setFPS(unsigned int fps);
 
+		
+		//ファイル情報
+		const std::string filename;
+
 	private:
+		/// <summary>コンストラクタ</summary>
+		ImageSequence();
 		enum {
 			CHECK_LOADTIME_FRAMES = 10,
 			MAX_THREAD_NUM = 2
 		};
 
-		//ファイル情報
-		std::string filepath;
 
 		//ロード
 		std::atomic<bool> is_loaded;
@@ -236,18 +274,10 @@ namespace jubeat_online {
 		std::size_t loaded_frame;
 		LoadType load_type;
 
-		//ファイル実体
-		struct Data {
-			std::atomic<bool> is_loaded;
-			std::streampos pos;
-			size_t size;
-			char * data;
-			sf::Texture * image;
-			sf::Time load_time;
-		};
-		Data * data;
+		std::vector<std::shared_ptr<ImageSequenceData>> data;
+
 		std::size_t data_size;
-		sf::Image * image;
+		std::shared_ptr<sf::Image> image;
 
 		//再生パラメータ
 		size_t play_frame;
@@ -263,7 +293,7 @@ namespace jubeat_online {
 		bool loop;
 
 		void pBufTh(void);
-		void loadTh(std::vector<Data *>data);
+		void loadTh(std::vector<ImageSequenceData *> data);
 	};
 
 
