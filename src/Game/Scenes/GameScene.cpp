@@ -26,7 +26,7 @@
 //for debug
 #include <iostream>
 
-
+#include "Graphics/ImageSequence.hpp"
 using namespace jubeon::game;
 using namespace jubeon::graphics;
 using namespace jubeon::systems;
@@ -35,6 +35,10 @@ using namespace jubeon::input;
 
 void jubeon::game::scenes::GameScene::init(void)
 {
+
+	wlib::ImageSequence isf("media/test1.isf");
+
+	isf.load(wlib::ImageSequence::STREAMING);
 
 	this->music.reset(new Music("musics/Daydream Cafe/Daydream Cafe.json", "musics/Daydream Cafe"));
 	this->music->load();

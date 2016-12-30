@@ -201,7 +201,7 @@ void wlib::ImageSequence::pBufTh(void) {
 
 	time_watch.restart();
 
-	std::ifstream fp(this->filename, std::ios::binary | std::ios::in);
+	this->fp.open(this->filename, std::ios::binary | std::ios::in);
 	if (!fp) {
 		//ファイルの開封に失敗
 		std::cout << "ImageSequence>" + this->filename + ":ロードに失敗" << std::endl;
@@ -326,7 +326,7 @@ void wlib::ImageSequence::pBufTh(void) {
 				size |= t;
 			}
 
-			this->data.emplace_back(new ImageSequenceData(fp, spos, size));
+			this->data.emplace_back(new ImageSequenceData(&fp, spos, size));
 			spos += size;
 		}
 	}
@@ -354,18 +354,18 @@ void wlib::ImageSequence::pBufTh(void) {
 
 	//すべてdataに代入
 	std::cout << "ImageSequence>" + this->filename + ":メモリに読み出し開始" << std::endl;
-	for (std::size_t i = 0; i < this->data_size; i++, this->nonload_thread--) {
-		if (i % 200 == 0 && i > 0) std::cout << "ImageSequence>" + this->filename + ":" << static_cast<int>(static_cast<float>(i) * 100.0f / static_cast<float>(this->data_size)) << "%完了" << std::endl;
+/*	for (std::size_t i = 0; i < this->data_size; i++, this->nonload_thread--) {
+		if (i % 200 == 0 && i > 0) 
+			std::cout << "ImageSequence>" + this->filename + ":" << static_cast<int>(static_cast<float>(i) * 100.0f / static_cast<float>(this->data_size)) << "%完了" << std::endl;
 		
-		this->data.at(i)->load();
+//		this->data.at(i)->load();
 
-	}
+	}*/
 
 	time_capture = time_watch.getElapsedTime();
 	std::cout << "ImageSequence>" + this->filename + ":ファイルの読出しを完了\t" << time_capture.asMilliseconds() << "msec." << std::endl;
 	std::cout << "ImageSequence>" + this->filename + ":フレームのロードを開始" << std::endl;
 
-	fp.close();
 
 	//ストリーミングする必要がない場合
 	if (this->data_size <= ImageSequence::CHECK_LOADTIME_FRAMES) this->load_type = ImageSequence::ALL_LOAD;
@@ -375,36 +375,55 @@ void wlib::ImageSequence::pBufTh(void) {
 	int load_start_frame = 0;
 	int frame = static_cast<int>(this->data_size);
 	if (this->load_type != ImageSequence::ALL_LOAD) {
-		long all_time = 0;
 		const int sampling_frame = ImageSequence::CHECK_LOADTIME_FRAMES;
 
 		//まずsampling_frame分だけ振り分ける
-		std::array<std::vector<ImageSequenceData *>, ImageSequence::MAX_THREAD_NUM> works_t;
-		for (int i = 0; i < works_t.size(); i++) {
-			works_t[i].clear();
+		std::vector<ImageSequenceData *> works_t[10];
+		for (int i = 0; i < 10; i++) {
+			works_t[i].push_back(this->data[i].get());
 		}
-
+		/*
 		for (int i = 0; i < this->data_size && i < sampling_frame * ImageSequence::MAX_THREAD_NUM; i++) {
 			works_t.at(i % ImageSequence::MAX_THREAD_NUM).push_back(this->data[i].get());
-		}
+		}*/
 
-		std::vector<std::unique_ptr<std::thread>> thvec;
-		for (int i = 0; i < ImageSequence::MAX_THREAD_NUM; i++) {
+		//std::vector<std::unique_ptr<std::thread>> thvec;
+		/*for (int i = 0; i < ImageSequence::MAX_THREAD_NUM; i++) {
 			thvec.emplace_back(new std::thread(&ImageSequence::loadTh, this, works_t[i]));
 		}
 		//全ロードが終わるまで待つ
-		for (int i = 0; i < thvec.size(); i++) thvec[i]->join();
+		//for (int i = 0; i < thvec.size(); i++) thvec[i]->join();
 
 		thvec.clear();
+		*/
 
+		sf::Clock cl;
+		std::thread t1(&ImageSequence::loadTh, this, works_t[0]);
+		std::thread t2(&ImageSequence::loadTh, this, works_t[1]);
+		std::thread t3(&ImageSequence::loadTh, this, works_t[2]);
+		std::thread t4(&ImageSequence::loadTh, this, works_t[3]);
+		std::thread t5(&ImageSequence::loadTh, this, works_t[4]);
+		
+		t1.join();
+		t2.join();
+		t3.join();
+		t4.join();
+		t5.join();
+
+
+		//this->loadTh(works_t);
+		sf::Time t = cl.getElapsedTime();
+
+
+		/*
 		for (int i = 0; i < works_t.size(); i++) {
 			for (int n = 0; n < works_t[i].size(); n++) {
 				all_time += works_t[i][n]->getLoadTime();
 			}
-		}
+		}*/
 
 		//ストリーミング時間の算出
-		double ave_time = all_time / static_cast<double>(sampling_frame * ImageSequence::MAX_THREAD_NUM);
+		double ave_time = t.asMilliseconds() / static_cast<double>(5 * ImageSequence::MAX_THREAD_NUM);
 		std::cout << "ImageSequence>" + this->filename + ":読み込み平均時間" << ave_time << "ms" << std::endl;
 		frame = static_cast<int>(this->data_size) - static_cast<int>(this->data_size * 1000.0f / fps / ave_time) + 10;
 		if (frame <= 0)	std::cout << "ImageSequence>" + this->filename + ":初期ロードフレームなし" << std::endl;
@@ -420,7 +439,7 @@ void wlib::ImageSequence::pBufTh(void) {
 	}
 	
 	for (int i = load_start_frame; i < this->data_size; i++) {
-		works[i % ImageSequence::MAX_THREAD_NUM].emplace_back(this->data[i].get());
+		works[i % ImageSequence::MAX_THREAD_NUM].push_back(this->data[i].get());
 	}
 
 	for (int i = 0; i < ImageSequence::MAX_THREAD_NUM; i++) {

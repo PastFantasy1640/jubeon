@@ -85,7 +85,7 @@ namespace wlib {
 	//ファイル実体
 	class ImageSequenceData : public sf::InputStream {
 	public:
-		ImageSequenceData(std::ifstream & ifs, const std::streampos & pos, const std::size_t & size_t);
+		ImageSequenceData(std::ifstream * ifs, const std::streampos & pos, const std::size_t & size_t);
 		
 		bool isLoaded() const;
 		bool load();
@@ -109,7 +109,7 @@ namespace wlib {
 
 		std::atomic<bool> is_loaded;
 
-		std::ifstream & ifs;
+		std::ifstream * ifs;
 				
 		unsigned int load_time;
 
@@ -253,6 +253,7 @@ namespace wlib {
 		/// <param name='fps'>設定するfps</param>
 		void setFPS(unsigned int fps);
 
+		std::ifstream fp;
 		
 		//ファイル情報
 		const std::string filename;
@@ -262,7 +263,7 @@ namespace wlib {
 		ImageSequence();
 		enum {
 			CHECK_LOADTIME_FRAMES = 10,
-			MAX_THREAD_NUM = 2
+			MAX_THREAD_NUM = 1
 		};
 
 
