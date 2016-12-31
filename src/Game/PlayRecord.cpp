@@ -64,6 +64,7 @@ void jubeon::game::PlayRecord::judge(const input::PanelInput panel_input)
 
 void jubeon::game::PlayRecord::update(const Music * music)
 {
+	//for autoplay
 	for (auto ite = this->pinputs.begin(); ite != this->pinputs.end();) {
 		if (music->getPlayingCurrentTime() >= ite->ms) {
 			this->judge(*ite);
