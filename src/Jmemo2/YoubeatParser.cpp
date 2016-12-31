@@ -50,7 +50,7 @@ std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::
 	//Prepare BPM Table
 	BpmTable bpm_table;
 	
-	
+	std::list<
 
 	//parse block
 	for (auto line = lines.begin(); line != lines.end(); line++) {
@@ -86,6 +86,12 @@ std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::
 			continue;
 		}
 		else if (line->at(0) == '[') {
+			//ホールドの指定
+			//[パネル番号:出現パネル,終端識別文字列]
+			jPanel to, from;
+			char pchar;
+			this->_holdParse(*line, &to, &from, &pchar);
+
 			continue;
 		}
 
@@ -164,12 +170,71 @@ std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::
 	return result;
 }
 
+void jubeon::parser::YoubeatParser::_holdParse(const std::string & line, jPanel * pno, jPanel * appear_pno, char * c)
+{
+	bool err = false;
+	//ホールドの指定
+	//[パネル番号:出現パネル,終端識別文字列]
+	std::string pno_str, appear_str, end_str;
+	std::string * ptr = &pno_str;
+	for (auto p : line) {
+		if (p == '[' || p == ']') continue;
+		else if (p == ':') ptr = &appear_str;
+		else if (p == ',') ptr = &end_str;
+		else ptr->push_back(p);
+	}
+
+	//構文エラーチェック
+	if (pno_str.empty()) {
+		jubeon::systems::Logger::warning("Empty panel No. COMMAND LINE : " + line);
+		err = true;
+	}
+	if (appear_str.empty()) {
+		jubeon::systems::Logger::warning("Empty appearing panel No. COMMAND LINE : " + line);
+		err = true;
+	}
+	if (end_str.empty()) {
+		jubeon::systems::Logger::warning("Empty note charactor. COMMAND LINE : " + line);
+		err = true;
+	}
+	if (err) return;
+
+	//型変換
+	int pno_ret, ap_pno_ret;
+	try {
+		pno_ret = std::stoi(pno_str);
+		ap_pno_ret = std::stoi(appear_str);
+	}
+	catch (std::invalid_argument e) {
+		jubeon::systems::Logger::warning("Failed to cast to integer. COMMAND LINE : " + line);
+		err = true;
+	}
+	if (err) return;
+
+	//範囲チェック
+	if (!(pno_ret >= 0 && pno_ret < 16)) {
+		jubeon::systems::Logger::warning("Panel No. is out of bounds. COMMAND LINE : " + line);
+		err = true;
+	}
+	if (!(ap_pno_ret >= 0 && ap_pno_ret < 16)) {
+		jubeon::systems::Logger::warning("Panel No. is out of bounds. COMMAND LINE : " + line);
+		err = true;
+	}
+	if (err) return;
+
+	//代入
+	*pno = static_cast<jPanel>(pno_ret);
+	*appear_pno = static_cast<jPanel>(ap_pno_ret);
+	*c = end_str[0];
+
+	jubeon::systems::Logger::information("[YoubeatParser]HOLD:panel No:" + pno_str + " ,appear panel No:" + appear_str + " ,end charactor:" + end_str.substr(0, 1));
+}
+
+	
 jubeon::parser::YoubeatParser::BpmColumn::BpmColumn(const unsigned int haku, const double bpm)
 	: haku(haku), bpm(bpm)
 {
 }
-
-
 
 
 jubeon::parser::YoubeatParser::Note_C::Note_C(const unsigned int haku, const unsigned int m, const unsigned int v, const jubeon::jPanel p_no)

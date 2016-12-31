@@ -50,7 +50,20 @@ namespace jubeon {
 				game::Note convertToNote(const BpmTable bpm_table, const jMillisec offset) const;
 			};
 
+			class Hold {
+			public:
+				Hold(const jPanel to, const jPanel from, const char endc);
+				Hold(const Hold & hold);
+
+				const jPanel to, from;
+				const char end_charactor;
+			private:
+				Hold();
+			}
+
 			std::vector<game::Note> parse(const std::vector<std::string> lines);
+
+			void _holdParse(const std::string & line, jPanel * pno, jPanel * appear_pno, char * c);
 		
 		};
 	}
