@@ -231,9 +231,5 @@ void jubeon::parser::YoubeatParser::_holdParse(const std::string & line, jPanel 
 }
 
 	
-jubeon::parser::YoubeatParser::BpmColumn::BpmColumn(const unsigned int haku, const double bpm)
-	: haku(haku), bpm(bpm)
-{
-}
 
 
