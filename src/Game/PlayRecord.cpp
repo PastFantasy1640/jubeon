@@ -29,7 +29,7 @@ void jubeon::game::PlayRecord::judge(const input::PanelInput panel_input)
 	
 	Judge j = NOJUDGE;
 	for (ite = this->sequence->search(panel_input.ms - JudgeSize::A_POOR); ite != end; ite++) {
-		if (ite->second == nullptr && ite->first.getPanelIndex() == panel_input.panel_no) {
+		if (ite->second == nullptr && ite->first.getPanelIndex() == panel_input.panel_no && panel_input.t == PUSH) {
 			//”»’è‘ÎÛ
 			if (ite->first.getJustTime() >= panel_input.ms) {
 				//Before
