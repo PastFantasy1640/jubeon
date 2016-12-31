@@ -66,7 +66,7 @@ std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::
 				bpm_table.push_back(BpmColumn(haku, bpm));
 			}
 			catch (const std::invalid_argument & e) {
-				systems::Logger::warning("Invalid BPM");
+				systems::Logger::warning("Invalid BPM :" + *line);
 			}
 
 
@@ -79,10 +79,13 @@ std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::
 				if(offset == 0) offset = std::stoi(line->substr(1));
 			}
 			catch (const std::invalid_argument & e) {
-				systems::Logger::warning("Invalid BPM");
+				systems::Logger::warning("Invalid Offset :" + *line);
 			}
 
 
+			continue;
+		}
+		else if (line->at(0) == '[') {
 			continue;
 		}
 
