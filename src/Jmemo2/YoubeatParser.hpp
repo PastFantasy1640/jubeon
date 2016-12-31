@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 #include "Game/Sequence.hpp"
 
@@ -53,13 +54,13 @@ namespace jubeon {
 			class Hold {
 			public:
 				Hold(const jPanel to, const jPanel from, const char endc);
-				Hold(const Hold & hold);
+				Hold(const Hold & copy);
 
 				const jPanel to, from;
 				const char end_charactor;
 			private:
 				Hold();
-			}
+			};
 
 			std::vector<game::Note> parse(const std::vector<std::string> lines);
 
