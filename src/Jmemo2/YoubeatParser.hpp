@@ -88,7 +88,15 @@ namespace jubeon {
 			std::vector<game::Note> parse(const std::vector<std::string> lines);
 
 			void _holdParse(const std::string & line, jPanel * pno, jPanel * appear_pno, char * c);
-		
+			void _bpm(const std::string & line, const unsigned int haku, BpmTable * bpm_table);
+			void _offset(const std::string & line, int * offset);
+			void _holdAdd(const std::string & line, std::list<Hold> * hold_list);
+			void _separatePos(const std::vector<std::string> & block, std::array<char, 16> * pos_str);
+			void _separateTiming(const std::vector<std::string> & block, std::vector<std::string> * note_strv);
+			void _addHoldEnd(const char c, const unsigned int haku, const unsigned int m, const std::string s, std::list<Hold> * hold_list, std::vector<std::unique_ptr<Note_C>> * note_c);
+			bool _addHoldStart(const char c, const unsigned int haku, const unsigned int m, const std::string s, const jPanel t_pno, std::list<Hold> * hold_list, std::vector<std::unique_ptr<Note_C>> * note_c);
+			void _calcHoldDuration(const BpmTable & bpm_table, std::list<Hold> * hold_list);
+			void _convert(const BpmTable & bpm_table, const std::vector<std::unique_ptr<Note_C>> & note_c, const jMillisec offset, std::vector<game::Note> * result);
 		};
 	}
 }
