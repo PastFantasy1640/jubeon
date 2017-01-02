@@ -36,7 +36,7 @@ using namespace jubeon::input;
 void jubeon::game::scenes::GameScene::init(void)
 {
 
-	this->music.reset(new Music("musics/Daydream Cafe/Daydream Cafe.json", "musics/Daydream Cafe"));
+	this->music.reset(new Music("musics/demo_music/demo_music.json", "musics/demo_music"));
 	this->music->load();
 	music->setForPlay();
 
@@ -49,7 +49,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	for (auto pp = this->panel_position.begin(); pp != this->panel_position.end(); pp++) pp->load();
 	
 
-	parser::YoubeatParser notes(jubeon::parser::YoubeatParser::loadFromFile("musics/Daydream Cafe/note.ndt"));
+	parser::YoubeatParser notes(jubeon::parser::YoubeatParser::loadFromFile("musics/demo_music/demo_music.txt"));
 
 
 
