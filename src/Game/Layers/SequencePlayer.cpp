@@ -19,7 +19,7 @@ jubeon::game::layers::SequencePlayer::SequencePlayer(
 	const Player * player,
 	const jubeon::game::PanelPosition * panel_position,
 	int offset_ms)
-	: sequence(sequence), music(music), player(player), panel_position(panel_position), offset_ms(offset_ms)
+	: sequence(sequence), music(music), player(player), panel_position(panel_position), offset_ms(offset_ms), holding_length(0)
 {
 }
 
@@ -86,10 +86,11 @@ void jubeon::game::layers::SequencePlayer::Draw()
 
 			}
 		}
-		else {
+		else if(!ite->first.isHoldEnd()){
 			//なかった
 			//まだ終わってない
 			//Markerのテクスチャを取得
+			//ホールドエンドマーカーは描写しない
 			const sf::Texture * tex = this->mk->getTexturePtr(ms - ite->first.getJustTime(), NOJUDGE);
 			if (tex != nullptr) {
 
