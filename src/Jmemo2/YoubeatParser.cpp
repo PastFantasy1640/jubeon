@@ -209,7 +209,7 @@ void jubeon::parser::YoubeatParser::_offset(const std::string & line, int * offs
 {
 	//オフセット
 	try {
-		if (offset == 0) *offset = std::stoi(line.substr(1));
+		if (*offset == 0) *offset = std::stoi(line.substr(1));
 		systems::Logger::information("[YoubeatParser]Offset : " + std::to_string(*offset) + "ms");
 	}
 	catch (const std::invalid_argument & e) {
