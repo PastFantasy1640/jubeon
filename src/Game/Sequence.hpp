@@ -37,16 +37,19 @@ namespace jubeon {
 			const jMillisec duration;
 
 			//ホールドマーカーの出現位置パネル
+			//0xffの場合はホールドマーカー終了地点
+			//isHoldはtrue、isHoldEndもtrueになる。
 			const jPanel holdMarkerIndex;
 
-			
 		public:
 			
+			static const jPanel HOLD_END = 0xFF;
+
 			//普通のマーカーのコンストラクタ
-			Note(const int just_time, const int panel_idx);
+			Note(const jMillisec just_time, const jPanel panel_idx, const bool is_hold_end = false);
 
 			//ホールドマーカーのコンストラクタ
-			Note(const int just_time, const int panel_idx, const int duration, const int holdmarker_panel_idx);
+			Note(const jMillisec just_time, const jPanel panel_idx, const int duration, const int holdmarker_panel_idx);
 
 
 			//アクセサ
@@ -55,6 +58,7 @@ namespace jubeon {
 			int getHoldDuration(void) const;
 			int getHoldMarkerIndex(void) const;
 			bool isHold(void) const;
+			bool isHoldEnd(void) const;
 
 		};
 	

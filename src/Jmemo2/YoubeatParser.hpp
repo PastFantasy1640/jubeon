@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <memory>
 
 #include "Game/Sequence.hpp"
 
@@ -41,14 +42,21 @@ namespace jubeon {
 			public:
 				
 				Note_C(const unsigned int haku, const unsigned int m, const unsigned int v, const jPanel p_no);
-				
+				Note_C(const unsigned int haku, const unsigned int m, const unsigned int v, const jPanel p_no, const jPanel from);
+				Note_C(const Note_C & cp);
 
 				const unsigned int haku;
 				const unsigned int m;
 				const unsigned int v;
 				const jPanel p_no;
+				const jPanel from_pno;
 				
-				game::Note convertToNote(const BpmTable bpm_table, const jMillisec offset) const;
+				game::Note convertToNote(const BpmTable & bpm_table, const jMillisec offset) const;
+
+				void setDuration(unsigned int duration);
+				unsigned int getDuration(void) const;
+			private:
+				unsigned int duration;
 			};
 
 			class Hold {
@@ -58,8 +66,23 @@ namespace jubeon {
 
 				const jPanel to, from;
 				const char end_charactor;
+
+				unsigned int getDuration(const BpmTable & bpm_table) const;
+
+				const Note_C * getStart() const;
+				Note_C * getStart();
+				bool emptyStart() const;
+				const Note_C * getEnd() const;
+				bool emptyEnd() const;
+				void setStart(Note_C *const start);
+				void setEnd(Note_C *const end);
+
 			private:
 				Hold();
+				jMillisec duration;
+				
+				Note_C * start;
+				Note_C * end;
 			};
 
 			std::vector<game::Note> parse(const std::vector<std::string> lines);

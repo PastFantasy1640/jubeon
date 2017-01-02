@@ -34,13 +34,16 @@ std::vector<std::string> jubeon::parser::YoubeatParser::loadFromFile(const std::
 std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::vector<std::string> lines)
 {
 
+	jubeon::systems::Logger::information("[YoubeatParser]Start to parse. " + std::to_string(lines.size()) + "lines.");
+
+
 	//BodySource
 	std::vector<std::string> block;
 
 	std::array<char,16> pos_str;
 	std::vector<std::string> note_strv;
 
-	std::vector<Note_C> note_c;
+	std::vector<std::unique_ptr<Note_C>> note_c;
 
 	std::vector<game::Note> result;
 
@@ -50,7 +53,8 @@ std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::
 	//Prepare BPM Table
 	BpmTable bpm_table;
 	
-	//std::list<
+	//Hold List
+	std::list<Hold> hold_list;
 
 	//parse block
 	for (auto line = lines.begin(); line != lines.end(); line++) {
@@ -59,30 +63,27 @@ std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::
 
 		if (line->at(0) == '#') {
 			//コマンド列
-
 			double bpm;
 			try {
 				bpm = std::stod(line->substr(1));
 				bpm_table.push_back(BpmColumn(haku, bpm));
+				systems::Logger::information("[YoubeatParser]BPM Changed. BPM : " + std::to_string(bpm));
 			}
 			catch (const std::invalid_argument & e) {
-				systems::Logger::warning("Invalid BPM :" + *line);
+				systems::Logger::warning("[YoubeatParser]Invalid BPM :" + *line);
 			}
-
-
+			
 			continue;
 		}
 		else if (line->at(0) == '@') {
 			//オフセット
-
 			try {
 				if(offset == 0) offset = std::stoi(line->substr(1));
+				systems::Logger::information("[YoubeatParser]Offset : " + std::to_string(offset) + "ms");
 			}
 			catch (const std::invalid_argument & e) {
-				systems::Logger::warning("Invalid Offset :" + *line);
+				systems::Logger::warning("[YoubeatParser]Invalid Offset :" + *line);
 			}
-
-
 			continue;
 		}
 		else if (line->at(0) == '[') {
@@ -90,7 +91,12 @@ std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::
 			//[パネル番号:出現パネル,終端識別文字列]
 			jPanel to, from;
 			char pchar;
+
+			//パース
 			this->_holdParse(*line, &to, &from, &pchar);
+
+			//ホールドリストへ追加
+			hold_list.emplace_back(Hold(to, from, pchar));
 
 			continue;
 		}
@@ -137,14 +143,40 @@ std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::
 			}
 
 			//●譜面化
+			//char c : タイミングにおける一文字
+			//char p : パネル番号における一文字
 			for (std::string s : note_strv) {
 				int m = 0;
 				for (char c : s) {
+					//まずホールドのチェック
+					for (auto hold = hold_list.begin(); hold != hold_list.end(); hold++) {
+						if (hold->end_charactor == c && !hold->emptyStart() && hold->emptyEnd()) {
+							//End of Hold
+							//const Note_C * ref = hold->getStart();
+							//[TO DO] setEndを実装して、後のNote_CからNoteへコンバートするときにDurationを計算できるようにすればいい。
+							std::unique_ptr<Note_C> hold_end(new Note_C(haku, m, s.length(), hold->to, game::Note::HOLD_END));
+							hold->setEnd(hold_end.get());
+							note_c.emplace_back(std::move(hold_end));	//Add End
+						}
+					}
+
 					if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
 						jPanel t_pno = 0;
 						for (char p : pos_str) {
 							if (c == p) {
-								note_c.push_back(Note_C(haku, m, s.length(),t_pno));
+								//ホールド開始か？
+								bool isHold = false;
+								for (auto hold = hold_list.rbegin(); hold != hold_list.rend(); hold++) {
+									if (hold->emptyStart() && hold->to == t_pno) {
+										//ホールド開始
+										std::unique_ptr<Note_C> hold_start(new Note_C(haku, m, s.length(), hold->to, hold->from));
+										hold->setStart(hold_start.get());
+										note_c.emplace_back(std::move(hold_start));
+										isHold = true;
+										break;
+									}
+								}
+								if(!isHold) note_c.emplace_back(new Note_C(haku, m, s.length(),t_pno));
 							}
 							t_pno++;
 						}
@@ -162,10 +194,19 @@ std::vector<jubeon::game::Note> jubeon::parser::YoubeatParser::parse(const std::
 
 	//ここまでで譜面の解析は終わってるはず
 
-	//譜面変換
-	for (auto nc : note_c) {
-		result.push_back(nc.convertToNote(bpm_table, offset));
+	
+	//Hold convert
+	for (auto hold = hold_list.begin(); hold != hold_list.end(); hold++) {
+		if (!hold->emptyEnd() && !hold->emptyStart()) {
+			hold->getStart()->setDuration(hold->getDuration(bpm_table));
+		}
 	}
+
+	//譜面変換
+	for (auto nc = note_c.begin(); nc != note_c.end(); nc++) {
+		result.push_back((*nc)->convertToNote(bpm_table, offset));
+	}
+
 	
 	return result;
 }

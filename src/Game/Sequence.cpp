@@ -6,6 +6,8 @@
 //cerr
 #include <iostream>
 
+//const jubeon::jPanel jubeon::game::Note::HOLD_END;
+
 jubeon::game::Sequence::Sequence(const Sequence & cp) 
 	: Notes(cp)
 {
