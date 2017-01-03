@@ -19,7 +19,7 @@ jubeon::game::layers::SequencePlayer::SequencePlayer(
 	const Player * player,
 	const jubeon::game::PanelPosition * panel_position,
 	int offset_ms)
-	: sequence(sequence), music(music), player(player), panel_position(panel_position), offset_ms(offset_ms), holding_length(0)
+	: sequence(sequence), music(music), player(player), panel_position(panel_position), offset_ms(offset_ms)
 {
 }
 

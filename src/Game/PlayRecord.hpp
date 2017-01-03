@@ -58,6 +58,8 @@ namespace jubeon {
 			using JudgedPanelInputs::empty;
 			using JudgedPanelInputs::operator[];
 
+			const std::list<Note> * getHoldingList(void) const;
+
 		private:
 
 			PlayRecord();
@@ -71,6 +73,7 @@ namespace jubeon {
 
 			std::list<input::PanelInput> pinputs;
 
+			Notes holding_list;
 		};
 	}
 }
