@@ -112,7 +112,7 @@ void jubeon::game::Score::calcScore(void){
 	
 	this->before_score = this->getAnimatedScore();
 
-	this->score = (900000.0f / this->notes_num) * ((double)this->getPerfectCount() + (double)this->getGreatCount() * 0.7 + this->getGoodCount() * 0.4 + this->getPoorCount() * 0.1);
+	this->score = 900000.0f * (((double)this->getPerfectCount() + (double)this->getGreatCount() * 0.7f + this->getGoodCount() * 0.4f + this->getPoorCount() * 0.1f) / static_cast<double>(this->notes_num));
 
 	//‚Ð‚Á‚­‚è•Ô‚ç‚È‚¢‚æ‚¤‚É
 	if (this->score > this->before_score)	this->diff_score = this->score - this->before_score;
