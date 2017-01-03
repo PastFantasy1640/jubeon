@@ -63,10 +63,21 @@ namespace jubeon {
 		};
 	
 		typedef std::pair<const Note, JudgedPanelInput *> NoteJudgePair;
-		typedef std::vector<NoteJudgePair> Notes;
+		class Notes : protected std::vector<NoteJudgePair> {
+		protected:
+		public:
+			using std::vector<NoteJudgePair>::const_iterator;
+			using std::vector<NoteJudgePair>::operator[];
+			using std::vector<NoteJudgePair>::at;
+			using std::vector<NoteJudgePair>::begin;
+			using std::vector<NoteJudgePair>::end;
+			using std::vector<NoteJudgePair>::size;
+			using std::vector<NoteJudgePair>::empty;
+			Notes::const_iterator jubeon::game::Notes::search(const jMillisec ms) const;
+		};
 
 		//Noteはconst付きメソッドのみでRead Onlyなためスレッドセーフ
-		class Sequence : protected Notes{
+		class Sequence : public Notes{
 
 		private:
 			
@@ -80,17 +91,7 @@ namespace jubeon {
 
 			//初期化
 			Sequence(const std::vector<Note> notes);
-
-			Notes::const_iterator jubeon::game::Sequence::search(const jMillisec ms) const;
 			
-			using Notes::const_iterator;
-			using Notes::operator[];
-			using Notes::at;
-			using Notes::begin;
-			using Notes::end;
-			using Notes::size;
-			using Notes::empty;
-
 			void setJudgedPanelInput(const Notes::const_iterator target, JudgedPanelInput * judged);
 
 		};

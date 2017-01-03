@@ -41,6 +41,8 @@ namespace jubeon {
 
 			private:
 
+				void drawMarker(const jMillisec now_ms ,const Notes::const_iterator & ite, Judge judge);
+
 				const Sequence * sequence;
 				const jubeon::game::Music * music;
 				const Player * player;

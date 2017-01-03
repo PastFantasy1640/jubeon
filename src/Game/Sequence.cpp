@@ -32,7 +32,7 @@ void jubeon::game::Sequence::setJudgedPanelInput(const Notes::const_iterator tar
 }
 
 
-jubeon::game::Notes::const_iterator jubeon::game::Sequence::search(const jubeon::jMillisec ms) const
+jubeon::game::Notes::const_iterator jubeon::game::Notes::search(const jubeon::jMillisec ms) const
 {
 	//“ñ•ª’Tõ
 	//ƒ‰ƒ€ƒ_®

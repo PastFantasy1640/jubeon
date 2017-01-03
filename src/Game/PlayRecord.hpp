@@ -23,6 +23,11 @@ namespace jubeon {
 	namespace game {
 
 		typedef std::vector<std::unique_ptr<JudgedPanelInput>> JudgedPanelInputs;
+		
+		class Holds : public Notes {
+		public:
+			using Notes::emplace_back;
+		};
 
 		class PlayRecord : protected JudgedPanelInputs {
 		public:
@@ -73,7 +78,7 @@ namespace jubeon {
 
 			std::list<input::PanelInput> pinputs;
 
-			Notes holding_list;
+			Holds holding_list;
 		};
 	}
 }

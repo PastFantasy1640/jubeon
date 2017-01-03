@@ -53,77 +53,78 @@ void jubeon::game::layers::SequencePlayer::Draw()
 	//Musicに問い合わせて今の再生時刻を取得
 	const int mms = this->player->getCurrentTime(this->music);
 	const int ms = mms - this->offset_ms;
-
-
-
-	//### 譜面の描写 ###
-	//譜面表示の可能性のあるmsは、CurrentMS - (disappear_time * 2)から、CurrentMS + appear_time
-	//全て最高500msであると仮定して
+	
 	const int start_ms = ms - this->mk->getLengthAfterMax();	//逆なんだな―
 	const int end_ms = ms + this->mk->getLengthBefore();
 
-	//まずms以降のSequenceのイテレータを取得
-	
-	jMillisec hold_max_time = 0;
-	
-	for (auto hold = this->player->getPlayRecord()->getHoldingList()->begin(); hold != this->player->getPlayRecord()->getHoldingList()->end(); hold++) {
-		if (hold->second != nullptr) {
-			jMillisec hold_end_time = hold->first.getJustTime() + hold->first.getHoldDuration();
-			if (hold_max_time < hold_end_time) hold_max_time = hold_end_time;
-		}
-	}
+	{
+		//### 譜面の描写 ###
+		//譜面表示の可能性のあるmsは、CurrentMS - (disappear_time * 2)から、CurrentMS + appear_time
+		//全て最高500msであると仮定して
 
-	Notes::const_iterator begin = this->sequence->search(start_ms);
-	Notes::const_iterator end = this->sequence->search((end_ms > hold_max_time ? end_ms : hold_max_time));
+		//まずms以降のSequenceのイテレータを取得
 
 
-	for (auto ite = begin; ite != end; ite++) {
-		//描写範囲内
+		Notes::const_iterator begin = this->sequence->search(start_ms);
+		Notes::const_iterator end = this->sequence->search(end_ms);
 
-		if (ite->second != nullptr) {
-			//あった
-			//ということはすでに判定が終わっている場合である。
-			//Markerのテクスチャを取得
-			const sf::Texture * tex = this->mk->getTexturePtr(ms - ite->second->ms, ite->second->judge);
-			if (tex != nullptr) {
 
-				sf::Sprite markersp(*tex);
+		for (auto ite = begin; ite != end; ite++) {
+			//描写範囲内
 
-				const sf::IntRect & rect = this->panel_position->get(ite->second->panel_no);
-
-				markersp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
-				markersp.setScale(PanelPosition::get_ex(tex->getSize().x, rect.width), PanelPosition::get_ex(tex->getSize().y, rect.height));
-				this->draw(markersp);
-
+			if (ite->second != nullptr) {
+				//あった
+				//ということはすでに判定が終わっている場合である。
+				this->drawMarker(ms - ite->second->ms, ite, ite->second->judge);
 			}
-		}
-		else if(!ite->first.isHoldEnd()){
-			//なかった
-			//まだ終わってない
-			//Markerのテクスチャを取得
-			//ホールドエンドマーカーは描写しない
-			const sf::Texture * tex = this->mk->getTexturePtr(ms - ite->first.getJustTime(), NOJUDGE);
-			if (tex != nullptr) {
-
-				sf::Sprite markersp(*tex);
-				const sf::IntRect & rect = this->panel_position->get(ite->first.getPanelIndex());
-
-				markersp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
-				markersp.setScale(PanelPosition::get_ex(tex->getSize().x, rect.width), PanelPosition::get_ex(tex->getSize().y, rect.height));
-				this->draw(markersp);
-
+			else if (!ite->first.isHoldEnd()) {
+				//なかった
+				//まだ終わってない
+				//Markerのテクスチャを取得
+				//ホールドエンドマーカーは描写しない
+				this->drawMarker(ms - ite->first.getJustTime(), ite, NOJUDGE);
 			}
 
 		}
-	
 	}
-
-
-
-
+	
+	/*
+	開発メモ
+	いつものSequenceで描写できないこと→ホールドエンドがSequenceのEndに達していない時
+	・holdのsecondがnullptrじゃない
+	・endより以降に終わるholdを描写する
+	*/
+	//ホールドの描写
+	{
+		for (auto ite = this->player->getPlayRecord()->getHoldingList()->begin(); ite != this->player->getPlayRecord()->getHoldingList()->end(); ite++) {
+			if (ite->second != nullptr) {
+				jMillisec hold_end_time = ite->first.getJustTime() + ite->first.getHoldDuration();
+				if (hold_end_time >= end_ms) {
+					//描写
+					this->drawMarker(ms - ite->second->ms, ite, ite->second->judge);
+				}
+			}
+		}
+	}
 }
 
 void jubeon::game::layers::SequencePlayer::Exit()
 {
+}
+
+void jubeon::game::layers::SequencePlayer::drawMarker(const jMillisec now_ms ,const Notes::const_iterator & ite, Judge judge)
+{
+	const sf::Texture * tex = this->mk->getTexturePtr(now_ms, judge);
+	if (tex != nullptr) {
+
+		sf::Sprite markersp(*tex);
+
+		const sf::IntRect & rect = this->panel_position->get(ite->first.getPanelIndex());
+
+		markersp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
+		markersp.setScale(PanelPosition::get_ex(tex->getSize().x, rect.width), PanelPosition::get_ex(tex->getSize().y, rect.height));
+		this->draw(markersp);
+
+	}
 }
 
