@@ -63,8 +63,19 @@ void jubeon::game::layers::SequencePlayer::Draw()
 	const int end_ms = ms + this->mk->getLengthBefore();
 
 	//‚Ü‚¸msˆÈ~‚ÌSequence‚ÌƒCƒeƒŒ[ƒ^‚ðŽæ“¾
+	
+	jMillisec hold_max_time = 0;
+	
+	for (auto hold = this->player->getPlayRecord()->getHoldingList()->begin(); hold != this->player->getPlayRecord()->getHoldingList()->end(); hold++) {
+		if (hold->second != nullptr) {
+			jMillisec hold_end_time = hold->first.getJustTime() + hold->first.getHoldDuration();
+			if (hold_max_time < hold_end_time) hold_max_time = hold_end_time;
+		}
+	}
+
 	Notes::const_iterator begin = this->sequence->search(start_ms);
-	Notes::const_iterator end = this->sequence->search(end_ms);
+	Notes::const_iterator end = this->sequence->search((end_ms > hold_max_time ? end_ms : hold_max_time));
+
 
 	for (auto ite = begin; ite != end; ite++) {
 		//•`ŽÊ”ÍˆÍ“à

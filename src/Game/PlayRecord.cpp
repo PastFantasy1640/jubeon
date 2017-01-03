@@ -86,7 +86,7 @@ void jubeon::game::PlayRecord::judge(const input::PanelInput panel_input)
 				}
 
 				//”»’è‚·‚é
-				j = MISS;
+				j = EARLY;
 				if (just_time >= panel_input.ms) {
 					//Before
 					jMillisec distance = just_time - panel_input.ms;
@@ -334,9 +334,8 @@ const jubeon::game::Score * jubeon::game::PlayRecord::getScore() const
 {
 	return &this->score;
 }
-/*
-const std::list<jubeon::game::Note> * jubeon::game::PlayRecord::getHoldingList(void) const
+
+const jubeon::game::Notes * jubeon::game::PlayRecord::getHoldingList(void) const
 {
 	return &(this->holding_list);
 }
-*/

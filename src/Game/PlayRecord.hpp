@@ -58,7 +58,7 @@ namespace jubeon {
 			using JudgedPanelInputs::empty;
 			using JudgedPanelInputs::operator[];
 
-			const std::list<Note> * getHoldingList(void) const;
+			const Notes * getHoldingList(void) const;
 
 		private:
 
