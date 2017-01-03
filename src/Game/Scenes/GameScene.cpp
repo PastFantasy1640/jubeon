@@ -63,8 +63,8 @@ void jubeon::game::scenes::GameScene::init(void)
 	
 	//this->sequence.reset( new jubeon::parser::YoubeatParser(jubeon::parser::YoubeatParser::loadFromFile("musics/Daydream Cafe/note.ndt")));
 	
-	this->player.initForAuto(notes, 0);
-	this->player1.initForPlay(this->gs_event.getPanelStreamBuf(), notes, 0);
+	this->player1.initForAuto(notes, 0);
+	this->player.initForPlay(this->gs_event.getPanelStreamBuf(), notes, 0);
 
 	//std::vector<Note> notes = jmemo2.getNotes();
 

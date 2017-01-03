@@ -35,6 +35,11 @@ int jubeon::game::Note::getHoldDuration(void) const
 	return this->duration;
 }
 
+int jubeon::game::Note::getHoldEndTime(void) const
+{
+	return this->getJustTime() + this->getHoldDuration();
+}
+
 int jubeon::game::Note::getHoldMarkerIndex(void) const
 {
 	return this->holdMarkerIndex;

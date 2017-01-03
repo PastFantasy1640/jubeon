@@ -72,7 +72,7 @@ jubeon::game::JudgedPanelInput * jubeon::game::PlayRecord::judge(const input::Pa
 		for (auto ite = this->holding_list.begin(); ite != this->holding_list.end(); ite++) {
 			if (panel_input.panel_no == ite->first.getPanelIndex() && ite->second == nullptr) {
 				//Search hold end
-				int just_time = ite->first.getJustTime() + ite->first.getHoldDuration();
+				int just_time = ite->first.getHoldEndTime();
 				Notes::const_iterator hold_end = this->sequence->search(just_time-1);
 				for (; hold_end != this->sequence->end(); ) {
 					if (hold_end->first.getJustTime() != just_time) hold_end = this->sequence->end();
@@ -129,8 +129,8 @@ void jubeon::game::PlayRecord::update(const Music * music)
 	//[TO DO]ホールドし続けたときに判定を追加する。
 	//hold_listを利用すればうまくできる？
 	for (auto ite = this->holding_list.begin(); ite != this->holding_list.end(); ite++) {
-		if (ite->second == nullptr && music->getPlayingCurrentTime() >= ite->first.getJustTime()) {
-			ite->second = this->judge(input::PanelInput(ite->first.getPanelIndex(), RELEASE, ite->first.getJustTime()));
+		if (ite->second == nullptr && music->getPlayingCurrentTime() >= ite->first.getHoldEndTime()) {
+			ite->second = this->judge(input::PanelInput(ite->first.getPanelIndex(), RELEASE, ite->first.getHoldEndTime()));
 		}
 	}
 

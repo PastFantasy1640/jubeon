@@ -56,6 +56,7 @@ namespace jubeon {
 			int getJustTime(void) const;
 			int getPanelIndex(void) const;
 			int getHoldDuration(void) const;
+			int getHoldEndTime(void) const;
 			int getHoldMarkerIndex(void) const;
 			bool isHold(void) const;
 			bool isHoldEnd(void) const;

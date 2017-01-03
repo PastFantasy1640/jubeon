@@ -93,7 +93,6 @@ void jubeon::game::Player::updateInput(const Music * music)
 {
 	while (this->panel_que->getQueSize()) {
 		input::PanelInput p = this->panel_que->unque();
-
 		this->record->judge(p);
 	}
 	this->record->update(music);
