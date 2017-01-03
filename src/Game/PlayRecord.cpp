@@ -21,9 +21,9 @@ jubeon::game::PlayRecord::~PlayRecord()
 */}
 
 
-void jubeon::game::PlayRecord::judge(const input::PanelInput panel_input)
+jubeon::game::JudgedPanelInput * jubeon::game::PlayRecord::judge(const input::PanelInput panel_input)
 {
-
+	JudgedPanelInput * ret = nullptr;
 
 	Judge j = NOJUDGE;
 	if (panel_input.t == PUSH) {
@@ -61,9 +61,11 @@ void jubeon::game::PlayRecord::judge(const input::PanelInput panel_input)
 		std::unique_ptr<JudgedPanelInput> jptr(new JudgedPanelInput(panel_input, j));
 		if (j != NOJUDGE) {
 			this->sequence->setJudgedPanelInput(ite, jptr.get());
+			ret = jptr.get();
 			this->score.incJudgeCount(j);
 		}
 		this->emplace_back(std::move(jptr));
+
 	}
 	else if (panel_input.t == RELEASE) {
 		//ホールドのリリース判定
@@ -108,24 +110,30 @@ void jubeon::game::PlayRecord::judge(const input::PanelInput panel_input)
 				if (j != NOJUDGE) {
 					ite->second = jptr.get();
 					this->sequence->setJudgedPanelInput(hold_end, jptr.get());
-
+					ret = jptr.get();
 					this->score.incJudgeCount(j);
 				}
 				this->emplace_back(std::move(jptr));
-
-
 
 			}
 		}
 	}
 
 
-
+	return ret;
 
 }
 
 void jubeon::game::PlayRecord::update(const Music * music)
 {
+	//[TO DO]ホールドし続けたときに判定を追加する。
+	//hold_listを利用すればうまくできる？
+	for (auto ite = this->holding_list.begin(); ite != this->holding_list.end(); ite++) {
+		if (ite->second == nullptr && music->getPlayingCurrentTime() >= ite->first.getJustTime()) {
+			ite->second = this->judge(input::PanelInput(ite->first.getPanelIndex(), RELEASE, ite->first.getJustTime()));
+		}
+	}
+
 	//for autoplay
 	for (auto ite = this->pinputs.begin(); ite != this->pinputs.end();) {
 		if (music->getPlayingCurrentTime() >= ite->ms) {

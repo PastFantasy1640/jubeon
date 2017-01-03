@@ -37,7 +37,7 @@ namespace jubeon {
 
 			//Judge
 			//‚±‚±‚Å’Ç‰Á
-			void judge(const input::PanelInput panel_input);
+			JudgedPanelInput * judge(const input::PanelInput panel_input);
 
 			void update(const Music * music);
 
