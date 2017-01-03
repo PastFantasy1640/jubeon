@@ -181,6 +181,8 @@ void jubeon::graphics::LayerManager::eventLoop(void)
 {
 	bool is_exit = false;
 
+	this->setKeyRepeatEnabled(false);
+
 	while (!is_exit && this->isOpen()) {
 		sf::Event e;
 		if (!this->waitEvent(e)) break;
