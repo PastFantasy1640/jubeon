@@ -47,7 +47,7 @@ int jubeon::game::Note::getHoldMarkerIndex(void) const
 
 bool jubeon::game::Note::isHold(void) const
 {
-	return this->getHoldDuration() != 0;
+	return this->getHoldDuration() != 0 || this->isHoldEnd();
 }
 
 bool jubeon::game::Note::isHoldEnd(void) const

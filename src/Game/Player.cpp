@@ -50,8 +50,18 @@ void jubeon::game::Player::initForAuto(const Sequence & sequence, const int play
 	//create auto file.
 	std::vector<input::PanelInput> pinputs;
 	for (auto ite = this->sequence->begin(); ite != this->sequence->end(); ite++) {
-		pinputs.emplace_back(input::PanelInput(ite->first.getPanelIndex(), jubeon::Type::PUSH, ite->first.getJustTime()));
-		pinputs.emplace_back(input::PanelInput(ite->first.getPanelIndex(), jubeon::Type::RELEASE, ite->first.getJustTime() + 10));
+		if (ite->first.isHold()) {
+			if (ite->first.isHoldEnd()) {
+				pinputs.emplace_back(input::PanelInput(ite->first.getPanelIndex(), jubeon::Type::RELEASE, ite->first.getJustTime()));
+			}
+			else {
+				pinputs.emplace_back(input::PanelInput(ite->first.getPanelIndex(), jubeon::Type::PUSH, ite->first.getJustTime()));
+			}
+		}
+		else {
+			pinputs.emplace_back(input::PanelInput(ite->first.getPanelIndex(), jubeon::Type::PUSH, ite->first.getJustTime()));
+			pinputs.emplace_back(input::PanelInput(ite->first.getPanelIndex(), jubeon::Type::RELEASE, ite->first.getJustTime() + 10));
+		}
 	}
 	this->record->setPanelInputs(pinputs);
 
