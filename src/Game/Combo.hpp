@@ -30,7 +30,8 @@ namespace jubeon {
 			//値変更の検知フラグを伏せる。
 			void clearUpdateCount(void);
 
-
+			Combo();
+			~Combo();
 		
 		};
 
