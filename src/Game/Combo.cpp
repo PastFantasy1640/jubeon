@@ -31,10 +31,8 @@ void jubeon::game::Combo::clearUpdateCount(void)
 	this->combo_baf = this->combo;
 }
 
-jubeon::game::Combo::Combo()
+jubeon::game::Combo::Combo() : combo(0), combo_baf(0)
 {
-	this->combo = 0;
-	this->combo_baf = 0;
 }
 
 jubeon::game::Combo::~Combo()
