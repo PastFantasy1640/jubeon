@@ -5,15 +5,26 @@
 
 #include "../../Graphics/Layer/LayerBase.hpp"
 #include <SFML/Graphics.hpp>
+#include <vector>
+
+#include "Game/Player.hpp"
 
 namespace jubeon {
 	namespace game {
 		namespace layers {
 			class HoldLayer : public jubeon::graphics::LayerBase {
 			private:
-				//sf::Texture frame;
+				std::vector<sf::Texture> arrow_tex;
+				std::vector<sf::Texture> panel_tex;
+				sf::Texture line_tex;
+				sf::Texture holdto_tex;
 
+				Player * player;
+
+				HoldLayer();
 			public:
+				HoldLayer(Player *const player);
+
 				virtual void Init() override;
 				virtual void Draw() override;
 				virtual void Exit() override;
