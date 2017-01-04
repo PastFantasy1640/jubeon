@@ -2,7 +2,7 @@
 //(c) 2016  white   ResourceMapping
 ////////////////////////////////////////
 
-#include "ResourceMapping.hpp"
+//#include "ResourceMapping.hpp"
 #include "JsonFileStorage.hpp"
 /*
 bool jubeon::storages::ResourceMapping::load(const std::string fpath)
