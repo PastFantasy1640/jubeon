@@ -8,6 +8,7 @@
 #include "Game/Layers/ShutterLayer.hpp"
 #include "Game/Layers/RivalShutterLayer.hpp"
 #include "Game/Layers/ScoreLayer.hpp"
+#include "Game/Layers/HoldLayer.hpp"
 
 //for panel position config
 #include "Game/PanelPosition.hpp"
@@ -90,6 +91,8 @@ void jubeon::game::scenes::GameScene::init(void)
 	//shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, sub_panel1_position, 0));
 	shared_ptr<layers::ScoreLayer> scorelayer(new layers::ScoreLayer(&this->player, this->music.get()));
 	shared_ptr<layers::PushframeLayer> push_frame_layer(new layers::PushframeLayer(&this->panel_position[0], this->gs_event.getPanelStreamBuf()));
+	shared_ptr<layers::PushframeLayer> hold_layer(new layers::HoldLayer(&this->panel_position[0], this->gs_event.getPanelStreamBuf()));
+	
 
     LayerManager * mainwindow = LayerManager::getInstance("mainwindow");
 	mainwindow->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
