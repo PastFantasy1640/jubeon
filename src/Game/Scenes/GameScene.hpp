@@ -36,6 +36,7 @@ namespace jubeon {
 				virtual ~EventBase() {}
 
 				Music * music;
+
 				void pollEvent(sf::Event e);
 
 				strbuf::StreamBuffer<jubeon::input::PanelInput> * jubeon::game::scenes::EventBase::getPanelStreamBuf(void);
@@ -50,6 +51,9 @@ namespace jubeon {
 				std::shared_ptr<Music> music;
 				Player player;
 				Player player1;
+
+				//temp
+				std::unique_ptr<Marker> marker;
 
 				EventBase gs_event;
 

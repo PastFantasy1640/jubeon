@@ -33,15 +33,6 @@ void jubeon::game::layers::SequencePlayer::Init()
 
 
 
-	//###################TEMPORARY####################
-	//マーカーマネージャ－みたいなのを用意する
-	//マーカー読み込みテスト
-	this->mk.reset(new Marker("media/marker/shutter","shutter.json"));
-	if (!this->mk->load()) {
-		systems::Logger::error("マーカーが読み込めませんでした");
-	}
-
-
 }
 
 void jubeon::game::layers::SequencePlayer::Draw()

@@ -27,6 +27,8 @@
 //for debug
 #include <iostream>
 
+#include "Systems/Logger.hpp"
+
 
 using namespace jubeon::game;
 using namespace jubeon::graphics;
@@ -73,7 +75,18 @@ void jubeon::game::scenes::GameScene::init(void)
 
 	//*********シーケンステストここまで
 
+	
 
+
+	//###################TEMPORARY####################
+	//マーカーマネージャ－みたいなのを用意する
+	//マーカー読み込みテスト
+	this->marker.reset(new Marker("media/marker/shutter","shutter.json"));
+	if (!this->marker->load()) {
+		systems::Logger::error("マーカーが読み込めませんでした");
+	}
+	this->player.setMarker(this->marker.get());
+	this->player1.setMarker(this->marker.get());
 
 	//TEMP
 	///////////////////////
