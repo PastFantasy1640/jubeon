@@ -27,7 +27,7 @@ jubeon::game::Note jubeon::parser::YoubeatParser::Note_C::convertToNote(const Bp
 	double paramB = 0.0f;
 	double ms = 0.0f;
 
-	// != p ‚Ü‚Å‚Æ‚µ‚ÄŒvZ‚·‚ê‚Î‚¢‚¢
+	// != p ã¾ã§ã¨ã—ã¦è¨ˆç®—ã™ã‚Œã°ã„ã„
 	for (BpmTable::const_iterator cur = bpm_table.begin(); cur != p; cur++) {
 		ms = paramA * cur->haku + paramB;
 		

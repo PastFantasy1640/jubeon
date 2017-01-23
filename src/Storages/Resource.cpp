@@ -134,7 +134,7 @@ std::shared_ptr<sf::Font> jubeon::storages::Resource::getf(void)
 
 void jubeon::storages::Resource::release()
 {
-	//�ǂݍ��ݍς݂̃f�[�^������Ώ����B�������Ή��}�b�s���O�͂��̂܂�
+	//読み込み済みのデータがあれば消す。ただし対応マッピングはそのまま
 	switch (this->type) {
 	case TEX:
 		Resource::ResourceManager::getInstance()->textures.erase(this->id);
@@ -155,7 +155,7 @@ jubeon::storages::Resource jubeon::storages::Resource::setf(const std::string fi
 {
 	if (ResourceManager::getInstance()->filename_map_id.count(filename)) return Resource(ResourceManager::getInstance()->filename_map_id.at(filename), type);
 	
-	//���݂��Ȃ��̂Œǉ�
+	//存在しないので追加
 	Resource res(ResourceManager::getInstance()->getNextID(), type);
 	systems::Logger::information("Add the resource from filename. FILE : [(" + std::to_string(res.id) + ")" + filename + "]");
 
@@ -169,7 +169,7 @@ jubeon::storages::Resource jubeon::storages::Resource::seti(std::unique_ptr<sf::
 
 	if (ResourceManager::getInstance()->inputstream_map_id.count(inputstream->get())) return Resource(ResourceManager::getInstance()->inputstream_map_id.at(inputstream->get()), type);
 
-	//���݂��Ȃ��̂Œǉ�
+	//存在しないので追加
 	Resource res(ResourceManager::getInstance()->getNextID(), type);
 	systems::Logger::information("Add the resource from inputstream. FILE : [(" + std::to_string(res.id) + ")inputstream]");
 
@@ -180,14 +180,14 @@ jubeon::storages::Resource jubeon::storages::Resource::seti(std::unique_ptr<sf::
 
 jubeon::storages::Resource jubeon::storages::Resource::setk(const std::string key)
 {
-	if (ResourceManager::getInstance()->key_map.count(key)) return ResourceManager::getInstance()->key_map.at(key);
+	if (ResourceManager::getInstance()->key_map.count(key)) return *(ResourceManager::getInstance()->key_map.at(key).get());
 	systems::Logger::error("[EXCEPTION:Resource]Failed to get key. There is no such key. KEY : [" + key + "]");
 	return Resource(0,TEX);
 }
 
 bool jubeon::storages::Resource::setKey(const std::string key)
 {
-	bool res =  ResourceManager::getInstance()->key_map.insert(std::pair<std::string,Resource>(key,*this)).second;
+	bool res =  ResourceManager::getInstance()->key_map.insert(std::pair<std::string,std::unique_ptr<Resource>>(key,std::unique_ptr<Resource>(new Resource(*this)))).second;
 
 	if (!res) {
 		systems::Logger::error("[EXCEPTION:Resource]Failed to set key. Already used. KEY : [" + key + "]");

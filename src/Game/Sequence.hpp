@@ -13,13 +13,13 @@
 namespace jubeon {
 	namespace game {
 		
-		//Note‚Íconst•t‚«ƒƒ\ƒbƒh‚Ì‚İ‚ÅRead Only‚È‚½‚ßƒXƒŒƒbƒhƒZ[ƒt
+		//Noteã¯constä»˜ããƒ¡ã‚½ãƒƒãƒ‰ã®ã¿ã§Read OnlyãªãŸã‚ã‚¹ãƒ¬ãƒƒãƒ‰ã‚»ãƒ¼ãƒ•
 		class Note{
 
 
 		private:
 
-			//ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Í‹Ö~
+			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯ç¦æ­¢
 			Note();
 
 			void operator=(Note & n);
@@ -27,32 +27,32 @@ namespace jubeon {
 
 		protected:
 			
-			//ƒWƒƒƒXƒgƒ^ƒCƒ€(ms)
+			//ã‚¸ãƒ£ã‚¹ãƒˆã‚¿ã‚¤ãƒ (ms)
 			const jMillisec justTime;
 
-			//ƒpƒlƒ‹”Ô†(0-15)
+			//ãƒ‘ãƒãƒ«ç•ªå·(0-15)
 			const jPanel panelIndex;
 
-			//ƒz[ƒ‹ƒh‚ÌŠÔ(0‚Ìê‡‚Íƒ^ƒbƒ`•ˆ–Êj
+			//ãƒ›ãƒ¼ãƒ«ãƒ‰ã®æ™‚é–“(0ã®å ´åˆã¯ã‚¿ãƒƒãƒè­œé¢ï¼‰
 			const jMillisec duration;
 
-			//ƒz[ƒ‹ƒhƒ}[ƒJ[‚ÌoŒ»ˆÊ’uƒpƒlƒ‹
-			//0xff‚Ìê‡‚Íƒz[ƒ‹ƒhƒ}[ƒJ[I—¹’n“_
-			//isHold‚ÍtrueAisHoldEnd‚àtrue‚É‚È‚éB
+			//ãƒ›ãƒ¼ãƒ«ãƒ‰ãƒãƒ¼ã‚«ãƒ¼ã®å‡ºç¾ä½ç½®ãƒ‘ãƒãƒ«
+			//0xffã®å ´åˆã¯ãƒ›ãƒ¼ãƒ«ãƒ‰ãƒãƒ¼ã‚«ãƒ¼çµ‚äº†åœ°ç‚¹
+			//isHoldã¯trueã€isHoldEndã‚‚trueã«ãªã‚‹ã€‚
 			const jPanel holdMarkerIndex;
 
 		public:
 			
 			static const jPanel HOLD_END = 0xFF;
 
-			//•’Ê‚Ìƒ}[ƒJ[‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+			//æ™®é€šã®ãƒãƒ¼ã‚«ãƒ¼ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 			Note(const jMillisec just_time, const jPanel panel_idx, const bool is_hold_end = false);
 
-			//ƒz[ƒ‹ƒhƒ}[ƒJ[‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+			//ãƒ›ãƒ¼ãƒ«ãƒ‰ãƒãƒ¼ã‚«ãƒ¼ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 			Note(const jMillisec just_time, const jPanel panel_idx, const int duration, const int holdmarker_panel_idx);
 
 
-			//ƒAƒNƒZƒT
+			//ã‚¢ã‚¯ã‚»ã‚µ
 			int getJustTime(void) const;
 			int getPanelIndex(void) const;
 			int getHoldDuration(void) const;
@@ -65,12 +65,12 @@ namespace jubeon {
 		typedef std::pair<const Note, JudgedPanelInput *> NoteJudgePair;
 		typedef std::vector<NoteJudgePair> Notes;
 
-		//Note‚Íconst•t‚«ƒƒ\ƒbƒh‚Ì‚İ‚ÅRead Only‚È‚½‚ßƒXƒŒƒbƒhƒZ[ƒt
+		//Noteã¯constä»˜ããƒ¡ã‚½ãƒƒãƒ‰ã®ã¿ã§Read OnlyãªãŸã‚ã‚¹ãƒ¬ãƒƒãƒ‰ã‚»ãƒ¼ãƒ•
 		class Sequence : protected Notes{
 
 		private:
 			
-			//ƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Í‹Ö~
+			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯ç¦æ­¢
 			Sequence(void);
 
 
@@ -78,10 +78,10 @@ namespace jubeon {
 
 			Sequence(const Sequence & cp);
 
-			//‰Šú‰»
+			//åˆæœŸåŒ–
 			Sequence(const std::vector<Note> notes);
 
-			Notes::const_iterator jubeon::game::Sequence::search(const jMillisec ms) const;
+			Notes::const_iterator search(const jMillisec ms) const;
 			
 			using Notes::const_iterator;
 			using Notes::operator[];

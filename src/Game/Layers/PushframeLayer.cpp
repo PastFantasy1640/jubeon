@@ -1,5 +1,6 @@
 #include "PushframeLayer.hpp"
-#include "Storages/ResourceManager.hpp"
+
+#include "Storages/Resource.hpp"
 
 
 
@@ -13,17 +14,17 @@ jubeon::game::layers::PushframeLayer::PushframeLayer(const jubeon::game::PanelPo
 void jubeon::game::layers::PushframeLayer::Init()
 {
 
-	//ƒpƒlƒ‹˜g‚Ì“Ç‚İ‚İ
+	//ï¿½pï¿½lï¿½ï¿½ï¿½gï¿½Ì“Ç‚İï¿½ï¿½ï¿½
 	storages::Resource::setf("media/image/panel_shadow.png", storages::Resource::TEX).setKey("panel_shadow");
 	
-	//‰æ–ÊƒvƒbƒVƒ…‚Í–³‚µ
+	//ï¿½ï¿½ï¿½Êƒvï¿½bï¿½Vï¿½ï¿½ï¿½Í–ï¿½ï¿½ï¿½
 	this->pushing = 0;
 
 }
 
 void jubeon::game::layers::PushframeLayer::Draw()
 {
-	//‰æ–ÊƒNƒŠƒA
+	//ï¿½ï¿½ï¿½ÊƒNï¿½ï¿½ï¿½A
 	this->clearBuffer();
 
 	while (this->poutput_que->getQueSize()) {
@@ -31,7 +32,7 @@ void jubeon::game::layers::PushframeLayer::Draw()
 		if (p.t == PUSH) this->setPushing(p.panel_no);
 		else this->setReleasing(p.panel_no);
 	}
-	//ÅI“I‚Épush‚³‚ê‚Ä‚éêŠ‚É•`Ê
+	//ï¿½ÅIï¿½Iï¿½ï¿½pushï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½êŠï¿½É•`ï¿½ï¿½
 	for (int i = 0; i < 16; i++) {
 		if (this->isPushing(i)) {
 			const sf::Texture & pframe = *storages::Resource::setk("panel_shadow").gett();

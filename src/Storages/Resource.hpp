@@ -13,7 +13,7 @@
 
 #include <unordered_map>
 
-//***** TO DO : �����J�E���g��1�̃��\�[�X���������@�\��ǉ�
+//***** TO DO : 所持カウントが1のリソースを解放する機能を追加
 
 namespace jubeon {
 	namespace storages {
@@ -45,9 +45,9 @@ namespace jubeon {
 
 			bool setKey(const std::string key);
 
-			//init�֐�������āA�ݒ�t�@�C����ǂݏo���悤�ɂ��Ăق���
-			//���ꂩ�Ainit�ŏ������p�����[�^
-			//�A���`�G�C���A�X�̗L�������͂����ł����ς����Ȃ��B
+			//init関数を作って、設定ファイルを読み出すようにしてほしい
+			//それか、initで初期化パラメータ
+			//アンチエイリアスの有効無効はここでしか変えられない。
 			
 			void operator=(Resource p);
 			Resource();
@@ -73,7 +73,7 @@ namespace jubeon {
 				std::unordered_map<unsigned int, std::shared_ptr<sf::Font>> fonts;
 				std::unordered_map<unsigned int, std::shared_ptr<sf::SoundBuffer>> sounds;
 
-				std::unordered_map<std::string, Resource> key_map;
+				std::unordered_map<std::string, std::unique_ptr<Resource>> key_map;
 
 				
 

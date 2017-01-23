@@ -1,6 +1,6 @@
 #include "RivalShutterLayer.hpp"
 
-#include "Storages/ResourceManager.hpp"
+#include "Storages/Resource.hpp"
 
 using namespace jubeon::storages;
 
@@ -20,7 +20,7 @@ void jubeon::game::layers::RivalShutterLayer::Init()
 {
 	this->createBuffer(sf::Vector2u(192,192));
 
-	//ƒvƒŒƒCƒ„[‚ª‹‚éŽž‚Æ‚¢‚È‚¢Žž‚Å”wŒi‚ªØ‚è‘Ö‚í‚é
+	//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½éŽžï¿½Æ‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½Å”wï¿½iï¿½ï¿½ï¿½Ø‚ï¿½ï¿½Ö‚ï¿½ï¿½ï¿½
 	if (this->enable) {
 		Resource::setf("media/image/combowhite.png", Resource::TEX);
 		Resource::setf("media/image/rival_frame.png", Resource::TEX);
@@ -58,7 +58,7 @@ void jubeon::game::layers::RivalShutterLayer::Draw()
 
 	}
 	else {
-		//ƒvƒŒƒCƒ„[–³‚µ
+		//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½
 		this->draw(sf::Sprite(*Resource::setf("media/image/default_rival.png", Resource::TEX).gett()));
 	}
 }

@@ -3,8 +3,8 @@
 //for Logger
 #include "Logger.hpp"
 
-std::atomic<bool> jubeon::systems::Scene::is_running = false;
-std::atomic<bool> jubeon::systems::Scene::is_loop = false;
+std::atomic<bool> jubeon::systems::Scene::is_running(false);
+std::atomic<bool> jubeon::systems::Scene::is_loop(false);
 bool jubeon::systems::Scene::is_scene_change = false;
 std::shared_ptr<jubeon::systems::Scene> jubeon::systems::Scene::next_scene;
 std::shared_ptr<jubeon::systems::Scene> jubeon::systems::Scene::current_scene;
@@ -15,7 +15,7 @@ jubeon::systems::Scene::Scene()
 {
 }
 
-//Š—LŒ ‚ÌˆÚ“®
+//ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½ÌˆÚ“ï¿½
 void jubeon::systems::Scene::setNextScene(const std::shared_ptr<Scene> & next_scene)
 {
 	Scene::next_scene = next_scene;
@@ -25,12 +25,12 @@ void jubeon::systems::Scene::setNextScene(const std::shared_ptr<Scene> & next_sc
 void jubeon::systems::Scene::process2(const std::shared_ptr<Scene> & first_scene)
 {
 	if (!Scene::is_running) {
-		Scene::is_running.store(true);	//ƒCƒ“ƒNƒ‹[ƒhƒK[ƒh“I‚È
+		Scene::is_running.store(true);	//ï¿½Cï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½[ï¿½hï¿½Kï¿½[ï¿½hï¿½Iï¿½ï¿½
 		Scene::is_loop.store(true);
 
         Logger::information("Start to scene process.");
 
-		//‰‰ñ‚ÌƒV[ƒ“‘ã“ü
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ÌƒVï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Scene::current_scene = first_scene;
 		
 
@@ -45,7 +45,7 @@ void jubeon::systems::Scene::process2(const std::shared_ptr<Scene> & first_scene
 			ret = Scene::current_scene->process();
 
 			if (Scene::is_scene_change) {
-				Scene::current_scene = Scene::next_scene;	//ƒV[ƒ“‚ğˆÚ‚·
+				Scene::current_scene = Scene::next_scene;	//ï¿½Vï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Ú‚ï¿½
                 Logger::information("Initializing the next scene.");
 				Scene::current_scene->init();
 				Scene::is_scene_change = false;
@@ -60,11 +60,11 @@ void jubeon::systems::Scene::process2(const std::shared_ptr<Scene> & first_scene
 		Scene::main_window->closeWindow();
 
 
-		//•Ô‚·
+		//ï¿½Ô‚ï¿½
 		Scene::is_running.store(false);
 		//return ret;
 	}
 
-	//Ä‹A“IÀs
+	//ï¿½Ä‹Aï¿½Iï¿½ï¿½ï¿½s
 	//return -1;
 }

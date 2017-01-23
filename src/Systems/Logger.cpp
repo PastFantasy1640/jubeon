@@ -3,31 +3,31 @@
 #include <sstream>
 #include <iostream>
 
-std::ofstream jubeon::systems::Logger::_fst;	//ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
-std::chrono::time_point<std::chrono::system_clock> jubeon::systems::Logger::_stc = std::chrono::system_clock::now();	//Œ»İŠÔ
-std::mutex jubeon::systems::Logger::_mtx;	//ƒXƒŒƒbƒhƒƒbƒN
-bool jubeon::systems::Logger::_fir = false;	//Å‰‚ÌƒƒO‚©
+std::ofstream jubeon::systems::Logger::_fst;	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
+std::chrono::time_point<std::chrono::system_clock> jubeon::systems::Logger::_stc = std::chrono::system_clock::now();	//ç¾åœ¨æ™‚é–“
+std::mutex jubeon::systems::Logger::_mtx;	//ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ­ãƒƒã‚¯
+bool jubeon::systems::Logger::_fir = false;	//æœ€åˆã®ãƒ­ã‚°ã‹
 #ifdef _DEBUG
-jubeon::systems::Logger::LogLevel jubeon::systems::Logger::_llv = jubeon::systems::Logger::ALL;	//ƒƒOƒŒƒxƒ‹(debug)
+jubeon::systems::Logger::LogLevel jubeon::systems::Logger::_llv = jubeon::systems::Logger::ALL;	//ãƒ­ã‚°ãƒ¬ãƒ™ãƒ«(debug)
 bool jubeon::systems::Logger::_sdo = true;
 #else
-jubeon::systems::Logger::LogLevel jubeon::systems::Logger::_llv = jubeon::systems::Logger::ERROR_ONLY;	//ƒƒOƒŒƒxƒ‹(release)
+jubeon::systems::Logger::LogLevel jubeon::systems::Logger::_llv = jubeon::systems::Logger::ERROR_ONLY;	//ãƒ­ã‚°ãƒ¬ãƒ™ãƒ«(release)
 bool jubeon::systems::Logger::_sdo = false;
 #endif
 
 using namespace jubeon::systems;
 
-//â‘Î‚ÉÀ‘Ì‚Í¶¬‚³‚ê‚È‚¢
+//çµ¶å¯¾ã«å®Ÿä½“ã¯ç”Ÿæˆã•ã‚Œãªã„
 jubeon::systems::Logger::Logger()
 {
 }
 
-//‚©‚ç‰ó‚·‚±‚Æ‚à‚Å‚«‚È‚¢‚æ‚Ë
+//ã‹ã‚‰å£Šã™ã“ã¨ã‚‚ã§ããªã„ã‚ˆã­
 jubeon::systems::Logger::~Logger()
 {
 }
 
-//ƒƒOƒŒƒxƒ‹‚ÌƒZƒbƒg
+//ãƒ­ã‚°ãƒ¬ãƒ™ãƒ«ã®ã‚»ãƒƒãƒˆ
 void jubeon::systems::Logger::setLogLevel(const LogLevel new_log_level)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);
@@ -37,9 +37,9 @@ void jubeon::systems::Logger::setLogLevel(const LogLevel new_log_level)
 void jubeon::systems::Logger::_Write(const std::string text)
 {
 	if (text.length() > 4) {
-		//Œ`®‚ÍINFO[Th(thread_no)](current_time):hogehoge
+		//å½¢å¼ã¯INFO[Th(thread_no)](current_time):hogehoge
 
-		//‚à‚µ‰üs•¶š‚ªŠÜ‚Ü‚ê‚Ä‚¢‚½‚ç‚»‚Ì‘O‚Étab•¶š‚ğ“ü‚ê‚é
+		//ã‚‚ã—æ”¹è¡Œæ–‡å­—ãŒå«ã¾ã‚Œã¦ã„ãŸã‚‰ãã®å‰ã«tabæ–‡å­—ã‚’å…¥ã‚Œã‚‹
 		std::stringstream textst(text);
 		std::string output_text("");
 		std::string buf;
@@ -49,13 +49,13 @@ void jubeon::systems::Logger::_Write(const std::string text)
 		}
 		
 
-		//ƒXƒŒƒbƒh‚ÌID‚ğæ“¾
+		//ã‚¹ãƒ¬ãƒƒãƒ‰ã®IDã‚’å–å¾—
 		std::thread::id this_id = std::this_thread::get_id();
 		
-		//Œo‰ß‚ğæ“¾
+		//çµŒéæ™‚åˆ»ã‚’å–å¾—
 		auto dur = std::chrono::system_clock::now() - Logger::_stc;
 		
-		//ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“
+		//ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³
 		if(Logger::_fir) Logger::_fst.open("Logger.log", std::ios::app);
 		else {
 			Logger::_fst.open("Logger.log");
@@ -78,27 +78,27 @@ void jubeon::systems::Logger::_Write(const std::string text)
 	}
 }
 
-//î•ñ
+//æƒ…å ±
 void jubeon::systems::Logger::information(const std::string text)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);
-	//ƒŒƒxƒ‹‚Ìƒ`ƒFƒbƒN
+	//ãƒ¬ãƒ™ãƒ«ã®ãƒã‚§ãƒƒã‚¯
 	if (Logger::_llv == Logger::LogLevel::ALL) {
 		Logger::_Write("INFO" + text);
 	}
 }
 
-//Œx
+//è­¦å‘Š
 void jubeon::systems::Logger::warning(const std::string text)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);
-	//ƒŒƒxƒ‹ƒ`ƒFƒbƒN
+	//ãƒ¬ãƒ™ãƒ«ãƒã‚§ãƒƒã‚¯
 	if (Logger::_llv == Logger::LogLevel::WARNING_AND_ERROR || Logger::_llv == Logger::LogLevel::ALL) {
 		Logger::_Write("WARN" + text);
 	}
 }
 
-//ƒGƒ‰[
+//ã‚¨ãƒ©ãƒ¼
 void jubeon::systems::Logger::error(const std::string text)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);
@@ -106,7 +106,7 @@ void jubeon::systems::Logger::error(const std::string text)
 }
 
 
-//—áŠO
+//ä¾‹å¤–
 void jubeon::systems::Logger::exception(const std::string text)
 {
 	std::lock_guard<std::mutex> lock(Logger::_mtx);

@@ -55,6 +55,7 @@ using namespace jubeon::graphics;
 using namespace jubeon::systems;
 using namespace std;
 
+#include <fstream>
 
 int main(int argc, char * argv[]){
 
@@ -62,6 +63,11 @@ int main(int argc, char * argv[]){
 	//in LINUX, call this to be able to use multithread.
 	XInitThreads();
 #endif
+
+    ofstream ofs("/home/white/test.txt");
+    ofs << "hogehoge";
+    ofs.close();
+
 
     //Starting Log
     Logger::information("Starting jubeon program.");
@@ -88,13 +94,14 @@ int main(int argc, char * argv[]){
     //create window
     LayerManager mainwindow("mainwindow",Configures::getInstance()->window_config->getLayoutType());
 		
+    sf::Uint32 style = 0;
     
     mainwindow.create(
         sf::VideoMode(
             Configures::getInstance()->window_config->getSize().x,
             Configures::getInstance()->window_config->getSize().y),
         "jubeon v0.1",              //window title
-        sf::Style::None);
+        style);
         
     mainwindow.setPosition(
         sf::Vector2i(
@@ -113,7 +120,7 @@ int main(int argc, char * argv[]){
 
 /////////////////////////////////////////
 
-	//ƒpƒlƒ‹ƒRƒ“ƒtƒBƒO
+	//ãƒ‘ãƒãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚°
 	Configures::getInstance()->panel_config.reset(new jubeon::models::PanelConfig("media/config/keyconfig.json"));
 	Configures::getInstance()->panel_config->load();
 
@@ -124,14 +131,14 @@ int main(int argc, char * argv[]){
 	int ret = Scene::process<scenes::GameScene>(&mainwindow);
 	
 	
-	//ƒCƒxƒ“ƒgŠÄ‹
+	//ã‚¤ãƒ™ãƒ³ãƒˆç›£è¦–
 	mainwindow.eventLoop();
 
 	Logger::information("Exiting the system...");
 
 	Scene::ExitGame();
 
-	//ƒVƒXƒeƒ€I—¹
+	//ã‚·ã‚¹ãƒ†ãƒ çµ‚äº†
 	return ret;
 }
 

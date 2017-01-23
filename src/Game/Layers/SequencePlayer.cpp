@@ -29,16 +29,16 @@ jubeon::game::layers::SequencePlayer::SequencePlayer(
 //Initialize
 void jubeon::game::layers::SequencePlayer::Init()
 {
-	//‰Šú‰»ˆ—
+	//åˆæœŸåŒ–å‡¦ç†
 
 
 
 	//###################TEMPORARY####################
-	//ƒ}[ƒJ[ƒ}ƒl[ƒWƒƒ|‚Ý‚½‚¢‚È‚Ì‚ð—pˆÓ‚·‚é
-	//ƒ}[ƒJ[“Ç‚Ýž‚ÝƒeƒXƒg
+	//ãƒžãƒ¼ã‚«ãƒ¼ãƒžãƒãƒ¼ã‚¸ãƒ£ï¼ã¿ãŸã„ãªã®ã‚’ç”¨æ„ã™ã‚‹
+	//ãƒžãƒ¼ã‚«ãƒ¼èª­ã¿è¾¼ã¿ãƒ†ã‚¹ãƒˆ
 	this->mk.reset(new Marker("media/marker/shutter","shutter.json"));
 	if (!this->mk->load()) {
-		systems::Logger::error("ƒ}[ƒJ[‚ª“Ç‚Ýž‚ß‚Ü‚¹‚ñ‚Å‚µ‚½");
+		systems::Logger::error("ãƒžãƒ¼ã‚«ãƒ¼ãŒèª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸ");
 	}
 
 
@@ -46,33 +46,33 @@ void jubeon::game::layers::SequencePlayer::Init()
 
 void jubeon::game::layers::SequencePlayer::Draw()
 {
-	//‰æ–ÊƒNƒŠƒA
+	//ç”»é¢ã‚¯ãƒªã‚¢
 	this->clearBuffer();
 
-	//•`ŽÊ
-	//Music‚É–â‚¢‡‚í‚¹‚Ä¡‚ÌÄ¶Žž‚ðŽæ“¾
+	//æå†™
+	//Musicã«å•ã„åˆã‚ã›ã¦ä»Šã®å†ç”Ÿæ™‚åˆ»ã‚’å–å¾—
 	const int mms = this->player->getCurrentTime(this->music);
 	const int ms = mms - this->offset_ms;
 
 
 
-	//### •ˆ–Ê‚Ì•`ŽÊ ###
-	//•ˆ–Ê•\Ž¦‚Ì‰Â”\«‚Ì‚ ‚éms‚ÍACurrentMS - (disappear_time * 2)‚©‚çACurrentMS + appear_time
-	//‘S‚ÄÅ‚500ms‚Å‚ ‚é‚Æ‰¼’è‚µ‚Ä
-	const int start_ms = ms - this->mk->getLengthAfterMax();	//‹t‚È‚ñ‚¾‚È\
+	//### è­œé¢ã®æå†™ ###
+	//è­œé¢è¡¨ç¤ºã®å¯èƒ½æ€§ã®ã‚ã‚‹msã¯ã€CurrentMS - (disappear_time * 2)ã‹ã‚‰ã€CurrentMS + appear_time
+	//å…¨ã¦æœ€é«˜500msã§ã‚ã‚‹ã¨ä»®å®šã—ã¦
+	const int start_ms = ms - this->mk->getLengthAfterMax();	//é€†ãªã‚“ã ãªâ€•
 	const int end_ms = ms + this->mk->getLengthBefore();
 
-	//‚Ü‚¸msˆÈ~‚ÌSequence‚ÌƒCƒeƒŒ[ƒ^‚ðŽæ“¾
+	//ã¾ãšmsä»¥é™ã®Sequenceã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’å–å¾—
 	Notes::const_iterator begin = this->sequence->search(start_ms);
 	Notes::const_iterator end = this->sequence->search(end_ms);
 
 	for (auto ite = begin; ite != end; ite++) {
-		//•`ŽÊ”ÍˆÍ“à
+		//æå†™ç¯„å›²å†…
 
 		if (ite->second != nullptr) {
-			//‚ ‚Á‚½
-			//‚Æ‚¢‚¤‚±‚Æ‚Í‚·‚Å‚É”»’è‚ªI‚í‚Á‚Ä‚¢‚éê‡‚Å‚ ‚éB
-			//Marker‚ÌƒeƒNƒXƒ`ƒƒ‚ðŽæ“¾
+			//ã‚ã£ãŸ
+			//ã¨ã„ã†ã“ã¨ã¯ã™ã§ã«åˆ¤å®šãŒçµ‚ã‚ã£ã¦ã„ã‚‹å ´åˆã§ã‚ã‚‹ã€‚
+			//Markerã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å–å¾—
 			const sf::Texture * tex = this->mk->getTexturePtr(ms - ite->second->ms, ite->second->judge);
 			if (tex != nullptr) {
 
@@ -87,9 +87,9 @@ void jubeon::game::layers::SequencePlayer::Draw()
 			}
 		}
 		else {
-			//‚È‚©‚Á‚½
-			//‚Ü‚¾I‚í‚Á‚Ä‚È‚¢
-			//Marker‚ÌƒeƒNƒXƒ`ƒƒ‚ðŽæ“¾
+			//ãªã‹ã£ãŸ
+			//ã¾ã çµ‚ã‚ã£ã¦ãªã„
+			//Markerã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’å–å¾—
 			const sf::Texture * tex = this->mk->getTexturePtr(ms - ite->first.getJustTime(), NOJUDGE);
 			if (tex != nullptr) {
 

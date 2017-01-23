@@ -34,12 +34,12 @@ void jubeon::game::Sequence::setJudgedPanelInput(const Notes::const_iterator tar
 
 jubeon::game::Notes::const_iterator jubeon::game::Sequence::search(const jubeon::jMillisec ms) const
 {
-	//“ñ•ª’Tõ
-	//ƒ‰ƒ€ƒ_®
+	//äºŒåˆ†æ¢ç´¢
+	//ãƒ©ãƒ ãƒ€å¼
 	std::function<size_t(size_t, size_t, unsigned int)> search = [&](size_t left, size_t right, int ms)
 	{
-		//’Tõ‚Ì¶‰E‚ğw’è‚µ‚ÄAÅŒã‚É‘}“ü‚·‚éƒCƒ“ƒfƒbƒNƒX‚ÌˆÊ’u‚ğ•Ô‚·
-		//I—¹ğŒ
+		//æ¢ç´¢ã®å·¦å³ã‚’æŒ‡å®šã—ã¦ã€æœ€å¾Œã«æŒ¿å…¥ã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ä½ç½®ã‚’è¿”ã™
+		//çµ‚äº†æ¡ä»¶
 		if (right == left) return right;
 
 		if (right - 1 == left) {
@@ -47,8 +47,8 @@ jubeon::game::Notes::const_iterator jubeon::game::Sequence::search(const jubeon:
 			else return left;
 		}
 
-		//I—¹‚µ‚È‚¢
-		//‚¿‚È‚İ‚Éright‚Í—Ìˆæ‚Ì+1‚ÌêŠ
+		//çµ‚äº†ã—ãªã„æ™‚
+		//ã¡ãªã¿ã«rightã¯é ˜åŸŸã®+1ã®å ´æ‰€
 		size_t center = left + (right - left) / 2;
 		if (this->at(center).first.getJustTime() <= ms) return search(center, right, ms);
 		else return search(left, center, ms);
@@ -57,8 +57,8 @@ jubeon::game::Notes::const_iterator jubeon::game::Sequence::search(const jubeon:
 	size_t idx = search(0, this->size(), ms);
 
 	if (idx > this->size()) {
-		//‚¨‚©‚µ‚¢
-		//‚Æ‚è‚ ‚¦‚¸ƒGƒ‰[o—Í
+		//ãŠã‹ã—ã„
+		//ã¨ã‚Šã‚ãˆãšã‚¨ãƒ©ãƒ¼å‡ºåŠ›
 		return this->end();
 	}
 

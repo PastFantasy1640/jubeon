@@ -38,7 +38,7 @@ namespace jubeon {
 				Music * music;
 				void pollEvent(sf::Event e);
 
-				strbuf::StreamBuffer<jubeon::input::PanelInput> * jubeon::game::scenes::EventBase::getPanelStreamBuf(void);
+				strbuf::StreamBuffer<jubeon::input::PanelInput> * getPanelStreamBuf(void);
 
 
 			};
@@ -55,7 +55,7 @@ namespace jubeon {
 
 				GameScene();
 
-				//ƒŒƒCƒ„[
+				//ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[
 
 				std::array<PanelPosition, 4> panel_position;
 
