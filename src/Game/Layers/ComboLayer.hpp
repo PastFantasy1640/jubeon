@@ -6,6 +6,7 @@
 #include "../../Graphics/Layer/LayerBase.hpp"
 #include <SFML/Graphics.hpp>
 #include "../../Game/Combo.hpp"
+#include <SFML/System/Clock.hpp>
 
 namespace jubeon {
 	namespace game {
@@ -14,16 +15,16 @@ namespace jubeon {
 			private:
 				sf::Texture dummy;
 
-				Combo combo;
+				Combo * combo;
+				ComboLayer::ComboLayer(Combo * combo) : combo(combo) {}
 
-				//sf;;clock的なのに修正しなきゃ
-				clock_t t0;//最初に記録
-				clock_t t1;//次に記録
-				clock_t t_;//時間の差
+
+				sf::Clock clock;
+				int t;
 
 				//描写の時に使いそうな...
-				int combo_baf;
-				char combo_baff;
+				int combo_buf;
+				char combo_buff;
 
 				//描写用の座標
 				int y;
@@ -38,10 +39,14 @@ namespace jubeon {
 				virtual void Exit() override;
 
 				//値変更の検知フラグを見て、リスタート処理
-				void Restart();
+				void restart();
 
 				//時間に応じて座標を上下する処理
-				void Set_Coordinates();
+				void set_Coordinates();
+
+
+				ComboLayer();
+				~ComboLayer();
 			
 			};
 		}
