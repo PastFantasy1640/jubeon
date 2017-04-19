@@ -101,7 +101,7 @@ void jubeon::game::layers::ComboLayer::restart()
 	}
 }
 
-int jubeon::game::layers::ComboLayer::get_Coordinates()
+float jubeon::game::layers::ComboLayer::get_Coordinates()
 {
 	this->t = this->clock.getElapsedTime().asMilliseconds();
 
@@ -123,7 +123,7 @@ int jubeon::game::layers::ComboLayer::get_Coordinates()
 	return 0;
 }
 
-jubeon::game::layers::ComboLayer::ComboLayer(int m)
+jubeon::game::layers::ComboLayer::ComboLayer(float m)
 {
 	//std::array<sf::Texture *, 10> textures;
 

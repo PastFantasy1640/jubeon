@@ -39,7 +39,7 @@ namespace jubeon {
 
 				//•`Ê‚Ì‚Ég‚¢‚»‚¤‚È...
 
-				int w; //•`Ê”ÍˆÍ
+				float w; //•`Ê”ÍˆÍ
 
 				//int combo_buf;
 				char combo_buf[4];
@@ -50,10 +50,10 @@ namespace jubeon {
 
 
 				//•`Ê—p‚ÌÀ•W
-				int y;
+				float y;
 
 				//‰Šú‚ÌyÀ•W
-				int y_def;
+				float y_def;
 
 			public:
 				virtual void Init() override;
@@ -64,10 +64,10 @@ namespace jubeon {
 				void restart();
 
 				//ŠÔ‚É‰‚¶‚ÄÀ•W‚ğã‰º‚·‚éˆ—
-				int get_Coordinates();
+				float get_Coordinates();
 
 
-				ComboLayer(int m);
+				ComboLayer(float m);
 				~ComboLayer();
 			
 			};
