@@ -117,11 +117,12 @@ int jubeon::game::layers::ComboLayer::get_Coordinates()
 	if (160 < this->t) {
 		return this->y_def;
 	}
+	return 0;
 }
 
 jubeon::game::layers::ComboLayer::ComboLayer(int m)
 {
-	std::array<sf::Texture *, 10> textures;
+	//std::array<sf::Texture *, 10> textures;
 
 
 
