@@ -52,8 +52,6 @@ namespace jubeon {
 				//描写するオフセットms
 				int offset_ms;
 
-				//TEMPORARY
-				std::shared_ptr<Marker> mk;
 
 
 			};

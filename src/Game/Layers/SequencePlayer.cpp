@@ -45,8 +45,8 @@ void jubeon::game::layers::SequencePlayer::Draw()
 	const int mms = this->player->getCurrentTime(this->music);
 	const int ms = mms - this->offset_ms;
 	
-	const int start_ms = ms - this->mk->getLengthAfterMax();	//‹t‚È‚ñ‚¾‚È\
-	const int end_ms = ms + this->mk->getLengthBefore();
+	const int start_ms = ms - this->player->getMarker()->getLengthAfterMax();	//‹t‚È‚ñ‚¾‚È\
+	const int end_ms = ms + this->player->getMarker()->getLengthBefore();
 
 	{
 		//### •ˆ–Ê‚Ì•`ŽÊ ###
@@ -105,7 +105,7 @@ void jubeon::game::layers::SequencePlayer::Exit()
 
 void jubeon::game::layers::SequencePlayer::drawMarker(const jMillisec now_ms ,const Notes::const_iterator & ite, Judge judge)
 {
-	const sf::Texture * tex = this->mk->getTexturePtr(now_ms, judge);
+	const sf::Texture * tex = this->player->getMarker()->getTexturePtr(now_ms, judge);
 	if (tex != nullptr) {
 
 		sf::Sprite markersp(*tex);
