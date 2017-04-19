@@ -7,7 +7,7 @@
 #include <vector>
 #include <memory>
 #include <SFML/Graphics.hpp>
-#include "src/Systems/Logger.hpp"
+#include "Systems/Logger.hpp"
 
 namespace jubeon {
 	namespace graphics {
