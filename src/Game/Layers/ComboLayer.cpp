@@ -32,12 +32,19 @@ void jubeon::game::layers::ComboLayer::Init()
 	}
 
 
-	sprintf(combo_buf,"%d",combo->get());
+
+}
+
+void jubeon::game::layers::ComboLayer::Draw()
+{
+
+
+	sprintf(combo_buf, "%d", combo->get());
 	keta1 = combo_buf[0];
 	keta2 = combo_buf[1];
 	keta3 = combo_buf[2];
 	keta4 = combo_buf[3];
-	
+
 	if (combo->get() >= 6 && combo->get() <= 9) {
 		this->combo_sp[keta1].setPosition(this->w / 3 * 8, get_Coordinates());
 	}
@@ -54,13 +61,9 @@ void jubeon::game::layers::ComboLayer::Init()
 		this->combo_sp[keta1].setPosition(0, get_Coordinates());
 		this->combo_sp[keta2].setPosition(this->w / 4, get_Coordinates());
 		this->combo_sp[keta3].setPosition(this->w / 2, get_Coordinates());
-		this->combo_sp[keta4].setPosition(this->w / 4 *3, get_Coordinates());
+		this->combo_sp[keta4].setPosition(this->w / 4 * 3, get_Coordinates());
 	}
 
-}
-
-void jubeon::game::layers::ComboLayer::Draw()
-{
 	if (combo->get() >= 6 && combo->get() <= 9) {
 		this->draw(this->combo_sp[keta1]);
 	}
