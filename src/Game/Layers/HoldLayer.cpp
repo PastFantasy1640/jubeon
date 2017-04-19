@@ -62,8 +62,8 @@ void jubeon::game::layers::HoldLayer::Exit()
 void jubeon::game::layers::HoldLayer::_holdtoDraw()
 {
 //	const Notes * hold_list = this->player->getPlayRecord()->getHoldingList();
-	Notes::const_iterator begin = this->player->getSequence()->search(this->player->getCurrentTime(this->music) - this->player->getMarker()->getLengthBefore());
-	Notes::const_iterator end = this->player->getSequence()->search(this->player->getCurrentTime(this->music) + this->player->getMarker()->getLengthAfterMax());
+	Notes::const_iterator begin = this->player->getSequence()->search(this->player->getCurrentTime(this->music) - this->player->getMarker()->getLengthAfterMax());
+	Notes::const_iterator end = this->player->getSequence()->search(this->player->getCurrentTime(this->music) + this->player->getMarker()->getLengthBefore());
 
 	std::array<bool, 16> is_draw{ false };
 

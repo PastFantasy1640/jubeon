@@ -7,7 +7,7 @@ using namespace jubeon::storages;
 jubeon::game::layers::RivalShutterLayer::RivalShutterLayer(const sf::Vector2f position, const std::shared_ptr<Music>& music, const Difficulty & difficulty)
 	: music(music), difficulty(difficulty), enable(true)
 {
-	this->buffer_sprite.setPosition(position);
+	this->buffer_sprite.setPosition(position - sf::Vector2f(6,6));
 }
 
 jubeon::game::layers::RivalShutterLayer::RivalShutterLayer(const sf::Vector2f position)

@@ -67,7 +67,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	//this->sequence.reset( new jubeon::parser::YoubeatParser(jubeon::parser::YoubeatParser::loadFromFile("musics/Daydream Cafe/note.ndt")));
 	
 	this->player.initForAuto(notes, 0);
-	this->player1.initForPlay(this->gs_event.getPanelStreamBuf(), notes, 0);
+	this->player1.initForPlay(this->gs_event.getPanelStreamBuf(), notes, -1000);
 
 	//std::vector<Note> notes = jmemo2.getNotes();
 
@@ -105,6 +105,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::ScoreLayer> scorelayer(new layers::ScoreLayer(&this->player, this->music.get()));
 	shared_ptr<layers::PushframeLayer> push_frame_layer(new layers::PushframeLayer(&this->panel_position[0], this->gs_event.getPanelStreamBuf()));
 	shared_ptr<layers::HoldLayer> hold_layer(new layers::HoldLayer(&this->player, this->panel_position[0],this->music.get()));
+	shared_ptr<layers::HoldLayer> hold_layer2(new layers::HoldLayer(&this->player1, this->panel_position[1],this->music.get()));
 	
 
     LayerManager * mainwindow = LayerManager::getInstance("mainwindow");
@@ -119,6 +120,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	mainwindow->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(hold_layer, jubeon::graphics::LayerManager::MAIN, 0);
+	mainwindow->addLayer(hold_layer2, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(push_frame_layer, LayerManager::MAIN, 0);
 
 
