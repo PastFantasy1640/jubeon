@@ -11,7 +11,7 @@
 
 namespace jubeon {
 	namespace graphics {
-		class ImageSequencer : protected std::vector<std::unique_ptr<sf::Texture>>{
+		class Texture : protected std::vector<std::unique_ptr<sf::Texture>>{
 		private:
 			
 			//#を連番番号に変換
@@ -43,7 +43,7 @@ namespace jubeon {
 			 * @param filenames 指定されたフォーマットに則ったファイル名
 			 * @param fps 再生するfps。標準は24fpsです。
 			 */
-			ImageSequencer(const std::string filenames, const unsigned int fps = 24);
+			Texture(const std::string filenames, const unsigned int fps = 24);
 			
 			/** タイル状画像用コンストラクタ。filenameを指定してください。
 			 * @param filenames 指定されたフォーマットに則ったファイル名
@@ -52,7 +52,7 @@ namespace jubeon {
 			 * @param frames 全フレーム数。frame_countのxとyを掛け合わせた数より多い数は指定できません。
 			 * @param fps 再生するfps。標準は24fpsです。
 			 */
-			ImageSequencer(const std::string filename, const sf::Vector2u & frame_count, const sf::Vector2u & boundingbox_size, const unsigned int frames, const unsigned int fps = 24);
+			Texture(const std::string filename, const sf::Vector2u & frame_count, const sf::Vector2u & boundingbox_size, const unsigned int frames, const unsigned int fps = 24);
 
 			/** 連番画像、タイル状画像をロードし、GPUメモリに保持します。
 			 * @returns 成功、もしくはすでに正常にロードされているときはtrue。失敗したときはfalse。
@@ -73,7 +73,7 @@ namespace jubeon {
 
 			inline bool isLoaded() const;
 
-			virtual ~ImageSequencer();
+			virtual ~Texture();
 
 			//######## 操作 #########
 			void start();
