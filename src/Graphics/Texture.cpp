@@ -1,4 +1,4 @@
-#include "ImageSequencer.hpp"
+#include "Texture.hpp"
 
 #include <sstream>
 #include <iostream>
@@ -6,7 +6,7 @@
 #include <cmath>
 #include <array>
 
-jubeon::graphics::ImageSequencer::ImageSequencer(const std::string filenames, const unsigned int fps)
+jubeon::graphics::Texture::Texture(const std::string filenames, const unsigned int fps)
 	: filename(filenames),
 	fps(fps),
 	frame_count(sf::Vector2u(0, 0)),
@@ -17,7 +17,7 @@ jubeon::graphics::ImageSequencer::ImageSequencer(const std::string filenames, co
 {
 }
 
-jubeon::graphics::ImageSequencer::ImageSequencer(const std::string filename, const sf::Vector2u & frame_count, const sf::Vector2u & boundingbox_size, const unsigned int frames, const unsigned int fps)
+jubeon::graphics::Texture::Texture(const std::string filename, const sf::Vector2u & frame_count, const sf::Vector2u & boundingbox_size, const unsigned int frames, const unsigned int fps)
 	: filename(filename),
 	fps(fps),
 	frame_count(frame_count),
@@ -28,28 +28,28 @@ jubeon::graphics::ImageSequencer::ImageSequencer(const std::string filename, con
 {
 }
 
-jubeon::graphics::ImageSequencer::~ImageSequencer()
+jubeon::graphics::Texture::~Texture()
 {
 }
 
-void jubeon::graphics::ImageSequencer::start()
+void jubeon::graphics::Texture::start()
 {
 	this->is_playing = true;
 	this->clk.restart();
 }
 
-void jubeon::graphics::ImageSequencer::startFromHead()
+void jubeon::graphics::Texture::startFromHead()
 {
 	this->now_frame = 0;
 	this->start();
 }
 
-void jubeon::graphics::ImageSequencer::stop()
+void jubeon::graphics::Texture::stop()
 {
 	this->is_playing = false;
 }
 
-const sf::Texture * jubeon::graphics::ImageSequencer::getTexture() const
+const sf::Texture * jubeon::graphics::Texture::getTexture() const
 {
 	if (this->is_playing) {
 	}
@@ -58,7 +58,7 @@ const sf::Texture * jubeon::graphics::ImageSequencer::getTexture() const
 	return nullptr;
 }
 
-bool jubeon::graphics::ImageSequencer::load()
+bool jubeon::graphics::Texture::load()
 {
 	if (this->is_loaded) return true;
 
@@ -77,13 +77,13 @@ bool jubeon::graphics::ImageSequencer::load()
 	if (count > 0) {
 		//シーケンス画像
 		std::ostringstream fname;
-		systems::Logger::information("ImageSequencerが連番画像のロードを開始しました : " + this->filename);
+		systems::Logger::information("Textureが連番画像のロードを開始しました : " + this->filename);
 		for (int i = 1; i < pow(10, count); i++) {
 			std::unique_ptr<sf::Texture> temp_tex(new sf::Texture);
 			fname << fname1 << std::setw(count) << std::cout.fill(0) << i << fname2;
 			if (!temp_tex->loadFromFile(fname.str())) {
 				//エラー（終了した可能性も）
-				systems::Logger::information("ImageSequencerが連番画像のロードを終了しました : 読み込んだ画像数" + std::to_string(count));
+				systems::Logger::information("Textureが連番画像のロードを終了しました : 読み込んだ画像数" + std::to_string(count));
 				break;
 			}
 			else this->emplace_back(std::move(temp_tex));
@@ -92,7 +92,7 @@ bool jubeon::graphics::ImageSequencer::load()
 	else {
 		//分割画像
 		sf::Image tmp_img;
-		systems::Logger::information("ImageSequencerがタイル画像のロードを開始しました : " + this->filename);
+		systems::Logger::information("Textureがタイル画像のロードを開始しました : " + this->filename);
 		if (tmp_img.loadFromFile(fname1)) {
 			//切り出し作業
 			for (int i = 0; i < this->frames; i++) {
@@ -100,13 +100,13 @@ bool jubeon::graphics::ImageSequencer::load()
 				if (!temp_tex->loadFromImage(tmp_img, 
 					sf::IntRect(this->bounding_size.x * (i % this->frame_count.x),this->bounding_size.y * (i / this->frame_count.y),this->bounding_size.x, this->bounding_size.y))) {
 					//エラー
-					systems::Logger::warning("ImageSequencerは全てのタイル画像を読み込めませんでした : 読み込んだ数" + std::to_string(count));
+					systems::Logger::warning("Textureは全てのタイル画像を読み込めませんでした : 読み込んだ数" + std::to_string(count));
 					break;
 				}
 				else this->emplace_back(std::move(temp_tex));
 			}
 		}
-		else systems::Logger::warning("ImageSequencerはタイル画像を読み込めませんでした : " + this->filename);
+		else systems::Logger::warning("Textureはタイル画像を読み込めませんでした : " + this->filename);
 	}
 
 	if (this->size() > 0) {
@@ -116,32 +116,32 @@ bool jubeon::graphics::ImageSequencer::load()
 	return this->isLoaded();
 }
 
-void jubeon::graphics::ImageSequencer::unload()
+void jubeon::graphics::Texture::unload()
 {
 	this->clear();
 }
 
-inline int jubeon::graphics::ImageSequencer::getFPS() const
+inline int jubeon::graphics::Texture::getFPS() const
 {
 	return this->fps;
 }
 
-inline void jubeon::graphics::ImageSequencer::setFPS(const unsigned int fps)
+inline void jubeon::graphics::Texture::setFPS(const unsigned int fps)
 {
 	this->fps = fps;
 }
 
-inline int jubeon::graphics::ImageSequencer::getNowFrame() const
+inline int jubeon::graphics::Texture::getNowFrame() const
 {
 	return this->now_frame;
 }
 
-inline void jubeon::graphics::ImageSequencer::seekNowFrame(const unsigned int to)
+inline void jubeon::graphics::Texture::seekNowFrame(const unsigned int to)
 {
 	if(to < this->size()) this->now_frame = to;
 }
 
-inline bool jubeon::graphics::ImageSequencer::isLoaded() const
+inline bool jubeon::graphics::Texture::isLoaded() const
 {
 	return this->is_loaded;
 }
