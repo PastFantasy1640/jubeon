@@ -51,38 +51,30 @@ void jubeon::game::layers::ComboLayer::Draw()
 	keta3 = combo_buf[2];
 	keta4 = combo_buf[3];
 
-	if (combo->get() >= 6 && combo->get() <= 9) {
-		this->combo_sp[keta1].setPosition(this->w / 3 * 8, get_Coordinates());
-	}
-	if (combo->get() >= 10 && combo->get() <= 99) {
-		this->combo_sp[keta1].setPosition(this->w / 4, get_Coordinates());
-		this->combo_sp[keta2].setPosition(this->w / 2, get_Coordinates());
-	}
-	if (combo->get() >= 100 && combo->get() <= 999) {
-		this->combo_sp[keta1].setPosition(this->w / 8, get_Coordinates());
-		this->combo_sp[keta2].setPosition(this->w / 8 * 3, get_Coordinates());
-		this->combo_sp[keta3].setPosition(this->w / 8 * 5, get_Coordinates());
-	}
-	if (combo->get() >= 1000 && combo->get() <= 9999) {
-		this->combo_sp[keta1].setPosition(0, get_Coordinates());
-		this->combo_sp[keta2].setPosition(this->w / 4, get_Coordinates());
-		this->combo_sp[keta3].setPosition(this->w / 2, get_Coordinates());
-		this->combo_sp[keta4].setPosition(this->w / 4 * 3, get_Coordinates());
-	}
 
 	if (combo->get() >= 6 && combo->get() <= 9) {
+		this->combo_sp[keta1].setPosition(this->w / 3 * 8, get_Coordinates());
 		this->draw(this->combo_sp[keta1]);
 	}
-	if (combo->get() >= 10 && combo->get() <= 99) {
+	else if (combo->get() <= 99) {
+		this->combo_sp[keta1].setPosition(this->w / 4, get_Coordinates());
+		this->combo_sp[keta2].setPosition(this->w / 2, get_Coordinates());
 		this->draw(this->combo_sp[keta1]);
 		this->draw(this->combo_sp[keta2]);
 	}
-	if (combo->get() >= 100 && combo->get() <= 999) {
+	else if (combo->get() <= 999) {
+		this->combo_sp[keta1].setPosition(this->w / 8, get_Coordinates());
+		this->combo_sp[keta2].setPosition(this->w / 8 * 3, get_Coordinates());
+		this->combo_sp[keta3].setPosition(this->w / 8 * 5, get_Coordinates());
 		this->draw(this->combo_sp[keta1]);
 		this->draw(this->combo_sp[keta2]);
 		this->draw(this->combo_sp[keta3]);
 	}
-	if (combo->get() >= 1000 && combo->get() <= 9999) {
+	else if (combo->get() <= 9999) {
+		this->combo_sp[keta1].setPosition(0, get_Coordinates());
+		this->combo_sp[keta2].setPosition(this->w / 4, get_Coordinates());
+		this->combo_sp[keta3].setPosition(this->w / 2, get_Coordinates());
+		this->combo_sp[keta4].setPosition(this->w / 4 * 3, get_Coordinates());
 		this->draw(this->combo_sp[keta1]);
 		this->draw(this->combo_sp[keta2]);
 		this->draw(this->combo_sp[keta3]);

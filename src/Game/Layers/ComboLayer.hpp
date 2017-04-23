@@ -17,7 +17,6 @@ namespace jubeon {
 				//sf::Texture dummy;
 
 				Combo * combo;
-				ComboLayer::ComboLayer(Combo * combo) : combo(combo) {}
 
 				sf::Sprite combo_sp[10];
 
@@ -50,6 +49,8 @@ namespace jubeon {
 				virtual void Init() override;
 				virtual void Draw() override;
 				virtual void Exit() override;
+
+				ComboLayer::ComboLayer(Combo * combo) : combo(combo) {}
 
 				//値変更の検知フラグを見て、リスタート処理
 				void restart();
