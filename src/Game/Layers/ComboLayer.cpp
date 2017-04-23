@@ -46,10 +46,10 @@ void jubeon::game::layers::ComboLayer::Draw()
 
 
 	sprintf(combo_buf, "%d", combo->get());
-	keta1 = combo_buf[0];
-	keta2 = combo_buf[1];
-	keta3 = combo_buf[2];
-	keta4 = combo_buf[3];
+	keta1 = combo_buf[0] - '0';
+	keta2 = combo_buf[1] - '0';
+	keta3 = combo_buf[2] - '0';
+	keta4 = combo_buf[3] - '0';
 
 
 	if (combo->get() >= 6 && combo->get() <= 9) {
