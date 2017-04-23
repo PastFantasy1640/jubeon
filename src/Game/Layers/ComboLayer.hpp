@@ -14,46 +14,37 @@ namespace jubeon {
 		namespace layers {
 			class ComboLayer : public jubeon::graphics::LayerBase {
 			private:
-				sf::Texture dummy;
+				//sf::Texture dummy;
 
 				Combo * combo;
 				ComboLayer::ComboLayer(Combo * combo) : combo(combo) {}
 
-
 				sf::Sprite combo_sp[10];
-
-				/*sf::Sprite combo0_sp;
-				sf::Sprite combo1_sp;
-				sf::Sprite combo2_sp;
-				sf::Sprite combo3_sp;
-				sf::Sprite combo4_sp;
-				sf::Sprite combo5_sp;
-				sf::Sprite combo6_sp;
-				sf::Sprite combo7_sp;
-				sf::Sprite combo8_sp;
-				sf::Sprite combo9_sp;*/
 
 				sf::Clock clock;
 				int t;
 
+				//描写範囲
+				float w;
 
-				//描写の時に使いそうな...
-
-				float w; //描写範囲
-
-				//int combo_buf;
+				//桁分割用の変数
 				char combo_buf[4];
 				int keta1;
 				int keta2;
 				int keta3;
 				int keta4;
 
-
 				//描写用の座標
 				float y;
 
 				//初期のy座標
 				float y_def;
+
+				//コンボ画像のWeight
+				float combo_w;
+
+				//拡大率？
+				float scale;
 
 			public:
 				virtual void Init() override;
@@ -66,10 +57,9 @@ namespace jubeon {
 				//時間に応じて座標を上下する処理
 				float get_Coordinates();
 
-
 				ComboLayer(float m);
 				~ComboLayer();
-			
+
 			};
 		}
 	}

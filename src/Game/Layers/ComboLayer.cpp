@@ -18,20 +18,26 @@ void jubeon::game::layers::ComboLayer::Init()
 	storages::Resource::setf("media/image/combo_9.png", storages::Resource::TEX).setKey("ComboLayer.combo9");
 
 
+	//コンボ画像のWeight取得
+
+	//scaleの計算
+	this->scale = this->w / this->combo_w / 4;
+
+
+	this->combo_sp[0].setTexture(*storages::Resource::setk("ComboLayer.combo0").gett());
+	this->combo_sp[1].setTexture(*storages::Resource::setk("ComboLayer.combo1").gett());
+	this->combo_sp[2].setTexture(*storages::Resource::setk("ComboLayer.combo2").gett());
+	this->combo_sp[3].setTexture(*storages::Resource::setk("ComboLayer.combo3").gett());
+	this->combo_sp[4].setTexture(*storages::Resource::setk("ComboLayer.combo4").gett());
+	this->combo_sp[5].setTexture(*storages::Resource::setk("ComboLayer.combo5").gett());
+	this->combo_sp[6].setTexture(*storages::Resource::setk("ComboLayer.combo6").gett());
+	this->combo_sp[7].setTexture(*storages::Resource::setk("ComboLayer.combo7").gett());
+	this->combo_sp[8].setTexture(*storages::Resource::setk("ComboLayer.combo8").gett());
+	this->combo_sp[9].setTexture(*storages::Resource::setk("ComboLayer.combo9").gett());
+
 	for (int i = 0; i <= 10; i++) {
-		this->combo_sp[0].setTexture(*storages::Resource::setk("ComboLayer.combo0").gett());
-		this->combo_sp[1].setTexture(*storages::Resource::setk("ComboLayer.combo1").gett());
-		this->combo_sp[2].setTexture(*storages::Resource::setk("ComboLayer.combo2").gett());
-		this->combo_sp[3].setTexture(*storages::Resource::setk("ComboLayer.combo3").gett());
-		this->combo_sp[4].setTexture(*storages::Resource::setk("ComboLayer.combo4").gett());
-		this->combo_sp[5].setTexture(*storages::Resource::setk("ComboLayer.combo5").gett());
-		this->combo_sp[6].setTexture(*storages::Resource::setk("ComboLayer.combo6").gett());
-		this->combo_sp[7].setTexture(*storages::Resource::setk("ComboLayer.combo7").gett());
-		this->combo_sp[8].setTexture(*storages::Resource::setk("ComboLayer.combo8").gett());
-		this->combo_sp[9].setTexture(*storages::Resource::setk("ComboLayer.combo9").gett());
+		this->combo_sp[i].setScale(this->scale, this->scale);
 	}
-
-
 
 }
 
@@ -125,12 +131,15 @@ float jubeon::game::layers::ComboLayer::get_Coordinates()
 
 jubeon::game::layers::ComboLayer::ComboLayer(float m)
 {
-	//std::array<sf::Texture *, 10> textures;
 
-
+	//初期のｙ座標を設定...受け取る？計算する？勝手に設定？
+	//this->y_def = ;
 
 	//描写範囲を受け取るようにしなきゃ? これでいいのかな↓
 	this -> w = m;
+
+	//とりあえず設定、取得関数作成後削除
+	this->combo_w = 160;
 }
 
 jubeon::game::layers::ComboLayer::~ComboLayer()
