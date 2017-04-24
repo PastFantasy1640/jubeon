@@ -40,7 +40,7 @@ namespace jubeon {
 
 			/** デコンストラクタ
 			 */
-			~PanelPosition();
+			~PanelPosition() {}
 
 			/** ModelBaseのオーバーライド関数
 			 */
