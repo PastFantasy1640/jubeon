@@ -18,6 +18,7 @@ namespace jubeon {
 				//sf::Texture dummy;
 
 				const Combo * combo;
+				const PanelPosition * panel_position;
 
 				sf::Sprite combo_sp[10];
 
@@ -51,7 +52,7 @@ namespace jubeon {
 				virtual void Draw() override;
 				virtual void Exit() override;
 
-				ComboLayer::ComboLayer(const Combo * combo, const PanelPosition * panel_position);
+				ComboLayer(const Combo * combo, const PanelPosition * panel_position);
 
 				//値変更の検知フラグを見て、リスタート処理
 				void restart();
@@ -59,7 +60,6 @@ namespace jubeon {
 				//時間に応じて座標を上下する処理
 				float get_Coordinates();
 
-				ComboLayer(float m);
 				~ComboLayer();
 
 			};
