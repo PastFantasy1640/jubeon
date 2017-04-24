@@ -37,6 +37,11 @@ namespace wlib {
 		 */
 		Json(const std::string json_str);
 
+		/** Copy Constructor.
+		 * @param copy original Json instance.
+		 */
+		Json(const Json & copy);
+
 		/** Destructor.
 		 */
 		virtual ~Json();
@@ -87,7 +92,6 @@ namespace wlib {
 	private:
 		Json();
 		Json(const picojson::value & v, const std::shared_ptr<std::string> & shp_err_str, const std::shared_ptr<bool> & shp_first_flag);
-		Json(const Json & copy);
 
 		template<typename T> T get();
 
