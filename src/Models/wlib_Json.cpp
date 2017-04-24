@@ -108,6 +108,23 @@ bool wlib::Json::is()
 	return this->get<bool>();
 }
 
+std::size_t wlib::Json::size()
+{
+	if (*this->shp_first_flag) this->shp_err_str->clear();	//error clear;
+
+	if (!this->isError()) {
+		if (this->json_value.is<picojson::array>()) {
+			picojson::array tarray = this->json_value.get<picojson::array>();
+			
+			return tarray.size();
+		}
+		else { *this->shp_err_str = "Not Array"; return 0; }
+	}
+
+	//Error
+	return 0;
+}
+
 
 /////////////////////////////////////////
 // Error
