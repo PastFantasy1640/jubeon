@@ -32,14 +32,14 @@ void jubeon::game::layers::PushframeLayer::Draw()
 		else this->setReleasing(p.panel_no);
 	}
 	//ÅI“I‚Épush‚³‚ê‚Ä‚éêŠ‚É•`Ê
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < this->panel_position->size(); i++) {
 		if (this->isPushing(i)) {
 			const sf::Texture & pframe = *storages::Resource::setk("panel_shadow").gett();
 			sf::Sprite sp(pframe);
-			const sf::IntRect & rect = this->panel_position->get(i);
+			const sf::IntRect rect = this->panel_position->get(i);
 
 			sp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
-			sp.setScale(PanelPosition::get_ex(pframe.getSize().x, rect.width), PanelPosition::get_ex(pframe.getSize().y, rect.height));
+			sp.setScale(static_cast<double>(rect.width) / pframe.getSize().x, static_cast<double>(rect.height) / pframe.getSize().y);
 			this->draw(sp);
 		}
 	}
