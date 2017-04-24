@@ -21,7 +21,7 @@ void jubeon::game::layers::ComboLayer::Init()
 	//コンボ画像のWeight取得
 
 	//scaleの計算
-	this->scale = this->w / this->combo_w / 4;
+	this->scale = this->w / this->combo_w / 4.0f;
 
 
 	this->combo_sp[0].setTexture(*storages::Resource::setk("ComboLayer.combo0").gett());
@@ -53,19 +53,19 @@ void jubeon::game::layers::ComboLayer::Draw()
 
 
 	if (combo->get() >= 6 && combo->get() <= 9) {
-		this->combo_sp[keta1].setPosition(this->w / 3 * 8, get_Coordinates());
+		this->combo_sp[keta1].setPosition(this->w / 3.0f * 8.0f, get_Coordinates());
 		this->draw(this->combo_sp[keta1]);
 	}
 	else if (combo->get() <= 99) {
-		this->combo_sp[keta1].setPosition(this->w / 4, get_Coordinates());
-		this->combo_sp[keta2].setPosition(this->w / 2, get_Coordinates());
+		this->combo_sp[keta1].setPosition(this->w / 4.0f, get_Coordinates());
+		this->combo_sp[keta2].setPosition(this->w / 2.0f, get_Coordinates());
 		this->draw(this->combo_sp[keta1]);
 		this->draw(this->combo_sp[keta2]);
 	}
 	else if (combo->get() <= 999) {
-		this->combo_sp[keta1].setPosition(this->w / 8, get_Coordinates());
-		this->combo_sp[keta2].setPosition(this->w / 8 * 3, get_Coordinates());
-		this->combo_sp[keta3].setPosition(this->w / 8 * 5, get_Coordinates());
+		this->combo_sp[keta1].setPosition(this->w / 8.0f, get_Coordinates());
+		this->combo_sp[keta2].setPosition(this->w / 8.0f * 3.0f, get_Coordinates());
+		this->combo_sp[keta3].setPosition(this->w / 8.0f * 5.0f, get_Coordinates());
 		this->draw(this->combo_sp[keta1]);
 		this->draw(this->combo_sp[keta2]);
 		this->draw(this->combo_sp[keta3]);
@@ -106,12 +106,12 @@ float jubeon::game::layers::ComboLayer::get_Coordinates()
 
 	//上がりきるまでの座標を計算代入
 	if (this->t <= 40) {
-		return this->y_def+1 / 8 * this->t;
+		return this->y_def+ 1.0f / 8.0f * this->t;
 	}
 
 	//下がりきるまでの座標を計算代入
 	if (40 < this->t && this->t <= 160) {
-		return this->y_def - 1 / 24 * this->t;
+		return this->y_def - 1.0f / 24.0f * this->t;
 	}
 
 	//下がりきったあとの座標を計算代入
