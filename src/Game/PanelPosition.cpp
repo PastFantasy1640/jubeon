@@ -31,7 +31,7 @@ bool jubeon::game::PanelPosition::set(void)
 	}
 
 	try {
-		int min_x = this->at(0).left, max_x = this->at(0).left + this->at(0).width, min_y = this->at(0).height, max_y = this->at(0).height + this->at(0).height; //position
+		int min_x = this->at(0).left, max_x = this->at(0).left + this->at(0).width, min_y = this->at(0).top, max_y = this->at(0).top + this->at(0).height; //position
 
 		for (auto p = ++this->begin(); p != this->end(); p++) {
 			if (p->left < min_x) min_x = p->left;
