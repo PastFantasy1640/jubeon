@@ -17,7 +17,7 @@ namespace jubeon {
 			private:
 				//sf::Texture dummy;
 
-				Combo * combo;
+				const Combo * combo;
 
 				sf::Sprite combo_sp[10];
 
