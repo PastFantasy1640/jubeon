@@ -6,6 +6,10 @@
 void jubeon::game::layers::ComboLayer::Init()
 {
 
+	//setPosition、createBufferはpanel_positionを元に変更する
+	//	this->buffer_sprite.setPosition();
+	//	this->createBuffer(sf::Vector2u(192,192));
+
 	storages::Resource::setf("media/image/combo_0.png", storages::Resource::TEX).setKey("ComboLayer.combo0");
 	storages::Resource::setf("media/image/combo_1.png", storages::Resource::TEX).setKey("ComboLayer.combo1");
 	storages::Resource::setf("media/image/combo_2.png", storages::Resource::TEX).setKey("ComboLayer.combo2");
@@ -121,7 +125,8 @@ float jubeon::game::layers::ComboLayer::get_Coordinates()
 	return 0;
 }
 
-jubeon::game::layers::ComboLayer::ComboLayer(float m)
+jubeon::game::layers::ComboLayer::ComboLayer(const Combo * combo, const PanelPosition * panel_position)
+	: combo(combo), panel_position(panel_position)
 {
 
 	//初期のｙ座標を設定...受け取る？計算する？勝手に設定？
