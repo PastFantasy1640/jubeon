@@ -92,7 +92,8 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::ScoreLayer> scorelayer(new layers::ScoreLayer(&this->player, this->music.get()));
 	shared_ptr<layers::PushframeLayer> push_frame_layer(new layers::PushframeLayer(&this->panel_position[0], this->gs_event.getPanelStreamBuf()));
 	
-	shared_ptr<layers::ComboLayer> combo_layer_main(new layers::ComboLayer(this->player.getCombo(), this->panel_position));
+	shared_ptr<layers::ComboLayer> combo_layer_main(new layers::ComboLayer(this->player.getCombo(), &this->panel_position.at(0)));
+	//shared_ptr<layers::ComboLayer> combo_layer_main(new layers::ComboLayer(nullptr, nullptr));
 
     LayerManager * mainwindow = LayerManager::getInstance("mainwindow");
 	mainwindow->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
