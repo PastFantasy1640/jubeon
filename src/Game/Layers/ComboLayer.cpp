@@ -6,9 +6,8 @@
 void jubeon::game::layers::ComboLayer::Init()
 {
 
-	//setPositionAcreateBuffer‚Ípanel_position‚ðŒ³‚É•ÏX‚·‚é
-	//	this->buffer_sprite.setPosition();
-	//	this->createBuffer(sf::Vector2u(192,192));
+	this->buffer_sprite.setPosition(this->panel_position->getBoundingBox().left,this->panel_position->getBoundingBox().top);
+	this->createBuffer(sf::Vector2u(this->panel_position->getBoundingBox().width,this->panel_position->getBoundingBox().height));
 
 	storages::Resource::setf("media/image/combo_0.png", storages::Resource::TEX).setKey("ComboLayer.combo0");
 	storages::Resource::setf("media/image/combo_1.png", storages::Resource::TEX).setKey("ComboLayer.combo1");
@@ -133,7 +132,7 @@ jubeon::game::layers::ComboLayer::ComboLayer(const Combo * combo, const PanelPos
 	//this->y_def = ;
 
 	//•`ŽÊ”ÍˆÍ‚ðŽó‚¯Žæ‚é‚æ‚¤‚É‚µ‚È‚«‚á? ‚±‚ê‚Å‚¢‚¢‚Ì‚©‚È«
-	this -> w = m;
+	this -> w = panel_position->getBoundingBox().width;
 
 	//‚Æ‚è‚ ‚¦‚¸Ý’èAŽæ“¾ŠÖ”ì¬Œãíœ
 	this->combo_w = 160;
