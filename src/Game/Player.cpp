@@ -99,6 +99,16 @@ void jubeon::game::Player::updateInput(const Music * music)
 	this->record->update(music);
 }
 
+const jubeon::game::Combo * jubeon::game::Player::getCombo() const
+{
+	return this->combo.get();
+}
+
+jubeon::game::Combo * jubeon::game::Player::getCombo()
+{
+	return this->combo.get();
+}
+
 int jubeon::game::Player::getCurrentTime(const Music * music) const
 {
 	return music->getPlayingCurrentTime() + this->offset;
