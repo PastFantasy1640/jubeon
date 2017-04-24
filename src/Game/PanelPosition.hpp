@@ -46,7 +46,10 @@ namespace jubeon {
 			 */
 			virtual bool set() override;
 
-			using std::vector<sf::IntRect>::at;
+			//using std::vector<sf::IntRect>::at;
+			
+			sf::IntRect get(std::size_t index) const throw (OutOfRangePanelNumberException);
+			
 			using std::vector<sf::IntRect>::operator[];
 			using std::vector<sf::IntRect>::size;
 

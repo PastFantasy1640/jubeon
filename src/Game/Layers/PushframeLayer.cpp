@@ -36,7 +36,7 @@ void jubeon::game::layers::PushframeLayer::Draw()
 		if (this->isPushing(i)) {
 			const sf::Texture & pframe = *storages::Resource::setk("panel_shadow").gett();
 			sf::Sprite sp(pframe);
-			const sf::IntRect & rect = this->panel_position->at(i);
+			const sf::IntRect rect = this->panel_position->get(i);
 
 			sp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
 			sp.setScale(static_cast<double>(rect.width) / pframe.getSize().x, static_cast<double>(rect.height) / pframe.getSize().y);

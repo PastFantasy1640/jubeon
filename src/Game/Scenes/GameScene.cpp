@@ -82,7 +82,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	shared_ptr<layers::FrameLayer> frame(new layers::FrameLayer);
 	shared_ptr<layers::MusicInfoLayer> musicinfo(new layers::MusicInfoLayer(music));
 	shared_ptr<layers::ShutterLayer> shutterlayer(new layers::ShutterLayer);
-	shared_ptr<layers::RivalShutterLayer> rival1(new layers::RivalShutterLayer(sf::Vector2f(this->panel_position[1].at(0).left, this->panel_position[1].at(0).top), this->music, BASIC));
+	shared_ptr<layers::RivalShutterLayer> rival1(new layers::RivalShutterLayer(sf::Vector2f(this->panel_position[1].get(0).left, this->panel_position[1].get(0).top), this->music, BASIC));
 	shared_ptr<layers::RivalShutterLayer> rival2(new layers::RivalShutterLayer(sf::Vector2f(288.0f, 122.0f), this->music, EXTREME));
 	shared_ptr<layers::RivalShutterLayer> rival3(new layers::RivalShutterLayer(sf::Vector2f(546.0f, 122.0f)));
 	shared_ptr<layers::SequencePlayer> sequenceplayer(new layers::SequencePlayer(this->player.getSequence(), this->music.get(), &this->player, &this->panel_position[0], 0));
