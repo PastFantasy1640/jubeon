@@ -26,6 +26,9 @@ void jubeon::game::Player::initForPlay(strbuf::StreamBuffer<input::PanelInput>* 
 	//reset PlayRecord
 	this->record.reset(new PlayRecord(this->sequence.get()));
 
+	//reset Combo
+	this->combo.reset(new Combo());
+
 	//connect PanelInput Streaming
 	panel_que.reset(new strbuf::OutputStream<input::PanelInput>());
 	panel_strbuf->addOutputStream(panel_que);
@@ -46,6 +49,9 @@ void jubeon::game::Player::initForAuto(const Sequence & sequence, const int play
 
 	//reset PlayRecord
 	this->record.reset(new PlayRecord(this->sequence.get()));
+
+	//reset Combo
+	this->combo.reset(new Combo());
 
 	//create auto file.
 	std::vector<input::PanelInput> pinputs;
