@@ -113,7 +113,7 @@ void jubeon::game::layers::SequencePlayer::drawMarker(const jMillisec now_ms ,co
 		const sf::IntRect & rect = this->panel_position->get(ite->first.getPanelIndex());
 
 		markersp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
-		markersp.setScale(PanelPosition::get_ex(tex->getSize().x, rect.width), PanelPosition::get_ex(tex->getSize().y, rect.height));
+		markersp.setScale(static_cast<double>(rect.width) / tex->getSize().x, static_cast<double>(rect.height) / tex->getSize().y);
 		this->draw(markersp);
 
 	}

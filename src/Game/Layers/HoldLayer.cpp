@@ -79,7 +79,7 @@ void jubeon::game::layers::HoldLayer::_holdtoDraw()
 			is_draw.at(ite->first.getPanelIndex()) = true;
 
 			markersp.setPosition(static_cast<float>(rect.left), static_cast<float>(rect.top));
-			markersp.setScale(PanelPosition::get_ex(this->holdto_tex.getSize().x, rect.width), PanelPosition::get_ex(this->holdto_tex.getSize().y, rect.height));
+			markersp.setScale(static_cast<double>(rect.width) / this->holdto_tex.getSize().x, static_cast<double>(rect.height) / this->holdto_tex.getSize().y);
 			this->draw(markersp);
 		}
 	}
