@@ -6,6 +6,7 @@
 #include "../../Graphics/Layer/LayerBase.hpp"
 #include <SFML/Graphics.hpp>
 #include "../../Game/Combo.hpp"
+#include "../../Game/PanelPosition.hpp"
 #include <SFML/System/Clock.hpp>
 #include <array>
 
@@ -50,7 +51,7 @@ namespace jubeon {
 				virtual void Draw() override;
 				virtual void Exit() override;
 
-				ComboLayer::ComboLayer(Combo * combo) : combo(combo) {}
+				ComboLayer::ComboLayer(const Combo * combo, const PanelPosition * panel_position);
 
 				//値変更の検知フラグを見て、リスタート処理
 				void restart();
