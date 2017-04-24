@@ -1,0 +1,97 @@
+{
+	"version" : "1.0",
+	"resources" : [
+		{
+			"name" : "hold.holdarrow",
+			"type" : "sequence",
+			"file" : "media/marker/hold/holdarrow/holdarrow_#####.png",
+			"frames" : 20,
+			"start" : 0,
+			"fps" : 24
+		},
+		{
+			"name" : "hold.holdpanel",
+			"type" : "sequence",
+			"file" : "media/marker/hold/holdpanel/holdpanel_#####.png",
+			"frames" : 20,
+			"start" : 0,
+			"fps" : 24
+		},
+		{
+			"name" : "hold.holdline",
+			"type" : "still",
+			"file" : "media/marker/hold/holdline.png"
+		},
+		{
+			"name" : "hold.holdto",
+			"type" : "still",
+			"file" : "media/marker/hold/holdto.png"
+		},
+		{
+			"name" : "chip.blue",
+			"type" : "still",
+			"file" : "media/image/blue_chip.png"
+		},
+		{
+			"name" : "chip.gray",
+			"type" : "still",
+			"file" : "media/image/gray_chip.png"
+		},
+		{
+			"name" : "chip.yellow",
+			"type" : "still",
+			"file" : "media/image/yellow_chip.png"
+		},
+		{
+			"name" : "level_1.png",
+			"type" : "still",
+			"file" : "media/image/level_1.png"
+		},
+		{
+			"name" : "level_2.png",
+			"type" : "still",
+			"file" : "media/image/level_2.png"
+		},
+		{
+			"name" : "level_3.png",
+			"type" : "still",
+			"file" : "media/image/level_3.png"
+		},
+		{
+			"name" : "level_4.png",
+			"type" : "still",
+			"file" : "media/image/level_4.png"
+		},
+		{
+			"name" : "level_5.png",
+			"type" : "still",
+			"file" : "media/image/level_5.png"
+		},
+		{
+			"name" : "level_6.png",
+			"type" : "still",
+			"file" : "media/image/level_6.png"
+		},
+		{
+			"name" : "level_7.png",
+			"type" : "still",
+			"file" : "media/image/level_7.png"
+		},
+		{
+			"name" : "level_8.png",
+			"type" : "still",
+			"file" : "media/image/level_8.png"
+		},
+		{
+			"name" : "level_9.png",
+			"type" : "still",
+			"file" : "media/image/level_9.png"
+		},
+		{
+			"name" : "level_10.png",
+			"type" : "still",
+			"file" : "media/image/level_10.png"
+		}
+	]
+}
+
