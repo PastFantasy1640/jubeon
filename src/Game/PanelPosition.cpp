@@ -54,7 +54,7 @@ bool jubeon::game::PanelPosition::set(void)
 	return true;
 }
 
-sf::IntRect jubeon::game::PanelPosition::get(std::size_t index) const /*throw(OutOfRangePanelNumberException)*/
+sf::IntRect jubeon::game::PanelPosition::get(std::size_t index) const
 {
 
 	if (index < this->size()) 	return this->at(index);
