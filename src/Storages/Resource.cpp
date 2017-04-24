@@ -33,7 +33,7 @@ bool jubeon::storages::Resource::load(void)
 		//not yet
 		switch (this->type) {
 		case TEX:
-			this->resm->getInstance()->textures[this->id] = std::shared_ptr<sf::Texture>(new sf::Texture());
+			this->resm->getInstance()->textures[this->id] = std::shared_ptr<graphics::ImageSequencer>(new graphics::ImageSequencer();
 			result = this->resm->getInstance()->textures[this->id]->loadFromFile(filename);
 			this->resm->getInstance()->textures[this->id]->setSmooth(true);
 			break;
