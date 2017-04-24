@@ -63,11 +63,16 @@ namespace wlib {
 		*/
 		std::string str();
 		
-
+		
 		/** Get the value as boolean.
 		* @returns the flags.
 		*/
 		bool is();
+		
+		/** Get the size of array.
+		* @returns the size of array.
+		*/
+		std::size_t size();
 
 
 		///////////////////////
