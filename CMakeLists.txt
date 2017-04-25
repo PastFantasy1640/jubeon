@@ -21,6 +21,7 @@ source_group("Game" REGULAR_EXPRESSION "src/Game/(.*).(cpp|hpp)")
 source_group("Game\\Layers" REGULAR_EXPRESSION "src/Game/Layers/(.*).(cpp|hpp)")
 source_group("Game\\Scenes" REGULAR_EXPRESSION "src/Game/Scenes/(.*).(cpp|hpp)")
 source_group("Systems" REGULAR_EXPRESSION "src/Systems/(.*).(cpp|hpp)")
+source_group("Network" REGULAR_EXPRESSION "src/Network/(.*).(cpp|hpp)")
 source_group("Main" FILES src/main.cpp)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
