@@ -55,6 +55,8 @@ using namespace jubeon::graphics;
 using namespace jubeon::systems;
 using namespace std;
 
+#include "Network/NetworkFile.hpp"
+void test_func();
 
 int main(int argc, char * argv[]){
 
@@ -75,6 +77,8 @@ int main(int argc, char * argv[]){
 #endif
 #endif
 	
+	test_func();
+
 	Resource::setf("media/font/deffont.ttf", Resource::FONT).setKey("default_font");
 
 	///////////////////////////////////////////////////////////
@@ -136,3 +140,6 @@ int main(int argc, char * argv[]){
 }
 
 
+void test_func() {
+
+}
