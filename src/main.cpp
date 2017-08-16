@@ -77,7 +77,7 @@ int main(int argc, char * argv[]){
 #endif
 #endif
 	
-	test_func();
+	//test_func();
 
 	Resource::setf("media/font/deffont.ttf", Resource::FONT).setKey("default_font");
 
@@ -142,4 +142,9 @@ int main(int argc, char * argv[]){
 
 void test_func() {
 
+	jubeon::network::NetworkFile file;
+
+	file.open("toyota.jp","/86/");
+
+	while (1);
 }
