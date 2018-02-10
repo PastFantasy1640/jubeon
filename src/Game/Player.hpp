@@ -32,6 +32,9 @@
 //Music(only pointer)
 #include "Music.hpp"
 
+//Score
+#include "Combo.hpp"
+
 namespace jubeon {
 	namespace game {
 		class Player {
@@ -55,6 +58,8 @@ namespace jubeon {
 			PlayRecord * getPlayRecord(void) const;
 			void updateInput(const Music * music);
 
+			const Combo * getCombo() const;
+			Combo * getCombo();
 
 			int getCurrentTime(const Music * music) const;
 
@@ -65,6 +70,8 @@ namespace jubeon {
 
 			std::unique_ptr<Sequence> sequence;
 			std::unique_ptr<PlayRecord> record;
+
+			std::unique_ptr<Combo> combo;
 
 			Marker * marker;
 			

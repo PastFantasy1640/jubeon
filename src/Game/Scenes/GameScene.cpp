@@ -8,6 +8,8 @@
 #include "Game/Layers/ShutterLayer.hpp"
 #include "Game/Layers/RivalShutterLayer.hpp"
 #include "Game/Layers/ScoreLayer.hpp"
+#include "Game/Layers/ComboLayer.hpp"
+
 
 //for panel position config
 #include "Game/PanelPosition.hpp"
@@ -90,6 +92,10 @@ void jubeon::game::scenes::GameScene::init(void)
 	//shared_ptr<layers::SequencePlayer> sequenceplayer2(new layers::SequencePlayer(this->sequence, this->music, this->playrecord, sub_panel1_position, 0));
 	shared_ptr<layers::ScoreLayer> scorelayer(new layers::ScoreLayer(&this->player, this->music.get()));
 	shared_ptr<layers::PushframeLayer> push_frame_layer(new layers::PushframeLayer(&this->panel_position[0], this->gs_event.getPanelStreamBuf()));
+	
+	shared_ptr<layers::ComboLayer> combo_layer_main(new layers::ComboLayer(this->player.getCombo(), &this->panel_position.at(0)));
+	//shared_ptr<layers::ComboLayer> combo_layer_main(new layers::ComboLayer(nullptr, nullptr));
+
 
     LayerManager * mainwindow = LayerManager::getInstance("mainwindow");
 	mainwindow->addLayer(bg, jubeon::graphics::LayerManager::BACKGROUND, 0);
@@ -100,6 +106,7 @@ void jubeon::game::scenes::GameScene::init(void)
 	mainwindow->addLayer(rival2, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(rival3, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(shutterlayer, jubeon::graphics::LayerManager::MAIN, 0);
+	mainwindow->addLayer(combo_layer_main, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(sequenceplayer, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(sequenceplayer2, jubeon::graphics::LayerManager::MAIN, 0);
 	mainwindow->addLayer(push_frame_layer, LayerManager::MAIN, 0);

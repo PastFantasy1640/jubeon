@@ -4,7 +4,6 @@
 #define JUBEON_GAME_COMBO_HPP
 
 namespace jubeon {
-	namespace game {
 		class Combo {
 
 		private:
@@ -36,7 +35,6 @@ namespace jubeon {
 		};
 
 	}
-}
 
 
 #endif
