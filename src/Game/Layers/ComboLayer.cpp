@@ -3,7 +3,7 @@
 
 #include "Storages/Resource.hpp"
 
-void jubeon::game::layers::ComboLayer::Init()
+void jubeon::ComboLayer::Init()
 {
 
 	this->buffer_sprite.setPosition(this->panel_position->getBoundingBox().left,this->panel_position->getBoundingBox().top);
@@ -44,7 +44,7 @@ void jubeon::game::layers::ComboLayer::Init()
 
 }
 
-void jubeon::game::layers::ComboLayer::Draw()
+void jubeon::ComboLayer::Draw()
 {
 
 
@@ -88,11 +88,11 @@ void jubeon::game::layers::ComboLayer::Draw()
 	
 }
 
-void jubeon::game::layers::ComboLayer::Exit()
+void jubeon::ComboLayer::Exit()
 {
 }
 
-void jubeon::game::layers::ComboLayer::restart()
+void jubeon::ComboLayer::restart()
 {
 	if (combo->isUpdate() == true) {
 		
@@ -106,7 +106,7 @@ void jubeon::game::layers::ComboLayer::restart()
 	}
 }
 
-float jubeon::game::layers::ComboLayer::get_Coordinates()
+float jubeon::ComboLayer::get_Coordinates()
 {
 
 	if (this->no == 0) { //記録が終わっていない
@@ -137,7 +137,7 @@ float jubeon::game::layers::ComboLayer::get_Coordinates()
 	return 0;
 }
 
-jubeon::game::layers::ComboLayer::ComboLayer(const Combo * combo, const PanelPosition * panel_position)
+jubeon::ComboLayer::ComboLayer(const Combo * combo, const PanelPosition * panel_position)
 	: combo(combo), panel_position(panel_position)
 {
 	//初期のｙ座標を設定...受け取る？計算する？勝手に設定？
@@ -150,7 +150,7 @@ jubeon::game::layers::ComboLayer::ComboLayer(const Combo * combo, const PanelPos
 	this->combo_w = 160;
 }
 
-jubeon::game::layers::ComboLayer::~ComboLayer()
+jubeon::ComboLayer::~ComboLayer()
 {
 }
 

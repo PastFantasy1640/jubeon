@@ -11,8 +11,6 @@
 #include <array>
 
 namespace jubeon {
-	namespace game {
-		namespace layers {
 			class ComboLayer : public jubeon::graphics::LayerBase {
 			private:
 				//sf::Texture dummy;
@@ -68,7 +66,5 @@ namespace jubeon {
 
 			};
 		}
-	}
-}
 
 #endif
