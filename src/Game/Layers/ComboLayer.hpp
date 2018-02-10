@@ -21,33 +21,33 @@ namespace jubeon {
 				sf::Sprite combo_sp[10];
 
 				sf::Clock clock;
-				int t;
-				int no = 0;
-				int n = 0; //座標記録ナンバーカウント用
+				int t_; //y座用計算用タイム変数
+				int no_ = 0; //記録終了フラグ
+				int n_ = 0; //座標記録ナンバーカウント用
 
-				float y_[32]; //座標記憶用変数
+				float y_[32]; //座標記憶用変数配列
 
 				//描写範囲
-				float w;
+				float w_;
 
 				//桁分割用の変数
-				char combo_buf[4];
-				int keta1;
-				int keta2;
-				int keta3;
-				int keta4;
+				char combo_buf_[4];
+				int keta1_;
+				int keta2_;
+				int keta3_;
+				int keta4_;
 
 				//描写用の座標
-				float y;
+				float y_draw_;
 
 				//初期のy座標
-				float y_def;
+				float y_def_;
 
 				//コンボ画像のWeight
-				float combo_w;
+				float combo_w_;
 
 				//拡大率？
-				float scale;
+				float scale_;
 
 			public:
 				virtual void Init() override;

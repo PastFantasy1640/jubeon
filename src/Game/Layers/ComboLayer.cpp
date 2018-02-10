@@ -24,7 +24,7 @@ void jubeon::ComboLayer::Init()
 	//コンボ画像のWeight取得
 
 	//scaleの計算
-	this->scale = this->w / this->combo_w / 4.0f;
+	this->scale_ = this->w_ / this->combo_w_ / 4.0f;
 
 
 	this->combo_sp[0].setTexture(*storages::Resource::setk("ComboLayer.combo0").gett());
@@ -39,7 +39,7 @@ void jubeon::ComboLayer::Init()
 	this->combo_sp[9].setTexture(*storages::Resource::setk("ComboLayer.combo9").gett());
 
 	for (int i = 0; i <= 10; i++) {
-		this->combo_sp[i].setScale(this->scale, this->scale);
+		this->combo_sp[i].setScale(this->scale_, this->scale_);
 	}
 
 }
@@ -48,42 +48,42 @@ void jubeon::ComboLayer::Draw()
 {
 
 
-	sprintf(combo_buf, "%d", combo->get());
-	keta1 = combo_buf[0] - '0';
-	keta2 = combo_buf[1] - '0';
-	keta3 = combo_buf[2] - '0';
-	keta4 = combo_buf[3] - '0';
+	sprintf(this->combo_buf_, "%d", combo->get());
+	this->keta1_ = this->combo_buf_[0] - '0';
+	this->keta2_ = this->combo_buf_[1] - '0';
+	this->keta3_ = this->combo_buf_[2] - '0';
+	this->keta4_ = this->combo_buf_[3] - '0';
 
 
 	if (combo->get() <= 5){
 	}
 	else if (combo->get() <= 9) {
-		this->combo_sp[keta1].setPosition(this->w / 3.0f * 8.0f, get_Coordinates());
-		this->draw(this->combo_sp[keta1]);
+		this->combo_sp[keta1_].setPosition(this->w_ / 3.0f * 8.0f, get_Coordinates());
+		this->draw(this->combo_sp[keta1_]);
 	}
 	else if (combo->get() <= 99) {
-		this->combo_sp[keta1].setPosition(this->w / 4.0f, get_Coordinates());
-		this->combo_sp[keta2].setPosition(this->w / 2.0f, get_Coordinates());
-		this->draw(this->combo_sp[keta1]);
-		this->draw(this->combo_sp[keta2]);
+		this->combo_sp[keta1_].setPosition(this->w_ / 4.0f, get_Coordinates());
+		this->combo_sp[keta2_].setPosition(this->w_ / 2.0f, get_Coordinates());
+		this->draw(this->combo_sp[keta1_]);
+		this->draw(this->combo_sp[keta2_]);
 	}
 	else if (combo->get() <= 999) {
-		this->combo_sp[keta1].setPosition(this->w / 8.0f, get_Coordinates());
-		this->combo_sp[keta2].setPosition(this->w / 8.0f * 3.0f, get_Coordinates());
-		this->combo_sp[keta3].setPosition(this->w / 8.0f * 5.0f, get_Coordinates());
-		this->draw(this->combo_sp[keta1]);
-		this->draw(this->combo_sp[keta2]);
-		this->draw(this->combo_sp[keta3]);
+		this->combo_sp[keta1_].setPosition(this->w_ / 8.0f, get_Coordinates());
+		this->combo_sp[keta2_].setPosition(this->w_ / 8.0f * 3.0f, get_Coordinates());
+		this->combo_sp[keta3_].setPosition(this->w_ / 8.0f * 5.0f, get_Coordinates());
+		this->draw(this->combo_sp[keta1_]);
+		this->draw(this->combo_sp[keta2_]);
+		this->draw(this->combo_sp[keta3_]);
 	}
 	else if (combo->get() <= 9999) {
-		this->combo_sp[keta1].setPosition(0, get_Coordinates());
-		this->combo_sp[keta2].setPosition(this->w / 4, get_Coordinates());
-		this->combo_sp[keta3].setPosition(this->w / 2, get_Coordinates());
-		this->combo_sp[keta4].setPosition(this->w / 4 * 3, get_Coordinates());
-		this->draw(this->combo_sp[keta1]);
-		this->draw(this->combo_sp[keta2]);
-		this->draw(this->combo_sp[keta3]);
-		this->draw(this->combo_sp[keta4]);
+		this->combo_sp[keta1_].setPosition(0, get_Coordinates());
+		this->combo_sp[keta2_].setPosition(this->w_ / 4, get_Coordinates());
+		this->combo_sp[keta3_].setPosition(this->w_ / 2, get_Coordinates());
+		this->combo_sp[keta4_].setPosition(this->w_ / 4 * 3, get_Coordinates());
+		this->draw(this->combo_sp[keta1_]);
+		this->draw(this->combo_sp[keta2_]);
+		this->draw(this->combo_sp[keta3_]);
+		this->draw(this->combo_sp[keta4_]);
 	}
 	
 }
@@ -98,7 +98,7 @@ void jubeon::ComboLayer::restart()
 		
 		//時間を0に
 		clock.restart();
-		n = 0;
+		n_ = 0;
 
 		//y座標をデフォルトに戻す
 		//this->y = this->y_def;
@@ -109,31 +109,31 @@ void jubeon::ComboLayer::restart()
 float jubeon::ComboLayer::get_Coordinates()
 {
 
-	if (this->no == 0) { //記録が終わっていない
+	if (this->no_ == 0) { //記録が終わっていない
 
-		this->t = this->clock.getElapsedTime().asMilliseconds();
+		this->t_ = this->clock.getElapsedTime().asMilliseconds();
 
 		//上がりきるまでの座標を計算代入
-		if (this->t <= 40) {
-			this->y_[n] = this->y_def + 1.0f / 8.0f * this->t; //記録しておく
+		if (this->t_ <= 40) {
+			this->y_[n_] = this->y_def_ + 1.0f / 8.0f * this->t_; //記録しておく
 		}
 
 		//下がりきるまでの座標を計算代入
-		if (40 < this->t && this->t <= 160) {
-			this->y_[n] = this->y_def - 1.0f / 24.0f * this->t;
+		if (40 < this->t_ && this->t_ <= 160) {
+			this->y_[n_] = this->y_def_ - 1.0f / 24.0f * this->t_;
 		}
 
 		//下がりきったあとの座標を計算代入 //記録終わったか？
-		if (160 < this->t) {
-			this->y_[n] = this->y_def;
-			this->no = 1; //記録が終わったフラグ立てる
+		if (160 < this->t_) {
+			this->y_[n_] = this->y_def_;
+			this->no_ = 1; //記録が終わったフラグ立てる
 		}
-		return this->y_[n];
+		return this->y_[n_];
 	}
 	else { //記録が終わっている
-		return this->y_[this->n]; //一回目でn回目に記録した座標
+		return this->y_[this->n_]; //一回目でn回目に記録した座標
 	}
-	this->n++;
+	this->n_++;
 	return 0;
 }
 
@@ -144,10 +144,10 @@ jubeon::ComboLayer::ComboLayer(const Combo * combo, const PanelPosition * panel_
 	//this->y_def = ;
 
 	//描写範囲を受け取るようにしなきゃ? これでいいのかな↓
-	this -> w = panel_position->getBoundingBox().width;
+	this -> w_ = panel_position->getBoundingBox().width;
 
 	//とりあえず設定、取得関数作成後削除
-	this->combo_w = 160;
+	this->combo_w_ = 160;
 }
 
 jubeon::ComboLayer::~ComboLayer()
