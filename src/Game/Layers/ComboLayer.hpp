@@ -24,6 +24,10 @@ namespace jubeon {
 
 				sf::Clock clock;
 				int t;
+				int no = 0;
+				int n = 0; //座標記録ナンバーカウント用
+
+				float y_[32]; //座標記憶用変数
 
 				//描写範囲
 				float w;

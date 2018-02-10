@@ -55,7 +55,9 @@ void jubeon::game::layers::ComboLayer::Draw()
 	keta4 = combo_buf[3] - '0';
 
 
-	if (combo->get() >= 6 && combo->get() <= 9) {
+	if (combo->get() <= 5){
+	}
+	else if (combo->get() <= 9) {
 		this->combo_sp[keta1].setPosition(this->w / 3.0f * 8.0f, get_Coordinates());
 		this->draw(this->combo_sp[keta1]);
 	}
@@ -83,6 +85,7 @@ void jubeon::game::layers::ComboLayer::Draw()
 		this->draw(this->combo_sp[keta3]);
 		this->draw(this->combo_sp[keta4]);
 	}
+	
 }
 
 void jubeon::game::layers::ComboLayer::Exit()
@@ -95,6 +98,7 @@ void jubeon::game::layers::ComboLayer::restart()
 		
 		//時間を0に
 		clock.restart();
+		n = 0;
 
 		//y座標をデフォルトに戻す
 		//this->y = this->y_def;
@@ -104,30 +108,38 @@ void jubeon::game::layers::ComboLayer::restart()
 
 float jubeon::game::layers::ComboLayer::get_Coordinates()
 {
-	this->t = this->clock.getElapsedTime().asMilliseconds();
 
+	if (this->no == 0) { //記録が終わっていない
 
-	//上がりきるまでの座標を計算代入
-	if (this->t <= 40) {
-		return this->y_def+ 1.0f / 8.0f * this->t;
+		this->t = this->clock.getElapsedTime().asMilliseconds();
+
+		//上がりきるまでの座標を計算代入
+		if (this->t <= 40) {
+			this->y_[n] = this->y_def + 1.0f / 8.0f * this->t; //記録しておく
+		}
+
+		//下がりきるまでの座標を計算代入
+		if (40 < this->t && this->t <= 160) {
+			this->y_[n] = this->y_def - 1.0f / 24.0f * this->t;
+		}
+
+		//下がりきったあとの座標を計算代入 //記録終わったか？
+		if (160 < this->t) {
+			this->y_[n] = this->y_def;
+			this->no = 1; //記録が終わったフラグ立てる
+		}
+		return this->y_[n];
 	}
-
-	//下がりきるまでの座標を計算代入
-	if (40 < this->t && this->t <= 160) {
-		return this->y_def - 1.0f / 24.0f * this->t;
+	else { //記録が終わっている
+		return this->y_[this->n]; //一回目でn回目に記録した座標
 	}
-
-	//下がりきったあとの座標を計算代入
-	if (160 < this->t) {
-		return this->y_def;
-	}
+	this->n++;
 	return 0;
 }
 
 jubeon::game::layers::ComboLayer::ComboLayer(const Combo * combo, const PanelPosition * panel_position)
 	: combo(combo), panel_position(panel_position)
 {
-
 	//初期のｙ座標を設定...受け取る？計算する？勝手に設定？
 	//this->y_def = ;
 
